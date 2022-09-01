@@ -10,6 +10,8 @@ const router = express.Router();
  *  post:
  *    tags: [Admin]
  *    summary: Register Admin Account
+ *    security:
+ *      - bearer: []
  *    requestBody:
  *      required: true
  *      content:
@@ -24,7 +26,7 @@ const router = express.Router();
  *        description: Bad Request
  *
  */
- router.route("/register").post(register);
+ router.route("/register").post(adminProtect, protect, register);
 
 
 // Login API
@@ -47,8 +49,10 @@ const router = express.Router();
  *              phone:
  *                type: string
  *                pattern: 01\d{9}$
+ *                default: '01234567890'
  *              password:
  *                type: string
+ *                default: 'hellodev'
  *
  *    responses:
  *      200:
@@ -78,7 +82,7 @@ const router = express.Router();
  *      404:
  *        description: No User Found
  *
- */2
+ */
  router.route("/validate").get(adminProtect, protect, validate);
  router.route("/forget-password").post(forgetpassword);
  router.route("/resetpassword").post(resetpassword);
