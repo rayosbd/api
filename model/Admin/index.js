@@ -15,7 +15,7 @@ var adminSchema = new mongoose.Schema(
       type: String,
       validate: [/01\d{9}$/, "Invalid Phone Number"],
       required: [true, "Please Provide a Phone Number"],
-      unique: [true, "Phone Number is already registered"]
+      unique: [true, "Phone Number is already registered"],
     },
     // email: {
     //   type: String,
@@ -31,6 +31,10 @@ var adminSchema = new mongoose.Schema(
       type: String,
       trim: true,
     },
+    image: {
+      type: String,
+      trim: true,
+    },
     password: {
       type: String,
       required: [true, "Please add a password"],
@@ -40,7 +44,17 @@ var adminSchema = new mongoose.Schema(
     isVerified: {
       type: Boolean,
       required: true,
-      default: false
+      default: false,
+    },
+    isActive: {
+      type: Boolean,
+      required: true,
+      default: true,
+    },
+    isSuper: {
+      type: Boolean,
+      required: true,
+      default: false,
     },
     resetPasswordToken: String,
     resetPasswordExpire: Date,
@@ -88,13 +102,22 @@ module.exports = Admin;
  *         maxLength: 11
  *       phone:
  *         type: string
+ *         unique: true
  *         pattern: 01\d{9}$
- *       avatarURL:
+ *       avatarUrl:
+ *         type: string
+ *       image:
  *         type: string
  *       password:
  *         type: string
  *         minLength: 6
  *       isVerified:
+ *         type: boolean
+ *         default: false
+ *       isActive:
+ *         type: boolean
+ *         default: true
+ *       isSuper:
  *         type: boolean
  *         default: false
  *        

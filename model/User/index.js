@@ -21,7 +21,7 @@ var userSchema = new mongoose.Schema(
       type: String,
       validate: [/01\d{9}$/, "Invalid Phone Number"],
       required: [true, "Please Provide a Phone Number"],
-      unique: [true, "Phone Number is already registered"]
+      unique: [true, "Phone Number is already registered"],
     },
     // email: {
     //   type: String,
@@ -37,6 +37,10 @@ var userSchema = new mongoose.Schema(
       type: String,
       trim: true,
     },
+    image: {
+      type: String,
+      trim: true,
+    },
     password: {
       type: String,
       required: [true, "Please add a password"],
@@ -46,6 +50,12 @@ var userSchema = new mongoose.Schema(
     isVerified: {
       type: Boolean,
       required: true,
+      default: false,
+    },
+    isActive: {
+      type: Boolean,
+      required: true,
+      default: true,
     },
     resetPasswordToken: String,
     resetPasswordExpire: Date,
@@ -97,8 +107,11 @@ module.exports = User;
  *         maxLength: 32
  *       phone:
  *         type: string
+ *         unique: true
  *         pattern: 01\d{9}$
- *       avatarURL:
+ *       avatarUrl:
+ *         type: string
+ *       image:
  *         type: string
  *       password:
  *         type: string
@@ -106,5 +119,8 @@ module.exports = User;
  *       isVerified:
  *         type: boolean
  *         default: false
+ *       isActive:
+ *         type: boolean
+ *         default: true
  *        
  */

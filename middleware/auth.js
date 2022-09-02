@@ -41,6 +41,3 @@ exports.adminProtect = async (req, res, next) => {
   req.admin = true;
   next()
 }
-
-
-// eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYzMTBlN2I5MWNlMzExMDQzZTU5MjIxNSIsImFkbWluIjp0cnVlLCJpYXQiOjE2NjIwNTQwMzgsImV4cCI6MTY2MjA1NTIzOH0.9oGROpzFH1GPI6uZJsd2_1M2R4qod8Zr_p3PvMQuMGs
