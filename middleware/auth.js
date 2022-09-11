@@ -13,17 +13,19 @@ exports.protect = async (req, res, next) => {
     token = req.headers.authorization.split(" ")[1];
   }
 
-  if (!token) return next(new ErrorResponse("Unauthorized User!", 401));
+  if (!token) return next(new ErrorResponse("Unauthorized user!", 401));
 
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
-    if(!(req.admin && decoded.admin))  return next(new ErrorResponse("Unauthorized User!", 401));
+    if (!(req.admin && decoded.admin))
+      return next(new ErrorResponse("Unauthorized User!", 401));
 
-    const user = decoded.admin ? await Admin.findById(decoded.id) :  await User.findById(decoded.id);
+    const user = decoded.admin
+      ? await Admin.findById(decoded.id)
+      : await User.findById(decoded.id);
 
-    if (!user) return next(new ErrorResponse("No User Found!", 404));
-
+    if (!user) return next(new ErrorResponse("No user found!", 404));
 
     req.user = user;
     req.isAdmin = decoded.admin;

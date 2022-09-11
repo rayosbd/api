@@ -1,6 +1,10 @@
 const mongoose = require("mongoose");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+const { authenticator, totp } = require("otplib");
+const base32 = require("base32");
+
+totp.options = { digits: 6, epoch: Date.now(), step: 60, window: 0 };
 
 var userSchema = new mongoose.Schema(
   {
@@ -23,16 +27,16 @@ var userSchema = new mongoose.Schema(
       required: [true, "Please Provide a Phone Number"],
       unique: [true, "Phone Number is already registered"],
     },
-    // email: {
-    //   type: String,
-    //   required: [true, "Please Provide an Email Address"],
-    //   unique: [true, "Email is already resigtered"], // One Account with One Email
-    //   match: [
-    //     /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/,
-    //     "Invalid Email Address",
-    //   ],
-    //   trim: true,
-    // },
+    email: {
+      type: String,
+      // required: [true, "Please Provide an Email Address"],
+      unique: [true, "Email is already resigtered"], // One Account with One Email
+      match: [
+        /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/,
+        "Invalid Email Address",
+      ],
+      trim: true,
+    },
     avatarUrl: {
       type: String,
       trim: true,
@@ -47,6 +51,7 @@ var userSchema = new mongoose.Schema(
       minlength: [6, "Password must have atleast 6 Characters"],
       select: false,
     },
+    verificationKey: { type: String },
     isVerified: {
       type: Boolean,
       required: true,
@@ -57,8 +62,6 @@ var userSchema = new mongoose.Schema(
       required: true,
       default: true,
     },
-    resetPasswordToken: String,
-    resetPasswordExpire: Date,
   },
   { timestamps: true }
 );
@@ -70,6 +73,7 @@ userSchema.pre("save", async function (next) {
 
   const salt = await bcrypt.genSalt(10);
   this.password = await bcrypt.hash(this.password, salt);
+  this.verificationKey = authenticator.generateSecret();
   next();
 });
 
@@ -82,6 +86,25 @@ userSchema.methods.getSignedToken = function () {
     expiresIn: process.env.JWT_EXPIRE,
   });
 };
+
+userSchema.methods.getTOTP = async function () {
+  return totp.generate(this.verificationKey);
+};
+
+userSchema.methods.verifyTOTP = async function (otp) {
+  return totp.check(otp, this.verificationKey);
+};
+
+userSchema.methods.getBase32ID = async function () {
+  return base32.encode(this._id.toString());
+};
+
+userSchema.methods.verifyUser = async function () {
+  this.isVerified = true;
+  await this.save();
+};
+
+
 
 const User = mongoose.model("User", userSchema);
 module.exports = User;
@@ -109,6 +132,11 @@ module.exports = User;
  *         type: string
  *         unique: true
  *         pattern: 01\d{9}$
+ *       email:
+ *         type: string
+ *         unique: true
+ *         pattern: ^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$
+ *         default: example@email.com
  *       avatarUrl:
  *         type: string
  *       image:
@@ -116,11 +144,11 @@ module.exports = User;
  *       password:
  *         type: string
  *         minLength: 6
- *       isVerified:
- *         type: boolean
- *         default: false
- *       isActive:
- *         type: boolean
- *         default: true
+ *#       isVerified:
+ *#         type: boolean
+ *#         default: false
+ *#       isActive:
+ *#         type: boolean
+ *#         default: true
  *        
  */

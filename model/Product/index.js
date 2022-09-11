@@ -5,11 +5,19 @@
  *   Product:
  *     type: object
  *     required:
+ *        - image
+ *        - store
+ *        - variantType
  *        - titleEn
  *        - descriptionEn
  *        - category
- *        - price
+ *        - buyPrice
+ *        - sellPrice
  *     properties:
+ *       sku:
+ *         type: string
+ *       slang:
+ *         type: string
  *       titleEn:
  *         type: string
  *       titleBn:
@@ -26,14 +34,21 @@
  *       subcategory:
  *         type: string
  *         description: Sub Category Id
- *       price:
+ *       buyPrice:
+ *         type: number
+ *       sellPrice:
  *         type: number
  *       discount:
- *         type: number
- *       variants:
- *         type: array
- *         items:
- *           type: string
+ *         type: object
+ *         required:
+ *             - discountType
+ *             - amount
+ *         properties:
+ *             discountType:
+ *               type: string
+ *               enum: [Percentage, Amount]
+ *             amount:
+ *               type: number
  *       variantType:
  *         type: string
  *         enum: [Variant, Color]
@@ -47,4 +62,6 @@
  *         type: array
  *         items:
  *           type: string
+ *       isActive:
+ *         type: boolean
  */

@@ -7,6 +7,6 @@
  *     required:
  *        - title
  *     properties:
- *       titleEn:
+ *       title:
  *         type: string
  */

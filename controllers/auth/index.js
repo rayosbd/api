@@ -1,9 +1,11 @@
 const User = require("../../model/User");
 const ErrorResponse = require("../../utils/errorResponse");
+const base32 = require("base32");
 
 exports.register = async (req, res, next) => {
   // Get Values
-  const { userName, fullName, phone, avatarUrl, password } = req.body;
+  const { userName, fullName, phone, email, avatarUrl, image, password } =
+    req.body;
 
   try {
     // Store User to DB
@@ -11,13 +13,14 @@ exports.register = async (req, res, next) => {
       userName,
       fullName,
       phone,
+      email,
       avatarUrl,
+      image,
       password,
-      isVerified: true
     });
 
     // Send Success Response & Login Token
-    sendToken(user, 201, res);
+    await sendOTP(user, 201, res);
 
     // On Error
   } catch (error) {
@@ -33,7 +36,11 @@ exports.login = async (req, res, next) => {
     next(ErrorResponse("Please provide phone and password", 400));
 
   try {
-    const user = await User.findOne({ phone }).select("+password");
+    const user = await User.findOne({
+      phone,
+      isVerified: true,
+      isActive: true,
+    }).select("+password");
 
     // Send Error if No User Found
     if (!user) next(new ErrorResponse("Invalid credentials", 401));
@@ -59,6 +66,22 @@ exports.resetpassword = async (req, res, next) => {
   res.send("Reset Password Route");
 };
 
+exports.verify = async (req, res, next) => {
+  const { token, otp } = req.body;
+
+  const uid = base32.decode(token);
+
+  const user = await User.findById(uid);
+
+  if (!user) next(new ErrorResponse("No user found", 404));
+
+  if (!(await user.verifyTOTP(otp)))
+    next(new ErrorResponse("Invalid OTP", 401));
+
+  await user.verifyUser();
+  sendToken(user, 200, res);
+};
+
 exports.validate = async (req, res, next) => {
   if (req.user)
     res.json({
@@ -66,7 +89,7 @@ exports.validate = async (req, res, next) => {
       data: req.user,
     });
   else {
-    next(ErrorResponse("No User Found!", 404));
+    next(ErrorResponse("No user found!", 404));
   }
 };
 
@@ -76,5 +99,14 @@ const sendToken = (user, statusCode, res) => {
     token: user.getSignedToken(), // generates token
   });
 };
+
+const sendOTP = async (user, statusCode, res) => {
+  res.status(statusCode).json({
+    success: true,
+    token: await user.getBase32ID(), // otp._id,
+    otp: await user.getTOTP(), // newOTP,
+  });
+};
+
 
 // https://youtu.be/YocRq-KesCM

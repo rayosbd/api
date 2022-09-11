@@ -51,4 +51,6 @@ module.exports = Category;
  *         type: string
  *       icon:
  *         type: string
- */
+ *       isActive:
+ *         type: boolean
+*/

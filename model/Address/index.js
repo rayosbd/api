@@ -5,13 +5,18 @@
  *   Address:
  *     type: object
  *     required:
- *        - owner
+ *        - user
  *        - title
+ *        - phone
  *        - description
  *     properties:
- *        owner:
+ *        user:
  *          type: string
- *          description: Owner ID
+ *          description: User ID
+ *        phone:
+ *          type: string
+ *          unique: true
+ *          pattern: 01\d{9}$
  *        lat:
  *          type: string
  *        lng:

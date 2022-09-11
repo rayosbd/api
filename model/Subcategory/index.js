@@ -60,4 +60,6 @@ module.exports = SubCategory;
  *       category:
  *         type: string
  *         description: Category Id
- */
+ *       isActive:
+ *         type: boolean
+*/

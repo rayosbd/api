@@ -21,4 +21,6 @@
  *       quantity:
  *         type: integer
  *         default: 0
- */
+ *       isActive:
+ *         type: boolean
+*/

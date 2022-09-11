@@ -49,7 +49,7 @@ const router = express.Router();
  *              phone:
  *                type: string
  *                pattern: 01\d{9}$
- *                default: '01234567890'
+ *                default: '01768161994'
  *              password:
  *                type: string
  *                default: 'hellodev'

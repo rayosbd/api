@@ -12,7 +12,6 @@ exports.register = async (req, res, next) => {
       phone,
       avatarUrl,
       password,
-      isVerified: true
     });
 
     // Send Success Response & Login Token
@@ -32,7 +31,11 @@ exports.login = async (req, res, next) => {
     next(ErrorResponse("Please provide phone and password", 400));
 
   try {
-    const user = await Admin.findOne({ phone }).select("+password");
+    const user = await Admin.findOne({
+      phone,
+      isVerified: true,
+      isActive: true,
+    }).select("+password");
 
     // Send Error if No Admin Found
     if (!user) next(new ErrorResponse("Invalid credentials", 401));
