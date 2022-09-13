@@ -119,9 +119,71 @@ router.route("/login").post(login);
  */
 router.route("/validate").get(protect, validate);
 
-
+// Send OTP API
+/**
+ * @swagger
+ * /api/auth/forget-password:
+ *  post:
+ *    tags: [Authentication]
+ *    summary: Forget User Password
+ *    requestBody:
+ *      required: true
+ *      content:
+ *        application/json:
+ *          schema:
+ *            type: object
+ *            required:
+ *              - phone
+ *            properties:
+ *              phone:
+ *                type: string
+ *                pattern: 01\d{9}$
+ *
+ *    responses:
+ *      200:
+ *        description: OTP Sent
+ *      400:
+ *        description: Bad Request
+ *      401:
+ *        description: Invalid Credentials
+ *
+ */
 router.route("/forget-password").post(forgetpassword);
-router.route("/resetpassword").post(resetpassword);
+// Send OTP API
+/**
+ * @swagger
+ * /api/auth/reset-password:
+ *  post:
+ *    tags: [Authentication]
+ *    summary: Reset User Password
+ *    requestBody:
+ *      required: true
+ *      content:
+ *        application/json:
+ *          schema:
+ *            type: object
+ *            required:
+ *              - token
+ *              - otp
+ *              - password
+ *            properties:
+ *              token:
+ *                type: string
+ *              otp:
+ *                type: string
+ *              password:
+ *                type: string
+ *
+ *    responses:
+ *      200:
+ *        description: OTP Sent
+ *      400:
+ *        description: Bad Request
+ *      401:
+ *        description: Invalid Credentials
+ *
+ */
+router.route("/reset-password").post(resetpassword);
 
 // admin auth routes
 router.use('/admin', require('./admin'))

@@ -59,10 +59,35 @@ exports.login = async (req, res, next) => {
 };
 
 exports.forgetpassword = async (req, res, next) => {
-  res.send("Forget Password Route");
+  const { phone } = req.body;
+  try {
+    const user = await User.findOne({
+      phone,
+      // isVerified: true,
+      isActive: true,
+    });
+    if (user) await sendOTP(user, 200, res);
+    else next(new ErrorResponse("Invalid credentials", 401));
+  } catch (error) {
+    // Send Error Response
+    next(error);
+  }
 };
 
 exports.resetpassword = async (req, res, next) => {
+  const { token, otp, password } = req.body;
+
+  const uid = base32.decode(token);
+
+  const user = await User.findById(uid);
+
+  if (!user) next(new ErrorResponse("No user found", 404));
+
+  if (!(await user.verifyTOTP(otp)))
+    next(new ErrorResponse("Invalid OTP", 401));
+
+  await user.updatePassword(password);
+
   res.send("Reset Password Route");
 };
 

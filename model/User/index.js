@@ -4,8 +4,6 @@ const jwt = require("jsonwebtoken");
 const { authenticator, totp } = require("otplib");
 const base32 = require("base32");
 
-totp.options = { digits: 6, epoch: Date.now(), step: 60, window: 0 };
-
 var userSchema = new mongoose.Schema(
   {
     userName: {
@@ -30,7 +28,7 @@ var userSchema = new mongoose.Schema(
     email: {
       type: String,
       // required: [true, "Please Provide an Email Address"],
-      unique: [true, "Email is already resigtered"], // One Account with One Email
+      // unique: [true, "Email is already resigtered"], // One Account with One Email
       match: [
         /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/,
         "Invalid Email Address",
@@ -50,6 +48,7 @@ var userSchema = new mongoose.Schema(
       required: [true, "Please add a password"],
       minlength: [6, "Password must have atleast 6 Characters"],
       select: false,
+      trim: true,
     },
     verificationKey: { type: String },
     isVerified: {
@@ -88,6 +87,14 @@ userSchema.methods.getSignedToken = function () {
 };
 
 userSchema.methods.getTOTP = async function () {
+  totp.options = {
+    algorithm: "sha1",
+    encoding: "ascii",
+    digits: 6,
+    epoch: Date.now(),
+    step: 30,
+    window: 30,
+  };
   return totp.generate(this.verificationKey);
 };
 
@@ -97,6 +104,11 @@ userSchema.methods.verifyTOTP = async function (otp) {
 
 userSchema.methods.getBase32ID = async function () {
   return base32.encode(this._id.toString());
+};
+
+userSchema.methods.updatePassword = async function (password) {
+  this.password = password;
+  await this.save();
 };
 
 userSchema.methods.verifyUser = async function () {
