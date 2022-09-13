@@ -10,19 +10,32 @@ var categorySchema = new mongoose.Schema(
     titleBn: {
       type: String,
       trim: true,
+      default: null,
     },
     descriptionEn: {
       type: String,
-      required: [true, "Please Provide Title"], // If Required
+      required: [true, "Please Provide Description"], // If Required
       trim: true,
     },
     descriptionBn: {
       type: String,
       trim: true,
+      default: null,
     },
     icon: {
       type: String,
       trim: true,
+      default: null,
+    },
+    // slang: {
+    //   type: String,
+    //   required: [true, "Please Provide Slang"], // If Required
+    //   trim: true,
+    // },
+    isActive: {
+      type: Boolean,
+      required: true,
+      default: true,
     },
   },
   { timestamps: true }
@@ -51,6 +64,4 @@ module.exports = Category;
  *         type: string
  *       icon:
  *         type: string
- *       isActive:
- *         type: boolean
 */

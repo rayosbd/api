@@ -79,16 +79,24 @@ exports.resetpassword = async (req, res, next) => {
 
   const uid = base32.decode(token);
 
-  const user = await User.findById(uid);
+  try {
+    const user = await User.findById(uid);
 
-  if (!user) next(new ErrorResponse("No user found", 404));
+    if (!user) next(new ErrorResponse("No user found", 404));
 
-  if (!(await user.verifyTOTP(otp)))
-    next(new ErrorResponse("Invalid OTP", 401));
+    if (!(await user.verifyTOTP(otp)))
+      next(new ErrorResponse("Invalid OTP", 401));
 
-  await user.updatePassword(password);
+    await user.updatePassword(password);
 
-  res.send("Reset Password Route");
+    res.status(204).json({
+      success: true,
+      message: "Reseted password sucessfully",
+    });
+  } catch (error) {
+    // Send Error Response
+    next(error);
+  }
 };
 
 exports.verify = async (req, res, next) => {
@@ -96,15 +104,20 @@ exports.verify = async (req, res, next) => {
 
   const uid = base32.decode(token);
 
-  const user = await User.findById(uid);
+  try {
+    const user = await User.findById(uid);
 
-  if (!user) next(new ErrorResponse("No user found", 404));
+    if (!user) next(new ErrorResponse("No user found", 404));
 
-  if (!(await user.verifyTOTP(otp)))
-    next(new ErrorResponse("Invalid OTP", 401));
+    if (!(await user.verifyTOTP(otp)))
+      next(new ErrorResponse("Invalid OTP", 401));
 
-  await user.verifyUser();
-  sendToken(user, 200, res);
+    await user.verifyUser();
+    sendToken(user, 200, res);
+  } catch (error) {
+    // Send Error Response
+    next(error);
+  }
 };
 
 exports.validate = async (req, res, next) => {

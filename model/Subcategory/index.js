@@ -10,24 +10,32 @@ var subcategorySchema = new mongoose.Schema(
     titleBn: {
       type: String,
       trim: true,
+      default: null,
     },
     descriptionEn: {
       type: String,
-      required: [true, "Please Provide Title"], // If Required
+      required: [true, "Please Provide Description"], // If Required
       trim: true,
     },
     descriptionBn: {
       type: String,
       trim: true,
+      default: null,
     },
     icon: {
       type: String,
       trim: true,
+      default: null,
     },
     category: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Category",
       required: [true, "Please Provide Category Id"],
+    },
+    isActive: {
+      type: Boolean,
+      required: true,
+      default: true,
     },
   },
   { timestamps: true }
@@ -60,6 +68,4 @@ module.exports = SubCategory;
  *       category:
  *         type: string
  *         description: Category Id
- *       isActive:
- *         type: boolean
 */
