@@ -14,6 +14,7 @@ const errorHandler = require("./middleware/error");
 // swaggerUI
 const swaggerJSDoc = require("swagger-jsdoc");
 const swaggerUi = require("swagger-ui-express");
+const { decodeInfo } = require("./middleware/auth");
 
 // swagger Options
 const swaggerOptions = {
@@ -35,6 +36,7 @@ app.use("/api/auth", require("./routes/auth"));
 app.use("/api/attachments", require("./routes/attachment"));
 app.use("/api/category", require("./routes/category"));
 app.use("/api/subcategory", require("./routes/subcategory"));
+app.use("/api/product", require("./routes/product"));
 
 // Add Swagger UI to Home Page
 app.use("/doc", swaggerUi.serve, swaggerUi.setup(swaggerJSDoc(swaggerOptions)));

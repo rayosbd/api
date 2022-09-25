@@ -6,6 +6,7 @@ const {
   getAll,
   byID,
 } = require("../controllers/category");
+const { byCategory } = require("../controllers/subcategory");
 const { protect, adminProtect } = require("../middleware/auth");
 const router = express.Router();
 
@@ -74,6 +75,30 @@ router.route("/").post(adminProtect, protect, create);
  */
 router.route("/:category_id").get(byID);
 
+// Get Subcategory List by Category API
+/**
+ * @swagger
+ * /api/category/{id}/subcategories:
+ *  get:
+ *    tags: [Category]
+ *    summary: Get Subcategory list using Category ID
+ *    parameters:
+ *      - in: path
+ *        name: id
+ *        required: true
+ *        type: string
+ *        description: Category Id
+ *    responses:
+ *      200:
+ *        description: Get successful
+ *      400:
+ *        description: Bad Request
+ *      404:
+ *        description: Not Found
+ *
+ */
+router.route("/:category_id/subcategories").get(byCategory);
+
 // Update API
 /**
  * @swagger
@@ -123,7 +148,7 @@ router.route("/:category_id").patch(adminProtect, protect, update);
  * /api/category/{id}:
  *  put:
  *    tags: [Category]
- *    summary: Toggle Status Category
+ *    summary: Toggle Category Status 
  *    security:
  *      - bearer: []
  *    parameters:

@@ -32,6 +32,13 @@ var subcategorySchema = new mongoose.Schema(
       ref: "Category",
       required: [true, "Please Provide Category Id"],
     },
+    slug: {
+      type: String,
+      slug: ["titleEn"],
+      unique: true,
+      // permanent: true,
+      index: true,
+    },
     isActive: {
       type: Boolean,
       required: true,

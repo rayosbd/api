@@ -74,6 +74,7 @@ router.route("/").post(adminProtect, protect, create);
  */
 router.route("/:subcategory_id").get(byID);
 
+
 // Update API
 /**
  * @swagger
@@ -123,7 +124,7 @@ router.route("/:subcategory_id").patch(adminProtect, protect, update);
  * /api/subcategory/{id}:
  *  put:
  *    tags: [Subcategory]
- *    summary: Toggle Status Subcategory
+ *    summary: Toggle Subcategory Status 
  *    security:
  *      - bearer: []
  *    parameters:

@@ -1,4 +1,5 @@
 const jwt = require("jsonwebtoken");
+const { default: mongoose } = require("mongoose");
 const Admin = require("../model/Admin");
 const User = require("../model/User");
 const ErrorResponse = require("../utils/errorResponse");
@@ -18,7 +19,11 @@ exports.protect = async (req, res, next) => {
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
-    if (!!req.admin !== !!decoded.admin)
+    if (
+      !decoded.id ||
+      !mongoose.Types.ObjectId.isValid(decoded.id) ||
+      !!req.admin !== !!decoded.admin
+    )
       return next(new ErrorResponse("Unauthorized user!", 401));
 
     const user = decoded.admin
@@ -33,8 +38,6 @@ exports.protect = async (req, res, next) => {
     next();
   } catch (error) {
     // error
-    console.log();
-    // return next();
     return next(new ErrorResponse(error));
   }
 };

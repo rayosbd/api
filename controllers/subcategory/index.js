@@ -54,7 +54,7 @@ exports.update = async (req, res, next) => {
         icon,
       },
       {
-        new: false,
+        new: true,
       }
     );
 
@@ -110,8 +110,8 @@ exports.getAll = async (req, res, next) => {
     res.status(200).json({
       success: true,
       message: "Subcategory list fetched successfully",
-      data: await Subcategory.find({ isActive: true }).populate("category"),
-      total: await Subcategory.find({ isActive: true }).count(),
+      data: await Subcategory.find().populate("category"),
+      total: await Subcategory.find().count(),
     });
 
     // On Error
@@ -131,15 +131,44 @@ exports.byID = async (req, res, next) => {
 
   try {
     const subcategory = await Subcategory.findById(subcategory_id).populate(
-      "category icon"
+      "category"
     );
 
-    if (!subcategory || !subcategory.isActive)
-      next(new ErrorResponse("No subcategory found", 404));
+    if (!subcategory) next(new ErrorResponse("No subcategory found", 404));
 
     res.status(200).json({
       success: true,
       data: subcategory,
+    });
+
+    // On Error
+  } catch (error) {
+    // Send Error Response
+    next(error);
+  }
+};
+
+exports.byCategory = async (req, res, next) => {
+  // Get Values
+  const { category_id } = req.params;
+
+  // mongoose.Types.ObjectId.isValid(id)
+  if (!category_id || !mongoose.Types.ObjectId.isValid(category_id))
+    next(new ErrorResponse("Please provide valid category id", 400));
+
+  try {
+    const subcategory = await Subcategory.find({
+      category: category_id,
+      // isActive: true,
+    });
+
+    res.status(200).json({
+      success: true,
+      data: subcategory,
+      total: await Subcategory.find({
+        category: category_id,
+        // isActive: true,
+      }).count(),
     });
 
     // On Error

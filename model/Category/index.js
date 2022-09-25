@@ -33,6 +33,13 @@ var categorySchema = new mongoose.Schema(
     //   required: [true, "Please Provide Slang"], // If Required
     //   trim: true,
     // },
+    slug: {
+      type: String,
+      slug: ["titleEn"],
+      unique: true,
+      // permanent: true,
+      index: true,
+    },
     isActive: {
       type: Boolean,
       required: true,
@@ -41,6 +48,16 @@ var categorySchema = new mongoose.Schema(
   },
   { timestamps: true }
 );
+
+categorySchema.virtual("totalSubcategories", {
+  ref: "Subcategory",
+  localField: "_id",
+  foreignField: "category",
+  count: true,
+});
+
+categorySchema.set("toObject", { virtuals: true });
+categorySchema.set("toJSON", { virtuals: true });
 
 const Category = mongoose.model("Category", categorySchema);
 module.exports = Category;
