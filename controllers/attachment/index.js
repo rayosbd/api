@@ -19,7 +19,7 @@ exports.saveAttachment = async (req, res, next) => {
 
   res.status(201).json({
     success: true,
-    message: "Image Uploaded Successfully",
+    message: "Attachments uploaded successfully",
     data: attachment,
   });
 };
