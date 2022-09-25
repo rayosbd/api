@@ -32,6 +32,7 @@ const swaggerOptions = {
 app.use(express.json());
 
 app.use("/api/auth", require("./routes/auth"));
+app.use("/api/attachments", require("./routes/attachment"));
 app.use("/api/category", require("./routes/category"));
 app.use("/api/subcategory", require("./routes/subcategory"));
 
