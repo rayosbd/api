@@ -54,15 +54,17 @@ exports.update = async (req, res, next) => {
         icon,
       },
       {
-        new: true,
+        new: false,
       }
     );
 
-    res.status(200).json({
-      success: true,
-      message: "Subcategory updated successfully",
-      data: subcategory,
-    });
+    if (subcategory)
+      res.status(200).json({
+        success: true,
+        message: "Subcategory updated successfully",
+        data: subcategory,
+      });
+    else next(new ErrorResponse("Subcategory not found", 404));
 
     // On Error
   } catch (error) {
@@ -129,7 +131,7 @@ exports.byID = async (req, res, next) => {
 
   try {
     const subcategory = await Subcategory.findById(subcategory_id).populate(
-      "category"
+      "category icon"
     );
 
     if (!subcategory || !subcategory.isActive)

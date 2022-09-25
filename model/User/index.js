@@ -40,8 +40,9 @@ var userSchema = new mongoose.Schema(
       trim: true,
     },
     image: {
-      type: String,
-      trim: true,
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Attachment",
+      default: null,
     },
     password: {
       type: String,

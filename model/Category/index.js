@@ -23,9 +23,10 @@ var categorySchema = new mongoose.Schema(
       default: null,
     },
     icon: {
-      type: String,
-      trim: true,
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Attachment",
       default: null,
+      // required: [true, "Please Provide Category Id"],
     },
     // slang: {
     //   type: String,

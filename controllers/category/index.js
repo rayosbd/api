@@ -50,15 +50,17 @@ exports.update = async (req, res, next) => {
         icon,
       },
       {
-        new: true,
+        new: false,
       }
     );
 
-    res.status(200).json({
-      success: true,
-      message: "Category updated successfully",
-      data: category,
-    });
+    if (category)
+      res.status(200).json({
+        success: true,
+        message: "Category updated successfully",
+        data: category,
+      });
+    else next(new ErrorResponse("Category not found", 404));
 
     // On Error
   } catch (error) {
@@ -124,7 +126,7 @@ exports.byID = async (req, res, next) => {
     next(new ErrorResponse("Please provide valid category id", 400));
 
   try {
-    const category = await Category.findById(category_id);
+    const category = await Category.findById(category_id).populate("icon");
 
     if (!category) next(new ErrorResponse("No category found", 404));
 
