@@ -1,6 +1,7 @@
 const { default: mongoose } = require("mongoose");
 const Attachment = require("../../model/Attachment");
 const fs = require("fs");
+const ErrorResponse = require("../../utils/errorResponse");
 
 exports.saveAttachment = async (req, res, next) => {
   let attachmentList = req.files
@@ -13,15 +14,22 @@ exports.saveAttachment = async (req, res, next) => {
       })
     : [];
 
-  console.log(attachmentList);
+  if (!attachmentList.length)
+    next(new ErrorResponse("No attachments added", 404));
 
-  const attachment = await Attachment.insertMany(attachmentList);
+  try {
+    const attachment = await Attachment.insertMany(attachmentList);
 
-  res.status(201).json({
-    success: true,
-    message: "Attachments uploaded successfully",
-    data: attachment,
-  });
+    res.status(201).json({
+      success: true,
+      message: "Attachments uploaded successfully",
+      data: attachment,
+    });
+  } catch (error) {
+    // On Error
+    // Send Error Response
+    next(error);
+  }
 };
 
 exports.previewAttachment = async (req, res, next) => {
@@ -35,8 +43,6 @@ exports.previewAttachment = async (req, res, next) => {
     const attachment = await Attachment.findById(attachment_id);
 
     if (!attachment) next(new ErrorResponse("No attachment found", 404));
-
-    console.log(attachment);
 
     let imageBuffer = fs.readFileSync("../file_bucket/" + attachment.filename);
     res.setHeader("Content-Type", attachment.mimetype);
