@@ -35,6 +35,7 @@ app.use(express.json());
 app.use("/api/auth", require("./routes/auth"));
 app.use("/api/attachments", require("./routes/attachment"));
 app.use("/api/category", require("./routes/category"));
+app.use("/api/feed", require("./routes/feed"));
 app.use("/api/subcategory", require("./routes/subcategory"));
 app.use("/api/product", require("./routes/product"));
 

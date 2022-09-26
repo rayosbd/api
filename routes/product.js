@@ -1,5 +1,4 @@
 const express = require("express");
-const { getAllForHome } = require("../controllers/category");
 const {
   create,
   update,
@@ -25,23 +24,6 @@ const router = express.Router();
  *
  */
 router.route("/").get(getAll);
-
-// Get All API
-/**
- * @swagger
- * /api/product/for-home:
- *  get:
- *    tags: [Product]
- *    summary: Get Products Short List for Home
- *    responses:
- *      200:
- *        description: Get successful
- *      400:
- *        description: Bad Request
- *
- */
-router.route("/for-home").get(getAllForHome);
-
 
 // Get Product API
 /**
