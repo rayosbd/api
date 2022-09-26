@@ -117,6 +117,24 @@ exports.getAll = async (req, res, next) => {
   }
 };
 
+exports.getAllForHome = async (req, res, next) => {
+  try {
+    res.status(200).json({
+      success: true,
+      message: "Category list fetched successfully",
+      data: await Category.find().populate(
+        "totalSubcategories subcategories products"
+      ),
+      total: await Category.find().count(),
+    });
+
+    // On Error
+  } catch (error) {
+    // Send Error Response
+    next(error);
+  }
+};
+
 exports.byID = async (req, res, next) => {
   // Get Values
   const { category_id } = req.params;

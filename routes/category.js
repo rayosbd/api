@@ -26,6 +26,7 @@ const router = express.Router();
  */
 router.route("/").get(getAll);
 
+
 // Create API
 /**
  * @swagger
