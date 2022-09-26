@@ -2,6 +2,7 @@
 require("dotenv").config();
 
 const express = require("express");
+const cors = require("cors");
 const app = express();
 const PORT = process.env.PORT || 4001;
 
@@ -14,7 +15,6 @@ const errorHandler = require("./middleware/error");
 // swaggerUI
 const swaggerJSDoc = require("swagger-jsdoc");
 const swaggerUi = require("swagger-ui-express");
-const { decodeInfo } = require("./middleware/auth");
 
 // swagger Options
 const swaggerOptions = {
@@ -28,6 +28,15 @@ const swaggerOptions = {
   // ['app.js', '.routes/*.js']
   apis: ["app.js", "./routes/*.js", "./model/*/*.js"],
 };
+
+app.use(
+  cors({
+    origin: "*",
+    methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+    preflightContinue: false,
+    optionsSuccessStatus: 204,
+  })
+);
 
 // Use Routes
 app.use(express.json());
