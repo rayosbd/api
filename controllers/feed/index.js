@@ -11,6 +11,7 @@ exports.getImages = async (req, res, next) => {
       success: true,
       message: "Images fetched successfully",
       data: await FeedImage.find({}),
+      total: await FeedImage.find({}).count(),
     });
 
     // On Error
