@@ -74,6 +74,42 @@ var productSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
+productSchema.virtual("variants", {
+  ref: "Variant",
+  localField: "_id",
+  foreignField: "product",
+});
+
+productSchema.virtual("quantity", {
+  ref: "Variant",
+  localField: "_id",
+  foreignField: "product",
+  count: true,
+});
+
+productSchema.pre(/^find/, async function () {
+  this.populate("variants");
+});
+
+async function addQuantity(result) {
+  if (result) {
+    if (!Array.isArray(result)) {
+      result = [result];
+    }
+    result.forEach(function (product) {
+      product.quantity = 0;
+      product.variants.forEach(function (variant) {
+        product.quantity += variant.quantity;
+      });
+    });
+  }
+}
+productSchema.post("findOne", addQuantity);
+productSchema.post("find", addQuantity);
+
+productSchema.set("toObject", { virtuals: true });
+productSchema.set("toJSON", { virtuals: true });
+
 const Product = mongoose.model("Product", productSchema);
 module.exports = Product;
 

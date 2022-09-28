@@ -6,6 +6,7 @@ const {
   saveImages,
   delImage,
 } = require("../controllers/feed");
+const { adminProtect, protect } = require("../middleware/auth");
 const router = express.Router();
 
 // Get Feed Products API
@@ -47,6 +48,8 @@ router.route("/image").get(getImages);
  *  post:
  *    tags: [Feed]
  *    summary: Upload Feed Images
+ *    security:
+ *      - bearer: []
  *    requestBody:
  *      required: true
  *      content:
@@ -69,7 +72,9 @@ router.route("/image").get(getImages);
  *        description: Bad Request
  *
  */
-router.route("/image").post(upload.array("Files"), saveImages);
+router
+  .route("/image")
+  .post(adminProtect, protect, upload.array("Files"), saveImages);
 
 // Get Category API
 /**
@@ -78,6 +83,8 @@ router.route("/image").post(upload.array("Files"), saveImages);
  *  delete:
  *    tags: [Feed]
  *    summary: Delete Feed Image
+ *    security:
+ *      - bearer: []
  *    parameters:
  *      - in: path
  *        name: id
@@ -93,6 +100,6 @@ router.route("/image").post(upload.array("Files"), saveImages);
  *        description: Not Found
  *
  */
-router.route("/image/:feed_id").delete(delImage);
+router.route("/image/:feed_id").delete(adminProtect, protect, delImage);
 
 module.exports = router;

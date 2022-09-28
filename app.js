@@ -47,7 +47,7 @@ app.use("/api/category", require("./routes/category"));
 app.use("/api/feed", require("./routes/feed"));
 app.use("/api/subcategory", require("./routes/subcategory"));
 app.use("/api/product", require("./routes/product"));
-
+app.use("/api/variant", require("./routes/variant"));
 // Add Swagger UI to Home Page
 app.use("/doc", swaggerUi.serve, swaggerUi.setup(swaggerJSDoc(swaggerOptions)));
 

@@ -84,10 +84,10 @@ exports.getFeedCategories = async (req, res, next) => {
     res.status(200).json({
       success: true,
       message: "Category list fetched successfully",
-      data: await Category.find().populate(
+      data: await Category.find({ isActive: true }).populate(
         "totalSubcategories subcategories products"
       ),
-      total: await Category.find().count(),
+      total: await Category.find({ isActive: true }).count(),
     });
 
     // On Error
