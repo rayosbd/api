@@ -4,6 +4,7 @@ const {
   getByProduct,
   update,
 } = require("../controllers/product/variant");
+const { protect, adminProtect } = require("../middleware/auth");
 const router = express.Router();
 
 // Get Product Variants API
@@ -37,8 +38,8 @@ router.route("/:product_id").get(getByProduct);
  *  post:
  *    tags: [Product]
  *    summary: Create New Variant
- * #   security:
- * #     - bearer: []
+ *    security:
+ *      - bearer: []
  *    parameters:
  *      - in: path
  *        name: productId
@@ -61,7 +62,7 @@ router.route("/:product_id").get(getByProduct);
  *        description: Unauthorized
  *
  */
-router.route("/:product_id").post(create);
+router.route("/:product_id").post(adminProtect, protect, create);
 
 // Update API
 /**
@@ -70,8 +71,8 @@ router.route("/:product_id").post(create);
  *  patch:
  *    tags: [Product]
  *    summary: Update Variant
- * #   security:
- * #     - bearer: []
+ *    security:
+ *      - bearer: []
  *    parameters:
  *      - in: path
  *        name: id
@@ -94,6 +95,6 @@ router.route("/:product_id").post(create);
  *        description: Unauthorized
  *
  */
-router.route("/:variant_id").patch(update);
+router.route("/:variant_id").patch(adminProtect, protect, update);
 
 module.exports = router;

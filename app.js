@@ -43,6 +43,7 @@ app.use(express.json());
 
 app.use("/api/auth", require("./routes/auth"));
 app.use("/api/attachments", require("./routes/attachment"));
+app.use("/api/bookmark", require("./routes/bookmark"));
 app.use("/api/category", require("./routes/category"));
 app.use("/api/feed", require("./routes/feed"));
 app.use("/api/subcategory", require("./routes/subcategory"));

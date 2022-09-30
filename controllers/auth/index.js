@@ -1,6 +1,7 @@
 const User = require("../../model/User");
 const ErrorResponse = require("../../utils/errorResponse");
 const base32 = require("base32");
+const Bookmark = require("../../model/Bookmark");
 
 exports.register = async (req, res, next) => {
   // Get Values
@@ -124,7 +125,14 @@ exports.validate = async (req, res, next) => {
   if (req.user)
     res.json({
       success: true,
-      data: req.user,
+      data: {
+        ...req.user._doc,
+        bookmarks: Array.from(
+          (await Bookmark.find({ user: req.user._id })) || [],
+          (bookmark) => bookmark._id
+        ),
+        totalBookmark: await Bookmark.find({ user: req.user._id }).count(),
+      },
     });
   else {
     next(ErrorResponse("No user found!", 404));

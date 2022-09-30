@@ -149,6 +149,7 @@ router.route("/validate").get(protect, validate);
  *
  */
 router.route("/forget-password").post(forgetpassword);
+
 // Send OTP API
 /**
  * @swagger
