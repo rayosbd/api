@@ -154,6 +154,60 @@ exports.getAll = async (req, res, next) => {
   }
 };
 
+exports.getByCategoryId = async (req, res, next) => {
+  // Get Values
+  const { category_id } = req.params;
+
+  // mongoose.Types.ObjectId.isValid(id)
+  if (!category_id || !mongoose.Types.ObjectId.isValid(category_id))
+    next(new ErrorResponse("Please provide valid category id", 400));
+
+  try {
+    res.status(200).json({
+      success: true,
+      message: "Product list fetched successfully",
+      data: await Product.find({
+        category: category_id,
+      }),
+      total: await Product.find({
+        category: category_id,
+      }).count(),
+    });
+
+    // On Error
+  } catch (error) {
+    // Send Error Response
+    next(error);
+  }
+};
+
+exports.getBySubcategoryId = async (req, res, next) => {
+  // Get Values
+  const { category_id } = req.params;
+
+  // mongoose.Types.ObjectId.isValid(id)
+  if (!category_id || !mongoose.Types.ObjectId.isValid(category_id))
+    next(new ErrorResponse("Please provide valid subcategory id", 400));
+
+  try {
+    res.status(200).json({
+      success: true,
+      message: "Product list fetched successfully",
+      data: await Product.find({
+        subcategory: category_id,
+      }),
+      total: await Product.find({
+        subcategory: category_id,
+      }).count(),
+    });
+
+    // On Error
+  } catch (error) {
+    // Send Error Response
+    next(error);
+  }
+};
+
 exports.byID = async (req, res, next) => {
   // Get Values
   const { product_id } = req.params;

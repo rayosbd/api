@@ -6,6 +6,7 @@ const {
   getAll,
   byID,
 } = require("../controllers/category");
+const { getByCategoryId } = require("../controllers/product");
 const { byCategory } = require("../controllers/subcategory");
 const { protect, adminProtect } = require("../middleware/auth");
 const router = express.Router();
@@ -25,7 +26,6 @@ const router = express.Router();
  *
  */
 router.route("/").get(getAll);
-
 
 // Create API
 /**
@@ -99,6 +99,30 @@ router.route("/:category_id").get(byID);
  *
  */
 router.route("/:category_id/subcategories").get(byCategory);
+
+// Get Product By Category API
+/**
+ * @swagger
+ * /api/category/{id}/products:
+ *  get:
+ *    tags: [Category]
+ *    summary: Get Product List by Category ID
+ *    parameters:
+ *      - in: path
+ *        name: id
+ *        required: true
+ *        type: string
+ *        description: Category Id
+ *    responses:
+ *      200:
+ *        description: Get successful
+ *      400:
+ *        description: Bad Request
+ *      404:
+ *        description: Not Found
+ *
+ */
+router.route("/:category_id/products").get(getByCategoryId);
 
 // Update API
 /**

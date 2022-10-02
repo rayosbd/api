@@ -1,4 +1,5 @@
 const express = require("express");
+const { getBySubcategoryId } = require("../controllers/product");
 const {
   create,
   update,
@@ -74,7 +75,6 @@ router.route("/").post(adminProtect, protect, create);
  */
 router.route("/:subcategory_id").get(byID);
 
-
 // Update API
 /**
  * @swagger
@@ -124,7 +124,7 @@ router.route("/:subcategory_id").patch(adminProtect, protect, update);
  * /api/subcategory/{id}:
  *  put:
  *    tags: [Subcategory]
- *    summary: Toggle Subcategory Status 
+ *    summary: Toggle Subcategory Status
  *    security:
  *      - bearer: []
  *    parameters:
@@ -143,5 +143,29 @@ router.route("/:subcategory_id").patch(adminProtect, protect, update);
  *
  */
 router.route("/:subcategory_id").put(adminProtect, protect, activeInactive);
+
+// Get Product By Category API
+/**
+ * @swagger
+ * /api/subcategory/{id}/products:
+ *  get:
+ *    tags: [Subcategory]
+ *    summary: Get Product List by Subategory ID
+ *    parameters:
+ *      - in: path
+ *        name: id
+ *        required: true
+ *        type: string
+ *        description: Subcategory Id
+ *    responses:
+ *      200:
+ *        description: Get successful
+ *      400:
+ *        description: Bad Request
+ *      404:
+ *        description: Not Found
+ *
+ */
+router.route("/:category_id/products").get(getBySubcategoryId);
 
 module.exports = router;
