@@ -129,7 +129,7 @@ exports.validate = async (req, res, next) => {
         ...req.user._doc,
         bookmarks: Array.from(
           (await Bookmark.find({ user: req.user._id })) || [],
-          (bookmark) => bookmark._id
+          (bookmark) => bookmark.product
         ),
         totalBookmark: await Bookmark.find({ user: req.user._id }).count(),
       },
