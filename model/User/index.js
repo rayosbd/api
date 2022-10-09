@@ -51,7 +51,7 @@ var userSchema = new mongoose.Schema(
       select: false,
       trim: true,
     },
-    verificationKey: { type: String },
+    verificationKey: { type: String, select: false, trim: true },
     isVerified: {
       type: Boolean,
       required: true,

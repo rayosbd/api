@@ -59,6 +59,35 @@ exports.login = async (req, res, next) => {
   }
 };
 
+exports.updateProfile = async (req, res, next) => {
+  if (req.user) {
+    // Get Values
+    const { userName, fullName, email, avatarUrl, image } = req.body;
+    try {
+      await User.updateOne(
+        { id: req.user._id },
+        {
+          userName,
+          fullName,
+          email,
+          avatarUrl,
+          image,
+        }
+      );
+      res.status(201).json({
+        success: true,
+        message: "Updated user sucessfully",
+      });
+      // On Error
+    } catch (error) {
+      // Send Error Response
+      next(error);
+    }
+  } else {
+    next(ErrorResponse("No user found!", 404));
+  }
+};
+
 exports.forgetpassword = async (req, res, next) => {
   const { phone } = req.body;
   try {
@@ -66,7 +95,7 @@ exports.forgetpassword = async (req, res, next) => {
       phone,
       // isVerified: true,
       isActive: true,
-    });
+    }).select("+verificationKey");
     if (user) await sendOTP(user, 200, res);
     else next(new ErrorResponse("Invalid credentials", 401));
   } catch (error) {
@@ -81,7 +110,7 @@ exports.resetpassword = async (req, res, next) => {
   const uid = base32.decode(token);
 
   try {
-    const user = await User.findById(uid);
+    const user = await User.findById(uid).select("+verificationKey");
 
     if (!user) next(new ErrorResponse("No user found", 404));
 
@@ -106,7 +135,7 @@ exports.verify = async (req, res, next) => {
   const uid = base32.decode(token);
 
   try {
-    const user = await User.findById(uid);
+    const user = await User.findById(uid).select("+verificationKey");
 
     if (!user) next(new ErrorResponse("No user found", 404));
 

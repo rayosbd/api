@@ -6,6 +6,7 @@ const {
   resetpassword,
   validate,
   verify,
+  updateProfile,
 } = require("../controllers/auth");
 const { protect } = require("../middleware/auth");
 const router = express.Router();
@@ -98,6 +99,29 @@ router.route("/verify").post(verify);
  *
  */
 router.route("/login").post(login);
+
+// Update User API
+/**
+ * @swagger
+ * /api/auth/update:
+ *  post:
+ *    tags: [Authentication]
+ *    summary: Update User Account
+ *    requestBody:
+ *      required: true
+ *      content:
+ *        application/json:
+ *          schema:
+ *            $ref: '#/components/schemas/User'
+ *
+ *    responses:
+ *      201:
+ *        description: Account creation successful
+ *      400:
+ *        description: Bad Request
+ *
+ */
+router.route("/update").post(protect, updateProfile);
 
 // Validation API
 /**
