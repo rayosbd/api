@@ -64,16 +64,13 @@ exports.updateProfile = async (req, res, next) => {
     // Get Values
     const { userName, fullName, email, avatarUrl, image } = req.body;
     try {
-      await User.updateOne(
-        { id: req.user._id },
-        {
-          userName,
-          fullName,
-          email,
-          avatarUrl,
-          image,
-        }
-      );
+      await User.findByIdAndUpdate(req.user._id, {
+        userName,
+        fullName,
+        email,
+        avatarUrl,
+        image,
+      });
       res.status(201).json({
         success: true,
         message: "Updated user sucessfully",

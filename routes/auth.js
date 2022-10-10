@@ -104,24 +104,26 @@ router.route("/login").post(login);
 /**
  * @swagger
  * /api/auth/update:
- *  post:
+ *  patch:
  *    tags: [Authentication]
  *    summary: Update User Account
+ *    security:
+ *      - bearer: []
  *    requestBody:
  *      required: true
  *      content:
  *        application/json:
  *          schema:
- *            $ref: '#/components/schemas/User'
+ *            $ref: '#/components/schemas/UserUpdate'
  *
  *    responses:
  *      201:
- *        description: Account creation successful
+ *        description: Account information updated
  *      400:
  *        description: Bad Request
  *
  */
-router.route("/update").post(protect, updateProfile);
+router.route("/update").patch(protect, updateProfile);
 
 // Validation API
 /**

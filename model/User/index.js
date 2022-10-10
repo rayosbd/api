@@ -165,3 +165,30 @@ module.exports = User;
  *#         default: true
  *        
  */
+
+
+ /**
+ * @swagger
+ * components:
+ *  schemas:
+ *   UserUpdate:
+ *     type: object
+ *     properties:
+ *       userName:
+ *         type: string
+ *         unique: true 
+ *         maxLength: 11
+ *       fullName:
+ *         type: string
+ *         maxLength: 32
+ *       email:
+ *         type: string
+ *         unique: true
+ *         pattern: ^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$
+ *         default: example@email.com
+ *       avatarUrl:
+ *         type: string
+ *       image:
+ *         type: string
+ *        
+ */
