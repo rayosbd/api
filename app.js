@@ -41,6 +41,9 @@ app.use(
 // Use Routes
 app.use(express.json());
 
+app.get("/", function (req, res) {
+  res.redirect("/doc");
+});
 app.use("/api/auth", require("./routes/auth"));
 app.use("/api/attachments", require("./routes/attachment"));
 app.use("/api/bookmark", require("./routes/bookmark"));
