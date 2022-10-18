@@ -30,9 +30,10 @@ var productSchema = new mongoose.Schema(
       default: null,
     },
     store: {
-      type: String,
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Store",
+      required: [true, "Please Provide Store Id"],
       trim: true,
-      default: null,
     },
     category: {
       type: mongoose.Schema.Types.ObjectId,
