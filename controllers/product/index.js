@@ -208,6 +208,33 @@ exports.getBySubcategoryId = async (req, res, next) => {
   }
 };
 
+exports.getByStoreId = async (req, res, next) => {
+  // Get Values
+  const { store_id } = req.params;
+
+  // mongoose.Types.ObjectId.isValid(id)
+  if (!store_id || !mongoose.Types.ObjectId.isValid(store_id))
+    next(new ErrorResponse("Please provide valid store id", 400));
+
+  try {
+    res.status(200).json({
+      success: true,
+      message: "Product list fetched successfully",
+      data: await Product.find({
+        store: store_id,
+      }),
+      total: await Product.find({
+        store: store_id,
+      }).count(),
+    });
+
+    // On Error
+  } catch (error) {
+    // Send Error Response
+    next(error);
+  }
+};
+
 exports.byID = async (req, res, next) => {
   // Get Values
   const { product_id } = req.params;
@@ -218,7 +245,7 @@ exports.byID = async (req, res, next) => {
 
   try {
     const product = await Product.findById(product_id).populate(
-      "category subcategory"
+      "category subcategory store"
     );
 
     if (!product) next(new ErrorResponse("No product found", 404));

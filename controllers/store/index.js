@@ -46,6 +46,32 @@ exports.getAll = async (req, res, next) => {
   }
 };
 
+exports.byID = async (req, res, next) => {
+  // Get Values
+  const { store_id } = req.params;
+
+  // mongoose.Types.ObjectId.isValid(id)
+  if (!store_id || !mongoose.Types.ObjectId.isValid(store_id))
+    next(new ErrorResponse("Please provide valid store id", 400));
+
+  try {
+    const store = await Store.findById(store_id);
+
+    if (!store) next(new ErrorResponse("No store found", 404));
+
+    res.status(200).json({
+      success: true,
+      data: store,
+    });
+
+    // On Error
+  } catch (error) {
+    // Send Error Response
+    next(error);
+  }
+};
+
+
 exports.update = async (req, res, next) => {
   // Get Values
   const { store_id } = req.params;

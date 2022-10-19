@@ -1,9 +1,11 @@
 const express = require("express");
+const { getByStoreId } = require("../controllers/product");
 const {
   create,
   getAll,
   update,
   activeInactive,
+  byID,
 } = require("../controllers/store");
 const { protect, adminProtect } = require("../middleware/auth");
 const router = express.Router();
@@ -46,6 +48,7 @@ router.route("/").get(getAll);
  *        description: Not Found
  *
  */
+router.route("/:store_id").get(byID);
 
 // Create API
 /**
@@ -153,4 +156,6 @@ router.route("/:store_id").put(adminProtect, protect, activeInactive);
  *        description: Not Found
  *
  */
+router.route("/:store_id/products").get(getByStoreId);
+
 module.exports = router;
