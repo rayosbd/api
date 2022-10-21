@@ -102,12 +102,19 @@ exports.activeInactive = async (req, res, next) => {
 };
 
 exports.getAll = async (req, res, next) => {
+  const { skip, limit, page } = req.pagination;
   try {
+    const category = await Category.find()
+      .populate("totalSubcategories")
+      .skip(skip)
+      .limit(limit);
     res.status(200).json({
       success: true,
       message: "Category list fetched successfully",
-      data: await Category.find().populate("totalSubcategories"),
+      data: category,
       total: await Category.find().count(),
+      page,
+      limit,
     });
 
     // On Error

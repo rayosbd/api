@@ -9,15 +9,25 @@ const {
 const { getByCategoryId } = require("../controllers/product");
 const { byCategory } = require("../controllers/subcategory");
 const { protect, adminProtect } = require("../middleware/auth");
+const { query } = require("../middleware/query");
 const router = express.Router();
 
 // Get All API
 /**
  * @swagger
- * /api/category:
+ * /api/category?limit={limit}&page={page}:
  *  get:
  *    tags: [Category]
  *    summary: Get All Categories
+ *    parameters:
+ *      - in: path
+ *        name: limit
+ *        required: true
+ *        type: string
+ *      - in: path
+ *        name: page
+ *        required: true
+ *        type: string
  *    responses:
  *      200:
  *        description: Get successful
@@ -25,7 +35,7 @@ const router = express.Router();
  *        description: Bad Request
  *
  */
-router.route("/").get(getAll);
+router.route("/").get(query, getAll);
 
 // Create API
 /**
