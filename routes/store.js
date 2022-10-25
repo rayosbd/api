@@ -8,15 +8,25 @@ const {
   byID,
 } = require("../controllers/store");
 const { protect, adminProtect } = require("../middleware/auth");
+const { query } = require("../middleware/query");
 const router = express.Router();
 
 // Get All API
 /**
  * @swagger
- * /api/store:
+ * /api/store?limit={limit}&page={page}:
  *  get:
  *    tags: [Store]
  *    summary: Get All Stores
+ *    parameters:
+ *      - in: path
+ *        name: limit
+ *        required: true
+ *        type: string
+ *      - in: path
+ *        name: page
+ *        required: true
+ *        type: string
  *    responses:
  *      200:
  *        description: Get successful
@@ -24,7 +34,7 @@ const router = express.Router();
  *        description: Bad Request
  *
  */
-router.route("/").get(getAll);
+router.route("/").get(query, getAll);
 
 // Get Store API
 /**
@@ -137,7 +147,7 @@ router.route("/:store_id").put(adminProtect, protect, activeInactive);
 // Get Product By Store API
 /**
  * @swagger
- * /api/store/{id}/products:
+ * /api/store/{id}/products?limit={limit}&page={page}:
  *  get:
  *    tags: [Store]
  *    summary: Get Product List by Store ID
@@ -147,6 +157,14 @@ router.route("/:store_id").put(adminProtect, protect, activeInactive);
  *        required: true
  *        type: string
  *        description: Store Id
+ *      - in: path
+ *        name: limit
+ *        required: true
+ *        type: string
+ *      - in: path
+ *        name: page
+ *        required: true
+ *        type: string
  *    responses:
  *      200:
  *        description: Get successful
@@ -156,6 +174,6 @@ router.route("/:store_id").put(adminProtect, protect, activeInactive);
  *        description: Not Found
  *
  */
-router.route("/:store_id/products").get(getByStoreId);
+router.route("/:store_id/products").get(query, getByStoreId);
 
 module.exports = router;

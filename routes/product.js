@@ -7,15 +7,25 @@ const {
   byID,
 } = require("../controllers/product");
 const { protect, adminProtect } = require("../middleware/auth");
+const { query } = require("../middleware/query");
 const router = express.Router();
 
 // Get All API
 /**
  * @swagger
- * /api/product:
+ * /api/product?limit={limit}&page={page}:
  *  get:
  *    tags: [Product]
  *    summary: Get All Products
+ *    parameters:
+ *      - in: path
+ *        name: limit
+ *        required: true
+ *        type: string
+ *      - in: path
+ *        name: page
+ *        required: true
+ *        type: string
  *    responses:
  *      200:
  *        description: Get successful
@@ -23,7 +33,7 @@ const router = express.Router();
  *        description: Bad Request
  *
  */
-router.route("/").get(getAll);
+router.route("/").get(query, getAll);
 
 // Get Product API
 /**

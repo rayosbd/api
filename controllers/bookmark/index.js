@@ -4,12 +4,18 @@ const ErrorResponse = require("../../utils/errorResponse");
 
 exports.getForUser = async (req, res, next) => {
   const user = req.user;
+  const { skip, limit, page } = req.pagination;
   try {
     res.status(200).json({
       success: true,
       message: "Bookmark list fetched successfully",
-      data: await Bookmark.find({ user: user._id }).populate("product"),
+      data: await Bookmark.find({ user: user._id })
+        .populate("product")
+        .skip(skip)
+        .limit(limit),
       total: await Bookmark.find({ user: user._id }).count(),
+      page,
+      limit,
     });
 
     // On Error

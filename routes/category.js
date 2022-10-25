@@ -89,7 +89,7 @@ router.route("/:category_id").get(byID);
 // Get Subcategory List by Category API
 /**
  * @swagger
- * /api/category/{id}/subcategories:
+ * /api/category/{id}/subcategories?limit={limit}&page={page}:
  *  get:
  *    tags: [Category]
  *    summary: Get Subcategory list using Category ID
@@ -99,6 +99,14 @@ router.route("/:category_id").get(byID);
  *        required: true
  *        type: string
  *        description: Category Id
+ *      - in: path
+ *        name: limit
+ *        required: true
+ *        type: string
+ *      - in: path
+ *        name: page
+ *        required: true
+ *        type: string
  *    responses:
  *      200:
  *        description: Get successful
@@ -108,12 +116,12 @@ router.route("/:category_id").get(byID);
  *        description: Not Found
  *
  */
-router.route("/:category_id/subcategories").get(byCategory);
+router.route("/:category_id/subcategories").get(query, byCategory);
 
 // Get Product By Category API
 /**
  * @swagger
- * /api/category/{id}/products:
+ * /api/category/{id}/products?limit={limit}&page={page}:
  *  get:
  *    tags: [Category]
  *    summary: Get Product List by Category ID
@@ -123,6 +131,14 @@ router.route("/:category_id/subcategories").get(byCategory);
  *        required: true
  *        type: string
  *        description: Category Id
+ *      - in: path
+ *        name: limit
+ *        required: true
+ *        type: string
+ *      - in: path
+ *        name: page
+ *        required: true
+ *        type: string
  *    responses:
  *      200:
  *        description: Get successful
@@ -132,7 +148,7 @@ router.route("/:category_id/subcategories").get(byCategory);
  *        description: Not Found
  *
  */
-router.route("/:category_id/products").get(getByCategoryId);
+router.route("/:category_id/products").get(query, getByCategoryId);
 
 // Update API
 /**

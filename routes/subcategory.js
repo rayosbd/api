@@ -8,15 +8,25 @@ const {
   byID,
 } = require("../controllers/subcategory");
 const { protect, adminProtect } = require("../middleware/auth");
+const { query } = require("../middleware/query");
 const router = express.Router();
 
 // Get All API
 /**
  * @swagger
- * /api/subcategory:
+ * /api/subcategory?limit={limit}&page={page}:
  *  get:
  *    tags: [Subcategory]
  *    summary: Get All Subcategories
+ *    parameters:
+ *      - in: path
+ *        name: limit
+ *        required: true
+ *        type: string
+ *      - in: path
+ *        name: page
+ *        required: true
+ *        type: string
  *    responses:
  *      200:
  *        description: Get successful
@@ -24,7 +34,7 @@ const router = express.Router();
  *        description: Bad Request
  *
  */
-router.route("/").get(getAll);
+router.route("/").get(query, getAll);
 
 // Create API
 /**
@@ -147,7 +157,7 @@ router.route("/:subcategory_id").put(adminProtect, protect, activeInactive);
 // Get Product By Category API
 /**
  * @swagger
- * /api/subcategory/{id}/products:
+ * /api/subcategory/{id}/products?limit={limit}&page={page}:
  *  get:
  *    tags: [Subcategory]
  *    summary: Get Product List by Subategory ID
@@ -157,6 +167,14 @@ router.route("/:subcategory_id").put(adminProtect, protect, activeInactive);
  *        required: true
  *        type: string
  *        description: Subcategory Id
+ *      - in: path
+ *        name: limit
+ *        required: true
+ *        type: string
+ *      - in: path
+ *        name: page
+ *        required: true
+ *        type: string
  *    responses:
  *      200:
  *        description: Get successful
@@ -166,6 +184,6 @@ router.route("/:subcategory_id").put(adminProtect, protect, activeInactive);
  *        description: Not Found
  *
  */
-router.route("/:category_id/products").get(getBySubcategoryId);
+router.route("/:category_id/products").get(query, getBySubcategoryId);
 
 module.exports = router;

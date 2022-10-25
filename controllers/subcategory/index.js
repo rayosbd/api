@@ -106,12 +106,18 @@ exports.activeInactive = async (req, res, next) => {
 };
 
 exports.getAll = async (req, res, next) => {
+  const { skip, limit, page } = req.pagination;
   try {
     res.status(200).json({
       success: true,
       message: "Subcategory list fetched successfully",
-      data: await Subcategory.find().populate("category"),
+      data: await Subcategory.find()
+        .populate("category")
+        .skip(skip)
+        .limit(limit),
       total: await Subcategory.find().count(),
+      page,
+      limit,
     });
 
     // On Error
@@ -151,6 +157,7 @@ exports.byID = async (req, res, next) => {
 exports.byCategory = async (req, res, next) => {
   // Get Values
   const { category_id } = req.params;
+  const { skip, limit, page } = req.pagination;
 
   // mongoose.Types.ObjectId.isValid(id)
   if (!category_id || !mongoose.Types.ObjectId.isValid(category_id))
@@ -160,7 +167,9 @@ exports.byCategory = async (req, res, next) => {
     const subcategory = await Subcategory.find({
       category: category_id,
       // isActive: true,
-    });
+    })
+      .skip(skip)
+      .limit(limit);
 
     res.status(200).json({
       success: true,
@@ -169,6 +178,8 @@ exports.byCategory = async (req, res, next) => {
         category: category_id,
         // isActive: true,
       }).count(),
+      page,
+      limit,
     });
 
     // On Error

@@ -139,12 +139,18 @@ exports.activeInactive = async (req, res, next) => {
 };
 
 exports.getAll = async (req, res, next) => {
+  const { skip, limit, page } = req.pagination;
   try {
     res.status(200).json({
       success: true,
       message: "Product list fetched successfully",
-      data: await Product.find().populate("category subcategory"),
+      data: await Product.find()
+        .populate("category subcategory")
+        .skip(skip)
+        .limit(limit),
       total: await Product.find().count(),
+      page,
+      limit,
     });
 
     // On Error
@@ -157,6 +163,7 @@ exports.getAll = async (req, res, next) => {
 exports.getByCategoryId = async (req, res, next) => {
   // Get Values
   const { category_id } = req.params;
+  const { skip, limit, page } = req.pagination;
 
   // mongoose.Types.ObjectId.isValid(id)
   if (!category_id || !mongoose.Types.ObjectId.isValid(category_id))
@@ -168,10 +175,14 @@ exports.getByCategoryId = async (req, res, next) => {
       message: "Product list fetched successfully",
       data: await Product.find({
         category: category_id,
-      }),
+      })
+        .skip(skip)
+        .limit(limit),
       total: await Product.find({
         category: category_id,
       }).count(),
+      page,
+      limit,
     });
 
     // On Error
@@ -184,6 +195,7 @@ exports.getByCategoryId = async (req, res, next) => {
 exports.getBySubcategoryId = async (req, res, next) => {
   // Get Values
   const { category_id } = req.params;
+  const { skip, limit, page } = req.pagination;
 
   // mongoose.Types.ObjectId.isValid(id)
   if (!category_id || !mongoose.Types.ObjectId.isValid(category_id))
@@ -195,10 +207,14 @@ exports.getBySubcategoryId = async (req, res, next) => {
       message: "Product list fetched successfully",
       data: await Product.find({
         subcategory: category_id,
-      }),
+      })
+        .skip(skip)
+        .limit(limit),
       total: await Product.find({
         subcategory: category_id,
       }).count(),
+      page,
+      limit,
     });
 
     // On Error
@@ -211,6 +227,7 @@ exports.getBySubcategoryId = async (req, res, next) => {
 exports.getByStoreId = async (req, res, next) => {
   // Get Values
   const { store_id } = req.params;
+  const { skip, limit, page } = req.pagination;
 
   // mongoose.Types.ObjectId.isValid(id)
   if (!store_id || !mongoose.Types.ObjectId.isValid(store_id))
@@ -222,10 +239,14 @@ exports.getByStoreId = async (req, res, next) => {
       message: "Product list fetched successfully",
       data: await Product.find({
         store: store_id,
-      }),
+      })
+        .skip(skip)
+        .limit(limit),
       total: await Product.find({
         store: store_id,
       }).count(),
+      page,
+      limit,
     });
 
     // On Error
