@@ -10,7 +10,7 @@ var cartSchema = new mongoose.Schema(
     variant: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Variant",
-      required: [true, "Please Provide Product Variant"],
+      required: [true, "Please Provide Variant Id"],
     },
     quantity: {
       type: Number,

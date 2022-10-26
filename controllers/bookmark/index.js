@@ -48,7 +48,7 @@ exports.createOrDelete = async (req, res, next) => {
   const { product_id } = req.params;
 
   if (!product_id || !mongoose.Types.ObjectId.isValid(product_id))
-    next(new ErrorResponse("Please provide valid product id", 400));
+    return next(new ErrorResponse("Please provide valid product id", 400));
 
   try {
     const bookmark = await Bookmark.findOneAndDelete({

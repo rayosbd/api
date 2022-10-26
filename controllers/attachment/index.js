@@ -15,7 +15,7 @@ exports.saveAttachment = async (req, res, next) => {
     : [];
 
   if (!attachmentList.length)
-    next(new ErrorResponse("No attachments added", 404));
+    return next(new ErrorResponse("No attachments added", 404));
 
   try {
     const attachment = await Attachment.insertMany(attachmentList);
@@ -60,7 +60,7 @@ exports.previewAttachmentInfo = async (req, res, next) => {
   const { attachment_id } = req.params;
   // mongoose.Types.ObjectId.isValid(id)
   if (!attachment_id || !mongoose.Types.ObjectId.isValid(attachment_id))
-    next(new ErrorResponse("Please provide valid attachment id", 400));
+    return next(new ErrorResponse("Please provide valid attachment id", 400));
 
   try {
     const attachment = await Attachment.findById(attachment_id);

@@ -53,7 +53,7 @@ exports.update = async (req, res, next) => {
   const { product_id } = req.params;
 
   if (!product_id || !mongoose.Types.ObjectId.isValid(product_id))
-    next(new ErrorResponse("Please provide valid product id", 400));
+    return next(new ErrorResponse("Please provide valid product id", 400));
 
   const {
     titleEn,
@@ -97,7 +97,7 @@ exports.update = async (req, res, next) => {
         message: "Product updated successfully",
         data: product,
       });
-    else next(new ErrorResponse("Product not found", 404));
+    else return next(new ErrorResponse("Product not found", 404));
 
     // On Error
   } catch (error) {
@@ -111,13 +111,13 @@ exports.activeInactive = async (req, res, next) => {
   const { product_id } = req.params;
 
   if (!product_id || !mongoose.Types.ObjectId.isValid(product_id))
-    next(new ErrorResponse("Please provide valid product id", 400));
+    return next(new ErrorResponse("Please provide valid product id", 400));
 
   try {
     // Update Product to DB
     const product = await Product.findById(product_id);
 
-    if (!product) next(new ErrorResponse("No product found", 404));
+    if (!product) return next(new ErrorResponse("No product found", 404));
 
     await product.updateOne({
       isActive: !product.isActive,
@@ -167,7 +167,7 @@ exports.getByCategoryId = async (req, res, next) => {
 
   // mongoose.Types.ObjectId.isValid(id)
   if (!category_id || !mongoose.Types.ObjectId.isValid(category_id))
-    next(new ErrorResponse("Please provide valid category id", 400));
+    return next(new ErrorResponse("Please provide valid category id", 400));
 
   try {
     res.status(200).json({
@@ -199,7 +199,7 @@ exports.getBySubcategoryId = async (req, res, next) => {
 
   // mongoose.Types.ObjectId.isValid(id)
   if (!category_id || !mongoose.Types.ObjectId.isValid(category_id))
-    next(new ErrorResponse("Please provide valid subcategory id", 400));
+    return next(new ErrorResponse("Please provide valid subcategory id", 400));
 
   try {
     res.status(200).json({
@@ -231,7 +231,7 @@ exports.getByStoreId = async (req, res, next) => {
 
   // mongoose.Types.ObjectId.isValid(id)
   if (!store_id || !mongoose.Types.ObjectId.isValid(store_id))
-    next(new ErrorResponse("Please provide valid store id", 400));
+    return next(new ErrorResponse("Please provide valid store id", 400));
 
   try {
     res.status(200).json({
@@ -262,14 +262,14 @@ exports.byID = async (req, res, next) => {
 
   // mongoose.Types.ObjectId.isValid(id)
   if (!product_id || !mongoose.Types.ObjectId.isValid(product_id))
-    next(new ErrorResponse("Please provide valid product id", 400));
+    return next(new ErrorResponse("Please provide valid product id", 400));
 
   try {
     const product = await Product.findById(product_id).populate(
       "category subcategory store"
     );
 
-    if (!product) next(new ErrorResponse("No product found", 404));
+    if (!product) return next(new ErrorResponse("No product found", 404));
 
     res.status(200).json({
       success: true,

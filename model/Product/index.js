@@ -59,7 +59,10 @@ var productSchema = new mongoose.Schema(
     variantType: {
       type: String,
       required: [true, "Please Provide Variant Type"], // If Required
-      enum: ["Size", "Variant", "Color"],
+      enum: {
+        values: ["Size", "Variant", "Color"],
+        message: "{VALUE} is not supported",
+      },
     },
     image: {
       type: mongoose.Schema.Types.ObjectId,
@@ -99,14 +102,30 @@ async function addQuantity(result) {
     }
     result.forEach(function (product) {
       product.quantity = 0;
-      product.variants.forEach(function (variant) {
+      product.variants?.forEach(function (variant) {
         product.quantity += variant.quantity;
       });
     });
   }
 }
+
+async function addQuantityAndRemoveVariants(result) {
+  if (result) {
+    if (!Array.isArray(result)) {
+      result = [result];
+    }
+    result.forEach(function (product) {
+      product.quantity = 0;
+      product.variants?.forEach(function (variant) {
+        product.quantity += variant.quantity;
+      });
+      product.variants = undefined;
+    });
+  }
+}
+
 productSchema.post("findOne", addQuantity);
-productSchema.post("find", addQuantity);
+productSchema.post("find", addQuantityAndRemoveVariants);
 
 productSchema.set("toObject", { virtuals: true });
 productSchema.set("toJSON", { virtuals: true });

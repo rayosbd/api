@@ -7,7 +7,7 @@ exports.create = async (req, res, next) => {
   const { product_id } = req.params;
 
   if (!product_id || !mongoose.Types.ObjectId.isValid(product_id))
-    next(new ErrorResponse("Please provide valid product id", 400));
+    return next(new ErrorResponse("Please provide valid product id", 400));
 
   const { titleEn, titleBn, descriptionEn, descriptionBn, quantity } = req.body;
 
@@ -40,7 +40,7 @@ exports.update = async (req, res, next) => {
   const { variant_id } = req.params;
 
   if (!variant_id || !mongoose.Types.ObjectId.isValid(variant_id))
-    next(new ErrorResponse("Please provide valid variant id", 400));
+    return next(new ErrorResponse("Please provide valid variant id", 400));
 
   const { titleEn, titleBn, descriptionEn, descriptionBn, quantity } = req.body;
 
@@ -80,7 +80,7 @@ exports.getByProduct = async (req, res, next) => {
   const { product_id } = req.params;
 
   if (!product_id || !mongoose.Types.ObjectId.isValid(product_id))
-    next(new ErrorResponse("Please provide valid product id", 400));
+    return next(new ErrorResponse("Please provide valid product id", 400));
 
   try {
     res.status(200).json({

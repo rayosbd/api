@@ -202,7 +202,7 @@ router.route("/forget-password").post(forgetpassword);
  *                type: string
  *
  *    responses:
- *      200:
+ *      204:
  *        description: OTP Sent
  *      400:
  *        description: Bad Request

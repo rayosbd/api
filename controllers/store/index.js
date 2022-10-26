@@ -55,12 +55,12 @@ exports.byID = async (req, res, next) => {
 
   // mongoose.Types.ObjectId.isValid(id)
   if (!store_id || !mongoose.Types.ObjectId.isValid(store_id))
-    next(new ErrorResponse("Please provide valid store id", 400));
+    return next(new ErrorResponse("Please provide valid store id", 400));
 
   try {
     const store = await Store.findById(store_id);
 
-    if (!store) next(new ErrorResponse("No store found", 404));
+    if (!store) return next(new ErrorResponse("No store found", 404));
 
     res.status(200).json({
       success: true,
@@ -74,13 +74,12 @@ exports.byID = async (req, res, next) => {
   }
 };
 
-
 exports.update = async (req, res, next) => {
   // Get Values
   const { store_id } = req.params;
 
   if (!store_id || !mongoose.Types.ObjectId.isValid(store_id))
-    next(new ErrorResponse("Please provide valid store id", 400));
+    return next(new ErrorResponse("Please provide valid store id", 400));
 
   const { titleEn, titleBn, descriptionEn, descriptionBn, image } = req.body;
 
@@ -106,7 +105,7 @@ exports.update = async (req, res, next) => {
         message: "Store updated successfully",
         data: store,
       });
-    else next(new ErrorResponse("Store not found", 404));
+    else return next(new ErrorResponse("Store not found", 404));
 
     // On Error
   } catch (error) {
@@ -120,13 +119,13 @@ exports.activeInactive = async (req, res, next) => {
   const { store_id } = req.params;
 
   if (!store_id || !mongoose.Types.ObjectId.isValid(store_id))
-    next(new ErrorResponse("Please provide valid store id", 400));
+    return next(new ErrorResponse("Please provide valid store id", 400));
 
   try {
     // Update Store to DB
     const store = await Store.findById(store_id).select("+isActive");
 
-    if (!store) next(new ErrorResponse("No store found", 404));
+    if (!store) return next(new ErrorResponse("No store found", 404));
 
     await store.updateOne({
       isActive: !store.isActive,

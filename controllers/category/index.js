@@ -34,7 +34,7 @@ exports.update = async (req, res, next) => {
   const { category_id } = req.params;
 
   if (!category_id || !mongoose.Types.ObjectId.isValid(category_id))
-    next(new ErrorResponse("Please provide valid category id", 400));
+    return next(new ErrorResponse("Please provide valid category id", 400));
 
   const { titleEn, titleBn, descriptionEn, descriptionBn, icon } = req.body;
 
@@ -60,7 +60,7 @@ exports.update = async (req, res, next) => {
         message: "Category updated successfully",
         data: category,
       });
-    else next(new ErrorResponse("Category not found", 404));
+    else return next(new ErrorResponse("Category not found", 404));
 
     // On Error
   } catch (error) {
@@ -74,13 +74,13 @@ exports.activeInactive = async (req, res, next) => {
   const { category_id } = req.params;
 
   if (!category_id || !mongoose.Types.ObjectId.isValid(category_id))
-    next(new ErrorResponse("Please provide valid category id", 400));
+    return next(new ErrorResponse("Please provide valid category id", 400));
 
   try {
     // Update Category to DB
     const category = await Category.findById(category_id);
 
-    if (!category) next(new ErrorResponse("No category found", 404));
+    if (!category) return next(new ErrorResponse("No category found", 404));
 
     await category.updateOne({
       isActive: !category.isActive,
@@ -124,21 +124,20 @@ exports.getAll = async (req, res, next) => {
   }
 };
 
-
 exports.byID = async (req, res, next) => {
   // Get Values
   const { category_id } = req.params;
 
   // mongoose.Types.ObjectId.isValid(id)
   if (!category_id || !mongoose.Types.ObjectId.isValid(category_id))
-    next(new ErrorResponse("Please provide valid category id", 400));
+    return next(new ErrorResponse("Please provide valid category id", 400));
 
   try {
     const category = await Category.findById(category_id).populate(
       "icon totalSubcategories"
     );
 
-    if (!category) next(new ErrorResponse("No category found", 404));
+    if (!category) return next(new ErrorResponse("No category found", 404));
 
     res.status(200).json({
       success: true,

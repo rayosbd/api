@@ -33,7 +33,7 @@ exports.saveImages = async (req, res, next) => {
     : [];
 
   if (!attachmentList.length)
-    next(new ErrorResponse("No attachments added", 404));
+    return next(new ErrorResponse("No attachments added", 404));
 
   try {
     const attachment = await Attachment.insertMany(attachmentList);
@@ -60,7 +60,7 @@ exports.delImage = async (req, res, next) => {
   const { feed_id } = req.params;
 
   if (!feed_id || !mongoose.Types.ObjectId.isValid(feed_id))
-    next(new ErrorResponse("Please provide valid feed image id", 400));
+    return next(new ErrorResponse("Please provide valid feed image id", 400));
 
   try {
     // const imageInfo =

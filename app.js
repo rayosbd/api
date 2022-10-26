@@ -47,6 +47,7 @@ app.get("/", function (req, res) {
 app.use("/api/auth", require("./routes/auth"));
 app.use("/api/attachments", require("./routes/attachment"));
 app.use("/api/bookmark", require("./routes/bookmark"));
+app.use("/api/cart", require("./routes/cart"));
 app.use("/api/category", require("./routes/category"));
 app.use("/api/feed", require("./routes/feed"));
 app.use("/api/store", require("./routes/store"));

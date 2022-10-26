@@ -28,7 +28,7 @@ exports.login = async (req, res, next) => {
   const { phone, password } = req.body;
 
   if (!phone || !password)
-    next(ErrorResponse("Please provide phone and password", 400));
+    return next(ErrorResponse("Please provide phone and password", 400));
 
   try {
     const user = await Admin.findOne({
@@ -68,7 +68,7 @@ exports.validate = async (req, res, next) => {
       data: req.user,
     });
   else {
-    next(ErrorResponse("No Admin Found!", 404));
+    return next(ErrorResponse("No Admin Found!", 404));
   }
 };
 

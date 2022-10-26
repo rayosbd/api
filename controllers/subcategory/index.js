@@ -36,7 +36,7 @@ exports.update = async (req, res, next) => {
   const { subcategory_id } = req.params;
 
   if (!subcategory_id || !mongoose.Types.ObjectId.isValid(subcategory_id))
-    next(new ErrorResponse("Please provide valid subcategory id", 400));
+    return next(new ErrorResponse("Please provide valid subcategory id", 400));
 
   const { titleEn, titleBn, descriptionEn, descriptionBn, category, icon } =
     req.body;
@@ -64,7 +64,7 @@ exports.update = async (req, res, next) => {
         message: "Subcategory updated successfully",
         data: subcategory,
       });
-    else next(new ErrorResponse("Subcategory not found", 404));
+    else return next(new ErrorResponse("Subcategory not found", 404));
 
     // On Error
   } catch (error) {
@@ -78,13 +78,14 @@ exports.activeInactive = async (req, res, next) => {
   const { subcategory_id } = req.params;
 
   if (!subcategory_id || !mongoose.Types.ObjectId.isValid(subcategory_id))
-    next(new ErrorResponse("Please provide valid subcategory id", 400));
+    return next(new ErrorResponse("Please provide valid subcategory id", 400));
 
   try {
     // Update Subcategory to DB
     const subcategory = await Subcategory.findById(subcategory_id);
 
-    if (!subcategory) next(new ErrorResponse("No subcategory found", 404));
+    if (!subcategory)
+      return next(new ErrorResponse("No subcategory found", 404));
 
     await subcategory.updateOne({
       isActive: !subcategory.isActive,
@@ -133,14 +134,15 @@ exports.byID = async (req, res, next) => {
 
   // mongoose.Types.ObjectId.isValid(id)
   if (!subcategory_id || !mongoose.Types.ObjectId.isValid(subcategory_id))
-    next(new ErrorResponse("Please provide valid subcategory id", 400));
+    return next(new ErrorResponse("Please provide valid subcategory id", 400));
 
   try {
     const subcategory = await Subcategory.findById(subcategory_id).populate(
       "category"
     );
 
-    if (!subcategory) next(new ErrorResponse("No subcategory found", 404));
+    if (!subcategory)
+      return next(new ErrorResponse("No subcategory found", 404));
 
     res.status(200).json({
       success: true,
@@ -161,7 +163,7 @@ exports.byCategory = async (req, res, next) => {
 
   // mongoose.Types.ObjectId.isValid(id)
   if (!category_id || !mongoose.Types.ObjectId.isValid(category_id))
-    next(new ErrorResponse("Please provide valid category id", 400));
+    return next(new ErrorResponse("Please provide valid category id", 400));
 
   try {
     const subcategory = await Subcategory.find({

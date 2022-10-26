@@ -34,7 +34,7 @@ exports.login = async (req, res, next) => {
   const { phone, password } = req.body;
 
   if (!phone || !password)
-    next(ErrorResponse("Please provide phone and password", 400));
+    return next(ErrorResponse("Please provide phone and password", 400));
 
   try {
     const user = await User.findOne({
@@ -44,11 +44,11 @@ exports.login = async (req, res, next) => {
     }).select("+password");
 
     // Send Error if No User Found
-    if (!user) next(new ErrorResponse("Invalid credentials", 401));
+    if (!user) return next(new ErrorResponse("Invalid credentials", 401));
 
     // Check if the password is corrent
     const isMatch = await user.matchPasswords(password);
-    if (!isMatch) next(new ErrorResponse("Incorrect password", 401));
+    if (!isMatch) return next(new ErrorResponse("Incorrect password", 401));
 
     // Send Success Response
     sendToken(user, 200, res);
@@ -109,7 +109,7 @@ exports.resetpassword = async (req, res, next) => {
   try {
     const user = await User.findById(uid).select("+verificationKey");
 
-    if (!user) next(new ErrorResponse("No user found", 404));
+    if (!user) return next(new ErrorResponse("No user found", 404));
 
     if (!(await user.verifyTOTP(otp)))
       next(new ErrorResponse("Invalid OTP", 401));
@@ -134,10 +134,10 @@ exports.verify = async (req, res, next) => {
   try {
     const user = await User.findById(uid).select("+verificationKey");
 
-    if (!user) next(new ErrorResponse("No user found", 404));
+    if (!user) return next(new ErrorResponse("No user found", 404));
 
     if (!(await user.verifyTOTP(otp)))
-      next(new ErrorResponse("Invalid OTP", 401));
+      return next(new ErrorResponse("Invalid OTP", 401));
 
     await user.verifyUser();
     sendToken(user, 200, res);
