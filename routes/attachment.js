@@ -84,9 +84,9 @@ router.route("/info/:attachment_id").get(previewAttachmentInfo);
  *          schema:
  *            type: object
  *            required:
- *              - Files
+ *              - Files[]
  *            properties:
- *              Files:
+ *              Files[]:
  *                type: array
  *                items:
  *                  type: string
@@ -99,6 +99,6 @@ router.route("/info/:attachment_id").get(previewAttachmentInfo);
  *        description: Bad Request
  *
  */
-router.route("/").post(upload.array("Files"), saveAttachment);
+router.route("/").post(upload.array("Files[]"), saveAttachment);
 
 module.exports = router;

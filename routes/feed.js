@@ -57,9 +57,9 @@ router.route("/image").get(getImages);
  *          schema:
  *            type: object
  *            required:
- *              - Files
+ *              - Files[]
  *            properties:
- *              Files:
+ *              Files[]:
  *                type: array
  *                items:
  *                  type: string
@@ -74,7 +74,7 @@ router.route("/image").get(getImages);
  */
 router
   .route("/image")
-  .post(adminProtect, protect, upload.array("Files"), saveImages);
+  .post(adminProtect, protect, upload.array("Files[]"), saveImages);
 
 // Get Category API
 /**
