@@ -75,7 +75,9 @@ var productSchema = new mongoose.Schema(
       default: true,
     },
   },
-  { timestamps: true }
+  {
+    timestamps: true,
+  }
 );
 
 productSchema.virtual("variants", {
@@ -84,48 +86,47 @@ productSchema.virtual("variants", {
   foreignField: "product",
 });
 
-productSchema.virtual("quantity", {
-  ref: "Variant",
-  localField: "_id",
-  foreignField: "product",
-  count: true,
-});
+productSchema
+  .virtual("quantity", {
+    ref: "Variant",
+    localField: "_id",
+    foreignField: "product",
+    match: {
+      isActive: true,
+    },
+    // getters: true,
+  })
+  .set(function () {
+    return 1;
+  })
+  .get(function (value, virtual, doc) {
+    let quantity = 0;
+    value?.forEach?.(function (variant) {
+      quantity += variant.quantity;
+    });
+    return quantity;
+  });
+
+productSchema
+  .virtual("price", {
+    // ref: "Discount",
+    localField: "_id",
+    foreignField: "product",
+    // match: {
+    // isActive: true,
+    // },
+    getters: true,
+  })
+  .set(function () {
+    return 1;
+  })
+  .get(function (value, virtual, doc) {
+    return doc.sellPrice;
+  });
 
 productSchema.pre(/^find/, async function () {
-  this.populate("variants");
+  this.populate("quantity price");
 });
-
-async function addQuantity(result) {
-  if (result) {
-    if (!Array.isArray(result)) {
-      result = [result];
-    }
-    result.forEach(function (product) {
-      product.quantity = 0;
-      product.variants?.forEach(function (variant) {
-        product.quantity += variant.quantity;
-      });
-    });
-  }
-}
-
-async function addQuantityAndRemoveVariants(result) {
-  if (result) {
-    if (!Array.isArray(result)) {
-      result = [result];
-    }
-    result.forEach(function (product) {
-      product.quantity = 0;
-      product.variants?.forEach(function (variant) {
-        product.quantity += variant.quantity;
-      });
-      product.variants = undefined;
-    });
-  }
-}
-
-productSchema.post("findOne", addQuantity);
-productSchema.post("find", addQuantityAndRemoveVariants);
 
 productSchema.set("toObject", { virtuals: true });
 productSchema.set("toJSON", { virtuals: true });

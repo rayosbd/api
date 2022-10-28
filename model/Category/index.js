@@ -5,6 +5,7 @@ var categorySchema = new mongoose.Schema(
     titleEn: {
       type: String,
       required: [true, "Please Provide Title"], // If Required
+      unique: true,
       trim: true,
     },
     titleBn: {

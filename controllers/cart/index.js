@@ -12,27 +12,21 @@ exports.getForUser = async (req, res, next) => {
       data: await Cart.find({ user: user._id })
         .populate({
           path: "variant",
+          match: {
+            isActive: true,
+          },
+          select: "titleEn titleBn product quantity",
           populate: {
             path: "product",
-            model: "Product",
-            select: {
-              descriptionEn: 0,
-              descriptionBn: 0,
-              store: 0,
-              category: 0,
-              subcategory: 0,
-              buyPrice: 0,
-              createdAt: 0,
-              updatedAt: 0,
-              __v: 0,
+            match: {
+              isActive: true,
             },
+            select: "titleEn titleBn image sellPrice",
           },
         })
         .select({
           user: 0,
-        })
-
-        .lean(),
+        }),
       total: await Cart.find({ user: user._id }).lean().count(),
     });
 
@@ -51,7 +45,11 @@ exports.createCart = async (req, res, next) => {
     if (!variant_id || !mongoose.Types.ObjectId.isValid(variant_id))
       return next(new ErrorResponse("Please provide valid variant id", 400));
 
-    const variant = await Variant.findById(mongoose.Types.ObjectId(variant_id));
+    const variant = await Variant.findOne({
+      _id: variant_id,
+      isActive: true,
+    });
+    console.log(variant);
     if (!variant) return next(new ErrorResponse("Product not found", 404));
 
     if (variant.quantity < (parseFloat(req.query?.quantity) || 0))

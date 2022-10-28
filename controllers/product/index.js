@@ -266,7 +266,7 @@ exports.byID = async (req, res, next) => {
 
   try {
     const product = await Product.findById(product_id).populate(
-      "category subcategory store"
+      "category subcategory store variants"
     );
 
     if (!product) return next(new ErrorResponse("No product found", 404));
