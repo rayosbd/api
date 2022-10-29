@@ -49,7 +49,6 @@ exports.createCart = async (req, res, next) => {
       _id: variant_id,
       isActive: true,
     });
-    console.log(variant);
     if (!variant) return next(new ErrorResponse("Product not found", 404));
 
     if (variant.quantity < (parseFloat(req.query?.quantity) || 0))

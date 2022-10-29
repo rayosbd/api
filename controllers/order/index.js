@@ -1,4 +1,5 @@
 const Cart = require("../../model/Cart");
+const ErrorResponse = require("../../utils/errorResponse");
 
 exports.createOrder = async (req, res, next) => {
   const user = req.user;
@@ -31,8 +32,10 @@ exports.createOrder = async (req, res, next) => {
     let sellPrice = 0;
     let shippingFee = 0;
     let discountPrice = 0;
-
     processingCarts?.map?.((cart) => {
+      if (!cart.variant || !cart.variant?.product) {
+        throw new ErrorResponse("Product not found", 404);
+      }
       sellPrice += cart?.variant?.product?.price || 0;
     });
 

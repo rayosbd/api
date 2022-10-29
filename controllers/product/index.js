@@ -145,7 +145,7 @@ exports.getAll = async (req, res, next) => {
       success: true,
       message: "Product list fetched successfully",
       data: await Product.find()
-        .populate("category subcategory")
+        .populate("category subcategory variants")
         .skip(skip)
         .limit(limit),
       total: await Product.find().count(),

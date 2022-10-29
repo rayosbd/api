@@ -36,7 +36,15 @@ exports.getAll = async (req, res, next) => {
     res.status(200).json({
       success: true,
       message: "Store list fetched successfully",
-      data: await Store.find().skip(skip).limit(limit),
+      data: await Store.find()
+        .populate([
+          {
+            path: "owner",
+            select: "userName image",
+          },
+        ])
+        .skip(skip)
+        .limit(limit),
       total: await Store.find().count(),
       page,
       limit,
