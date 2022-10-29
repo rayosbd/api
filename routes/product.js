@@ -13,18 +13,19 @@ const router = express.Router();
 // Get All API
 /**
  * @swagger
- * /api/product?limit={limit}&page={page}:
+ * /api/product:
  *  get:
  *    tags: [Product]
  *    summary: Get All Products
  *    parameters:
- *      - in: path
- *        name: limit
- *        required: true
+ *      - in: query
+ *        name: search
  *        type: string
- *      - in: path
+ *      - in: query
+ *        name: limit
+ *        type: string
+ *      - in: query
  *        name: page
- *        required: true
  *        type: string
  *    responses:
  *      200:

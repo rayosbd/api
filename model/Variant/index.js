@@ -32,6 +32,10 @@ var variantSchema = new mongoose.Schema(
       // required: [true, "Please Provide Quantity"], // If Required
       default: 0,
     },
+    sold: {
+      type: Number,
+      default: 0,
+    },
     isActive: {
       type: Boolean,
       required: true,

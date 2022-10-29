@@ -12,16 +12,10 @@ exports.getForUser = async (req, res, next) => {
       data: await Cart.find({ user: user._id })
         .populate({
           path: "variant",
-          match: {
-            isActive: true,
-          },
-          select: "titleEn titleBn product quantity",
+          select: "titleEn titleBn product quantity isActive",
           populate: {
             path: "product",
-            match: {
-              isActive: true,
-            },
-            select: "titleEn titleBn image sellPrice",
+            select: "titleEn titleBn image sellPrice isActive",
           },
         })
         .select({
@@ -54,7 +48,7 @@ exports.createCart = async (req, res, next) => {
     if (variant.quantity < (parseFloat(req.query?.quantity) || 0))
       return next(
         new ErrorResponse(
-          `${parseFloat(req.query?.quantity) || 0} products are not available`,
+          `${parseFloat(req.query?.quantity) || 0} products not available`,
           400
         )
       );
@@ -119,7 +113,7 @@ exports.updateCart = async (req, res, next) => {
     if (cart.variant.quantity < (parseFloat(req.query?.quantity) || 0))
       return next(
         new ErrorResponse(
-          `${parseFloat(req.query?.quantity) || 0} products are not available`,
+          `${parseFloat(req.query?.quantity) || 0} products not available`,
           400
         )
       );

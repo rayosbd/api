@@ -8,9 +8,11 @@ var orderSchema = new mongoose.Schema(
       required: [true, "Please Provide User Id"],
     },
     shipping: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Address",
-      required: [true, "Please Provide Address"],
+      // type: mongoose.Schema.Types.ObjectId,
+      // ref: "Address",
+      // required: [true, "Please Provide Address"],
+      type: String,
+      default: null,
     },
     paymentMethod: {
       type: String,
@@ -46,11 +48,17 @@ var orderSchema = new mongoose.Schema(
       default: 0,
     },
     voucher: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Voucher",
+      // type: mongoose.Schema.Types.ObjectId,
+      // ref: "Voucher",
+      // default: null,
+      type: String,
       default: null,
     },
-    totalPrice: {
+    discount: {
+      type: Number,
+      default: 0,
+    },
+    total: {
       type: Number,
       required: [true, "Please Provide Price"], // If Required
       default: 0,
@@ -79,14 +87,24 @@ module.exports = Order;
  *           properties:
  *             id:
  *               type: string
- *             quantity:
- *               type: number
  *       paymentMethod:
  *         type: string
  *         enum: [COD]
  *       shipping:
  *         type: string
  *         description: address id
+ *       voucher:
+ *         type: string
+ *
+ */
+
+/**
+ * @swagger
+ * components:
+ *  schemas:
+ *   OrderCreate:
+ *     type: object
+ *     properties:
  *       voucher:
  *         type: string
  *

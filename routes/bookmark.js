@@ -11,18 +11,19 @@ const router = express.Router();
 // Get Bookmarks API
 /**
  * @swagger
- * /api/bookmark?limit={limit}&page={page}:
+ * /api/bookmark:
  *  get:
  *    tags: [Bookmark]
  *    summary: Get Bookmarks for User
  *    parameters:
- *      - in: path
- *        name: limit
- *        required: true
+ *      - in: query
+ *        name: search
  *        type: string
- *      - in: path
+ *      - in: query
+ *        name: limit
+ *        type: string
+ *      - in: query
  *        name: page
- *        required: true
  *        type: string
  *    security:
  *      - bearer: []

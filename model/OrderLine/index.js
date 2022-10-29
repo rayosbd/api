@@ -6,6 +6,11 @@ var orderlineSchema = new mongoose.Schema({
     ref: "Order",
     required: [true, "Please Provide Order Id"],
   },
+  product: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Product",
+    required: [true, "Please Provide Product Id"],
+  },
   variant: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Variant",
@@ -27,9 +32,8 @@ var orderlineSchema = new mongoose.Schema({
     default: 0,
   },
   discount: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "Discount",
-    default: null,
+    type: Number,
+    default: 0,
   },
 });
 

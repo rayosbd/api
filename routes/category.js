@@ -15,18 +15,19 @@ const router = express.Router();
 // Get All API
 /**
  * @swagger
- * /api/category?limit={limit}&page={page}:
+ * /api/category:
  *  get:
  *    tags: [Category]
  *    summary: Get All Categories
  *    parameters:
- *      - in: path
- *        name: limit
- *        required: true
+ *      - in: query
+ *        name: search
  *        type: string
- *      - in: path
+ *      - in: query
+ *        name: limit
+ *        type: string
+ *      - in: query
  *        name: page
- *        required: true
  *        type: string
  *    responses:
  *      200:
@@ -89,7 +90,7 @@ router.route("/:category_id").get(byID);
 // Get Subcategory List by Category API
 /**
  * @swagger
- * /api/category/{id}/subcategories?limit={limit}&page={page}:
+ * /api/category/{id}/subcategories:
  *  get:
  *    tags: [Category]
  *    summary: Get Subcategory list using Category ID
@@ -99,13 +100,14 @@ router.route("/:category_id").get(byID);
  *        required: true
  *        type: string
  *        description: Category Id
- *      - in: path
- *        name: limit
- *        required: true
+ *      - in: query
+ *        name: search
  *        type: string
- *      - in: path
+ *      - in: query
+ *        name: limit
+ *        type: string
+ *      - in: query
  *        name: page
- *        required: true
  *        type: string
  *    responses:
  *      200:
@@ -121,7 +123,7 @@ router.route("/:category_id/subcategories").get(query, byCategory);
 // Get Product By Category API
 /**
  * @swagger
- * /api/category/{id}/products?limit={limit}&page={page}:
+ * /api/category/{id}/products:
  *  get:
  *    tags: [Category]
  *    summary: Get Product List by Category ID
@@ -131,13 +133,14 @@ router.route("/:category_id/subcategories").get(query, byCategory);
  *        required: true
  *        type: string
  *        description: Category Id
- *      - in: path
- *        name: limit
- *        required: true
+ *      - in: query
+ *        name: search
  *        type: string
- *      - in: path
+ *      - in: query
+ *        name: limit
+ *        type: string
+ *      - in: query
  *        name: page
- *        required: true
  *        type: string
  *    responses:
  *      200:

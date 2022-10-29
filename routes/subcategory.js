@@ -14,18 +14,19 @@ const router = express.Router();
 // Get All API
 /**
  * @swagger
- * /api/subcategory?limit={limit}&page={page}:
+ * /api/subcategory:
  *  get:
  *    tags: [Subcategory]
  *    summary: Get All Subcategories
  *    parameters:
- *      - in: path
- *        name: limit
- *        required: true
+ *      - in: query
+ *        name: search
  *        type: string
- *      - in: path
+ *      - in: query
+ *        name: limit
+ *        type: string
+ *      - in: query
  *        name: page
- *        required: true
  *        type: string
  *    responses:
  *      200:
@@ -157,7 +158,7 @@ router.route("/:subcategory_id").put(adminProtect, protect, activeInactive);
 // Get Product By Category API
 /**
  * @swagger
- * /api/subcategory/{id}/products?limit={limit}&page={page}:
+ * /api/subcategory/{id}/products:
  *  get:
  *    tags: [Subcategory]
  *    summary: Get Product List by Subategory ID
@@ -167,13 +168,14 @@ router.route("/:subcategory_id").put(adminProtect, protect, activeInactive);
  *        required: true
  *        type: string
  *        description: Subcategory Id
- *      - in: path
- *        name: limit
- *        required: true
+ *      - in: query
+ *        name: search
  *        type: string
- *      - in: path
+ *      - in: query
+ *        name: limit
+ *        type: string
+ *      - in: query
  *        name: page
- *        required: true
  *        type: string
  *    responses:
  *      200:

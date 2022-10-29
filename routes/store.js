@@ -14,18 +14,19 @@ const router = express.Router();
 // Get All API
 /**
  * @swagger
- * /api/store?limit={limit}&page={page}:
+ * /api/store:
  *  get:
  *    tags: [Store]
  *    summary: Get All Stores
  *    parameters:
- *      - in: path
- *        name: limit
- *        required: true
+ *      - in: query
+ *        name: search
  *        type: string
- *      - in: path
+ *      - in: query
+ *        name: limit
+ *        type: string
+ *      - in: query
  *        name: page
- *        required: true
  *        type: string
  *    responses:
  *      200:
@@ -147,7 +148,7 @@ router.route("/:store_id").put(adminProtect, protect, activeInactive);
 // Get Product By Store API
 /**
  * @swagger
- * /api/store/{id}/products?limit={limit}&page={page}:
+ * /api/store/{id}/products:
  *  get:
  *    tags: [Store]
  *    summary: Get Product List by Store ID
@@ -157,13 +158,14 @@ router.route("/:store_id").put(adminProtect, protect, activeInactive);
  *        required: true
  *        type: string
  *        description: Store Id
- *      - in: path
- *        name: limit
- *        required: true
+ *      - in: query
+ *        name: search
  *        type: string
- *      - in: path
+ *      - in: query
+ *        name: limit
+ *        type: string
+ *      - in: query
  *        name: page
- *        required: true
  *        type: string
  *    responses:
  *      200:
