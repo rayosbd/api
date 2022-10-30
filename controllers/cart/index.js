@@ -15,7 +15,7 @@ exports.getForUser = async (req, res, next) => {
           select: "titleEn titleBn product quantity isActive",
           populate: {
             path: "product",
-            select: "titleEn titleBn image sellPrice isActive",
+            select: "titleEn titleBn image sellPrice variantType isActive",
           },
         })
         .select({
