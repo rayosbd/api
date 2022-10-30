@@ -1,0 +1,206 @@
+Date : 2022-10-30 16:52:39
+Directory : /media/tam/48955458-d4d5-4f63-b57b-bb4d87490c69/tam/git-repos/rayos/ecommerce-backend
+Total : 101 files,  1574 codes, 754 comments, 134 blanks, all 2462 lines
+
+Languages
++-----------------------+------------+------------+------------+------------+------------+
+| language              | files      | code       | comment    | blank      | total      |
++-----------------------+------------+------------+------------+------------+------------+
+| JavaScript            |         89 |        999 |        754 |        134 |      1,887 |
+| JSON                  |          4 |        575 |          0 |          0 |        575 |
+| Docker                |          2 |          0 |          0 |          0 |          0 |
+| Environment Variables |          2 |          0 |          0 |          0 |          0 |
+| Markdown              |          2 |          0 |          0 |          0 |          0 |
+| YAML                  |          2 |          0 |          0 |          0 |          0 |
++-----------------------+------------+------------+------------+------------+------------+
+
+Directories
++------------------------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| path                                                                                                                   | files      | code       | comment    | blank      | total      |
++------------------------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| .                                                                                                                      |        101 |      1,574 |        754 |        134 |      2,462 |
+| ..                                                                                                                     |         45 |     -4,663 |     -1,541 |       -384 |     -6,588 |
+| ../..                                                                                                                  |         45 |     -4,663 |     -1,541 |       -384 |     -6,588 |
+| ../../..                                                                                                               |         45 |     -4,663 |     -1,541 |       -384 |     -6,588 |
+| ../../../..                                                                                                            |         45 |     -4,663 |     -1,541 |       -384 |     -6,588 |
+| ../../../../..                                                                                                         |         45 |     -4,663 |     -1,541 |       -384 |     -6,588 |
+| ../../../../../..                                                                                                      |         45 |     -4,663 |     -1,541 |       -384 |     -6,588 |
+| ../../../../../../..                                                                                                   |         45 |     -4,663 |     -1,541 |       -384 |     -6,588 |
+| ../../../../../../../home                                                                                              |         45 |     -4,663 |     -1,541 |       -384 |     -6,588 |
+| ../../../../../../../home/tam                                                                                          |         45 |     -4,663 |     -1,541 |       -384 |     -6,588 |
+| ../../../../../../../home/tam/Documents                                                                                |         45 |     -4,663 |     -1,541 |       -384 |     -6,588 |
+| ../../../../../../../home/tam/Documents/GithubRepos                                                                    |         45 |     -4,663 |     -1,541 |       -384 |     -6,588 |
+| ../../../../../../../home/tam/Documents/GithubRepos/ecommerce-backend                                                  |         45 |     -4,663 |     -1,541 |       -384 |     -6,588 |
+| ../../../../../../../home/tam/Documents/GithubRepos/ecommerce-backend/config                                           |          2 |        -23 |          0 |         -6 |        -29 |
+| ../../../../../../../home/tam/Documents/GithubRepos/ecommerce-backend/controllers                                      |          9 |       -807 |       -127 |       -187 |     -1,121 |
+| ../../../../../../../home/tam/Documents/GithubRepos/ecommerce-backend/controllers/admin                                |          1 |        -56 |        -11 |        -15 |        -82 |
+| ../../../../../../../home/tam/Documents/GithubRepos/ecommerce-backend/controllers/attachment                           |          1 |        -68 |        -12 |        -17 |        -97 |
+| ../../../../../../../home/tam/Documents/GithubRepos/ecommerce-backend/controllers/auth                                 |          1 |       -114 |        -15 |        -29 |       -158 |
+| ../../../../../../../home/tam/Documents/GithubRepos/ecommerce-backend/controllers/bookmark                             |          1 |        -54 |         -6 |        -12 |        -72 |
+| ../../../../../../../home/tam/Documents/GithubRepos/ecommerce-backend/controllers/category                             |          1 |       -102 |        -18 |        -27 |       -147 |
+| ../../../../../../../home/tam/Documents/GithubRepos/ecommerce-backend/controllers/feed                                 |          1 |        -74 |        -12 |        -13 |        -99 |
+| ../../../../../../../home/tam/Documents/GithubRepos/ecommerce-backend/controllers/product                              |          2 |       -214 |        -29 |        -43 |       -286 |
+| ../../../../../../../home/tam/Documents/GithubRepos/ecommerce-backend/controllers/subcategory                          |          1 |       -125 |        -24 |        -31 |       -180 |
+| ../../../../../../../home/tam/Documents/GithubRepos/ecommerce-backend/middleware                                       |          2 |        -56 |         -2 |        -14 |        -72 |
+| ../../../../../../../home/tam/Documents/GithubRepos/ecommerce-backend/model                                            |         15 |       -489 |       -436 |        -66 |       -991 |
+| ../../../../../../../home/tam/Documents/GithubRepos/ecommerce-backend/model/Address                                    |          1 |          0 |        -30 |         -1 |        -31 |
+| ../../../../../../../home/tam/Documents/GithubRepos/ecommerce-backend/model/Admin                                      |          1 |        -71 |        -47 |         -8 |       -126 |
+| ../../../../../../../home/tam/Documents/GithubRepos/ecommerce-backend/model/Attachment                                 |          1 |        -22 |        -18 |         -4 |        -44 |
+| ../../../../../../../home/tam/Documents/GithubRepos/ecommerce-backend/model/Bookmark                                   |          1 |        -18 |        -17 |         -4 |        -39 |
+| ../../../../../../../home/tam/Documents/GithubRepos/ecommerce-backend/model/Cart                                       |          1 |          0 |        -24 |         -1 |        -25 |
+| ../../../../../../../home/tam/Documents/GithubRepos/ecommerce-backend/model/Category                                   |          1 |        -62 |        -28 |         -8 |        -98 |
+| ../../../../../../../home/tam/Documents/GithubRepos/ecommerce-backend/model/FeedImage                                  |          1 |        -14 |        -13 |         -4 |        -31 |
+| ../../../../../../../home/tam/Documents/GithubRepos/ecommerce-backend/model/Keyword                                    |          1 |          0 |        -12 |         -1 |        -13 |
+| ../../../../../../../home/tam/Documents/GithubRepos/ecommerce-backend/model/Order                                      |          1 |          0 |        -26 |         -1 |        -27 |
+| ../../../../../../../home/tam/Documents/GithubRepos/ecommerce-backend/model/Product                                    |          1 |       -103 |        -66 |         -9 |       -178 |
+| ../../../../../../../home/tam/Documents/GithubRepos/ecommerce-backend/model/Review                                     |          1 |          0 |        -25 |         -1 |        -26 |
+| ../../../../../../../home/tam/Documents/GithubRepos/ecommerce-backend/model/Store                                      |          1 |          0 |        -36 |         -1 |        -37 |
+| ../../../../../../../home/tam/Documents/GithubRepos/ecommerce-backend/model/Subcategory                                |          1 |        -49 |        -26 |         -4 |        -79 |
+| ../../../../../../../home/tam/Documents/GithubRepos/ecommerce-backend/model/User                                       |          1 |       -108 |        -45 |        -15 |       -168 |
+| ../../../../../../../home/tam/Documents/GithubRepos/ecommerce-backend/model/Variant                                    |          1 |        -42 |        -23 |         -4 |        -69 |
+| ../../../../../../../home/tam/Documents/GithubRepos/ecommerce-backend/routes                                           |          9 |       -134 |       -943 |        -60 |     -1,137 |
+| ../../../../../../../home/tam/Documents/GithubRepos/ecommerce-backend/utils                                            |          1 |         -7 |          0 |         -1 |         -8 |
+| config                                                                                                                 |          2 |         23 |          0 |          6 |         29 |
+| controllers                                                                                                            |         12 |      1,473 |        202 |        271 |      1,946 |
+| controllers/admin                                                                                                      |          1 |         56 |         11 |         15 |         82 |
+| controllers/attachment                                                                                                 |          1 |         68 |         12 |         17 |         97 |
+| controllers/auth                                                                                                       |          1 |        136 |         18 |         30 |        184 |
+| controllers/bookmark                                                                                                   |          1 |         60 |          6 |         12 |         78 |
+| controllers/cart                                                                                                       |          1 |        120 |          8 |         19 |        147 |
+| controllers/category                                                                                                   |          1 |        109 |         18 |         26 |        153 |
+| controllers/feed                                                                                                       |          1 |         74 |         12 |         13 |         99 |
+| controllers/order                                                                                                      |          1 |        308 |         34 |         27 |        369 |
+| controllers/product                                                                                                    |          2 |        292 |         41 |         55 |        388 |
+| controllers/store                                                                                                      |          1 |        112 |         18 |         26 |        156 |
+| controllers/subcategory                                                                                                |          1 |        138 |         24 |         31 |        193 |
+| middleware                                                                                                             |          3 |         68 |         13 |         17 |         98 |
+| model                                                                                                                  |         18 |        723 |        514 |         85 |      1,322 |
+| model/Address                                                                                                          |          1 |          0 |         30 |          1 |         31 |
+| model/Admin                                                                                                            |          1 |         71 |         47 |          8 |        126 |
+| model/Attachment                                                                                                       |          1 |         22 |         18 |          4 |         44 |
+| model/Bookmark                                                                                                         |          1 |         18 |         17 |          4 |         39 |
+| model/Cart                                                                                                             |          1 |         23 |         20 |          3 |         46 |
+| model/Category                                                                                                         |          1 |         63 |         28 |          8 |         99 |
+| model/FeedImage                                                                                                        |          1 |         14 |         13 |          4 |         31 |
+| model/Keyword                                                                                                          |          1 |          0 |         12 |          1 |         13 |
+| model/Order                                                                                                            |          1 |         63 |         44 |          5 |        112 |
+| model/OrderCache                                                                                                       |          1 |         27 |          3 |          3 |         33 |
+| model/OrderLine                                                                                                        |          1 |         39 |          0 |          3 |         42 |
+| model/Product                                                                                                          |          1 |        119 |         71 |          9 |        199 |
+| model/Review                                                                                                           |          1 |          0 |         25 |          1 |         26 |
+| model/Store                                                                                                            |          1 |         61 |         50 |          5 |        116 |
+| model/StoreImage                                                                                                       |          1 |          0 |         17 |          1 |         18 |
+| model/Subcategory                                                                                                      |          1 |         49 |         26 |          4 |         79 |
+| model/User                                                                                                             |          1 |        108 |         70 |         17 |        195 |
+| model/Variant                                                                                                          |          1 |         46 |         23 |          4 |         73 |
+| routes                                                                                                                 |         12 |        204 |      1,531 |         85 |      1,820 |
+| utils                                                                                                                  |          2 |         18 |          0 |          2 |         20 |
++------------------------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+
+Files
++------------------------------------------------------------------------------------------------------------------------+-----------------------+------------+------------+------------+------------+
+| filename                                                                                                               | language              | code       | comment    | blank      | total      |
++------------------------------------------------------------------------------------------------------------------------+-----------------------+------------+------------+------------+------------+
+| /home/tam/Documents/GithubRepos/ecommerce-backend/.templates.env                                                       | Environment Variables |         -5 |          0 |          0 |         -5 |
+| /home/tam/Documents/GithubRepos/ecommerce-backend/Dockerfile                                                           | Docker                |         -8 |         -2 |         -7 |        -17 |
+| /home/tam/Documents/GithubRepos/ecommerce-backend/app.js                                                               | JavaScript            |        -41 |        -19 |        -12 |        -72 |
+| /home/tam/Documents/GithubRepos/ecommerce-backend/config/attachment.js                                                 | JavaScript            |        -11 |          0 |         -2 |        -13 |
+| /home/tam/Documents/GithubRepos/ecommerce-backend/config/database.js                                                   | JavaScript            |        -12 |          0 |         -4 |        -16 |
+| /home/tam/Documents/GithubRepos/ecommerce-backend/controllers/admin/index.js                                           | JavaScript            |        -56 |        -11 |        -15 |        -82 |
+| /home/tam/Documents/GithubRepos/ecommerce-backend/controllers/attachment/index.js                                      | JavaScript            |        -68 |        -12 |        -17 |        -97 |
+| /home/tam/Documents/GithubRepos/ecommerce-backend/controllers/auth/index.js                                            | JavaScript            |       -114 |        -15 |        -29 |       -158 |
+| /home/tam/Documents/GithubRepos/ecommerce-backend/controllers/bookmark/index.js                                        | JavaScript            |        -54 |         -6 |        -12 |        -72 |
+| /home/tam/Documents/GithubRepos/ecommerce-backend/controllers/category/index.js                                        | JavaScript            |       -102 |        -18 |        -27 |       -147 |
+| /home/tam/Documents/GithubRepos/ecommerce-backend/controllers/feed/index.js                                            | JavaScript            |        -74 |        -12 |        -13 |        -99 |
+| /home/tam/Documents/GithubRepos/ecommerce-backend/controllers/product/index.js                                         | JavaScript            |       -139 |        -18 |        -26 |       -183 |
+| /home/tam/Documents/GithubRepos/ecommerce-backend/controllers/product/variant.js                                       | JavaScript            |        -75 |        -11 |        -17 |       -103 |
+| /home/tam/Documents/GithubRepos/ecommerce-backend/controllers/subcategory/index.js                                     | JavaScript            |       -125 |        -24 |        -31 |       -180 |
+| /home/tam/Documents/GithubRepos/ecommerce-backend/docker-compose.yml                                                   | YAML                  |        -14 |        -12 |         -1 |        -27 |
+| /home/tam/Documents/GithubRepos/ecommerce-backend/middleware/auth.js                                                   | JavaScript            |        -37 |         -1 |        -11 |        -49 |
+| /home/tam/Documents/GithubRepos/ecommerce-backend/middleware/error.js                                                  | JavaScript            |        -19 |         -1 |         -3 |        -23 |
+| /home/tam/Documents/GithubRepos/ecommerce-backend/model/Address/index.js                                               | JavaScript            |          0 |        -30 |         -1 |        -31 |
+| /home/tam/Documents/GithubRepos/ecommerce-backend/model/Admin/index.js                                                 | JavaScript            |        -71 |        -47 |         -8 |       -126 |
+| /home/tam/Documents/GithubRepos/ecommerce-backend/model/Attachment/index.js                                            | JavaScript            |        -22 |        -18 |         -4 |        -44 |
+| /home/tam/Documents/GithubRepos/ecommerce-backend/model/Bookmark/index.js                                              | JavaScript            |        -18 |        -17 |         -4 |        -39 |
+| /home/tam/Documents/GithubRepos/ecommerce-backend/model/Cart/index.js                                                  | JavaScript            |          0 |        -24 |         -1 |        -25 |
+| /home/tam/Documents/GithubRepos/ecommerce-backend/model/Category/index.js                                              | JavaScript            |        -62 |        -28 |         -8 |        -98 |
+| /home/tam/Documents/GithubRepos/ecommerce-backend/model/FeedImage/index.js                                             | JavaScript            |        -14 |        -13 |         -4 |        -31 |
+| /home/tam/Documents/GithubRepos/ecommerce-backend/model/Keyword/index.js                                               | JavaScript            |          0 |        -12 |         -1 |        -13 |
+| /home/tam/Documents/GithubRepos/ecommerce-backend/model/Order/index.js                                                 | JavaScript            |          0 |        -26 |         -1 |        -27 |
+| /home/tam/Documents/GithubRepos/ecommerce-backend/model/Product/index.js                                               | JavaScript            |       -103 |        -66 |         -9 |       -178 |
+| /home/tam/Documents/GithubRepos/ecommerce-backend/model/Review/index.js                                                | JavaScript            |          0 |        -25 |         -1 |        -26 |
+| /home/tam/Documents/GithubRepos/ecommerce-backend/model/Store/index.js                                                 | JavaScript            |          0 |        -36 |         -1 |        -37 |
+| /home/tam/Documents/GithubRepos/ecommerce-backend/model/Subcategory/index.js                                           | JavaScript            |        -49 |        -26 |         -4 |        -79 |
+| /home/tam/Documents/GithubRepos/ecommerce-backend/model/User/index.js                                                  | JavaScript            |       -108 |        -45 |        -15 |       -168 |
+| /home/tam/Documents/GithubRepos/ecommerce-backend/model/Variant/index.js                                               | JavaScript            |        -42 |        -23 |         -4 |        -69 |
+| /home/tam/Documents/GithubRepos/ecommerce-backend/package-lock.json                                                    | JSON                  |     -2,970 |          0 |         -1 |     -2,971 |
+| /home/tam/Documents/GithubRepos/ecommerce-backend/package.json                                                         | JSON                  |        -37 |          0 |         -1 |        -38 |
+| /home/tam/Documents/GithubRepos/ecommerce-backend/readme.md                                                            | Markdown              |        -72 |          0 |        -28 |       -100 |
+| /home/tam/Documents/GithubRepos/ecommerce-backend/routes/admin.js                                                      | JavaScript            |        -10 |        -75 |         -5 |        -90 |
+| /home/tam/Documents/GithubRepos/ecommerce-backend/routes/attachment.js                                                 | JavaScript            |        -14 |        -85 |         -6 |       -105 |
+| /home/tam/Documents/GithubRepos/ecommerce-backend/routes/auth.js                                                       | JavaScript            |        -19 |       -165 |         -9 |       -193 |
+| /home/tam/Documents/GithubRepos/ecommerce-backend/routes/bookmark.js                                                   | JavaScript            |        -12 |        -65 |         -5 |        -82 |
+| /home/tam/Documents/GithubRepos/ecommerce-backend/routes/category.js                                                   | JavaScript            |        -18 |       -146 |         -9 |       -173 |
+| /home/tam/Documents/GithubRepos/ecommerce-backend/routes/feed.js                                                       | JavaScript            |        -17 |        -83 |         -6 |       -106 |
+| /home/tam/Documents/GithubRepos/ecommerce-backend/routes/product.js                                                    | JavaScript            |        -16 |       -116 |         -7 |       -139 |
+| /home/tam/Documents/GithubRepos/ecommerce-backend/routes/subcategory.js                                                | JavaScript            |        -16 |       -124 |         -8 |       -148 |
+| /home/tam/Documents/GithubRepos/ecommerce-backend/routes/variant.js                                                    | JavaScript            |        -12 |        -84 |         -5 |       -101 |
+| /home/tam/Documents/GithubRepos/ecommerce-backend/utils/errorResponse.js                                               | JavaScript            |         -7 |          0 |         -1 |         -8 |
+| /media/tam/48955458-d4d5-4f63-b57b-bb4d87490c69/tam/git-repos/rayos/ecommerce-backend/.templates.env                   | Environment Variables |          5 |          0 |          0 |          5 |
+| /media/tam/48955458-d4d5-4f63-b57b-bb4d87490c69/tam/git-repos/rayos/ecommerce-backend/Dockerfile                       | Docker                |          8 |          2 |          7 |         17 |
+| /media/tam/48955458-d4d5-4f63-b57b-bb4d87490c69/tam/git-repos/rayos/ecommerce-backend/app.js                           | JavaScript            |         47 |         21 |         14 |         82 |
+| /media/tam/48955458-d4d5-4f63-b57b-bb4d87490c69/tam/git-repos/rayos/ecommerce-backend/config/attachment.js             | JavaScript            |         11 |          0 |          2 |         13 |
+| /media/tam/48955458-d4d5-4f63-b57b-bb4d87490c69/tam/git-repos/rayos/ecommerce-backend/config/database.js               | JavaScript            |         12 |          0 |          4 |         16 |
+| /media/tam/48955458-d4d5-4f63-b57b-bb4d87490c69/tam/git-repos/rayos/ecommerce-backend/controllers/admin/index.js       | JavaScript            |         56 |         11 |         15 |         82 |
+| /media/tam/48955458-d4d5-4f63-b57b-bb4d87490c69/tam/git-repos/rayos/ecommerce-backend/controllers/attachment/index.js  | JavaScript            |         68 |         12 |         17 |         97 |
+| /media/tam/48955458-d4d5-4f63-b57b-bb4d87490c69/tam/git-repos/rayos/ecommerce-backend/controllers/auth/index.js        | JavaScript            |        136 |         18 |         30 |        184 |
+| /media/tam/48955458-d4d5-4f63-b57b-bb4d87490c69/tam/git-repos/rayos/ecommerce-backend/controllers/bookmark/index.js    | JavaScript            |         60 |          6 |         12 |         78 |
+| /media/tam/48955458-d4d5-4f63-b57b-bb4d87490c69/tam/git-repos/rayos/ecommerce-backend/controllers/cart/index.js        | JavaScript            |        120 |          8 |         19 |        147 |
+| /media/tam/48955458-d4d5-4f63-b57b-bb4d87490c69/tam/git-repos/rayos/ecommerce-backend/controllers/category/index.js    | JavaScript            |        109 |         18 |         26 |        153 |
+| /media/tam/48955458-d4d5-4f63-b57b-bb4d87490c69/tam/git-repos/rayos/ecommerce-backend/controllers/feed/index.js        | JavaScript            |         74 |         12 |         13 |         99 |
+| /media/tam/48955458-d4d5-4f63-b57b-bb4d87490c69/tam/git-repos/rayos/ecommerce-backend/controllers/order/index.js       | JavaScript            |        308 |         34 |         27 |        369 |
+| /media/tam/48955458-d4d5-4f63-b57b-bb4d87490c69/tam/git-repos/rayos/ecommerce-backend/controllers/product/index.js     | JavaScript            |        217 |         30 |         38 |        285 |
+| /media/tam/48955458-d4d5-4f63-b57b-bb4d87490c69/tam/git-repos/rayos/ecommerce-backend/controllers/product/variant.js   | JavaScript            |         75 |         11 |         17 |        103 |
+| /media/tam/48955458-d4d5-4f63-b57b-bb4d87490c69/tam/git-repos/rayos/ecommerce-backend/controllers/store/index.js       | JavaScript            |        112 |         18 |         26 |        156 |
+| /media/tam/48955458-d4d5-4f63-b57b-bb4d87490c69/tam/git-repos/rayos/ecommerce-backend/controllers/subcategory/index.js | JavaScript            |        138 |         24 |         31 |        193 |
+| /media/tam/48955458-d4d5-4f63-b57b-bb4d87490c69/tam/git-repos/rayos/ecommerce-backend/docker-compose.yml               | YAML                  |         14 |         12 |          1 |         27 |
+| /media/tam/48955458-d4d5-4f63-b57b-bb4d87490c69/tam/git-repos/rayos/ecommerce-backend/middleware/auth.js               | JavaScript            |         37 |          1 |         11 |         49 |
+| /media/tam/48955458-d4d5-4f63-b57b-bb4d87490c69/tam/git-repos/rayos/ecommerce-backend/middleware/error.js              | JavaScript            |         19 |          1 |          3 |         23 |
+| /media/tam/48955458-d4d5-4f63-b57b-bb4d87490c69/tam/git-repos/rayos/ecommerce-backend/middleware/query.js              | JavaScript            |         12 |         11 |          3 |         26 |
+| /media/tam/48955458-d4d5-4f63-b57b-bb4d87490c69/tam/git-repos/rayos/ecommerce-backend/model/Address/index.js           | JavaScript            |          0 |         30 |          1 |         31 |
+| /media/tam/48955458-d4d5-4f63-b57b-bb4d87490c69/tam/git-repos/rayos/ecommerce-backend/model/Admin/index.js             | JavaScript            |         71 |         47 |          8 |        126 |
+| /media/tam/48955458-d4d5-4f63-b57b-bb4d87490c69/tam/git-repos/rayos/ecommerce-backend/model/Attachment/index.js        | JavaScript            |         22 |         18 |          4 |         44 |
+| /media/tam/48955458-d4d5-4f63-b57b-bb4d87490c69/tam/git-repos/rayos/ecommerce-backend/model/Bookmark/index.js          | JavaScript            |         18 |         17 |          4 |         39 |
+| /media/tam/48955458-d4d5-4f63-b57b-bb4d87490c69/tam/git-repos/rayos/ecommerce-backend/model/Cart/index.js              | JavaScript            |         23 |         20 |          3 |         46 |
+| /media/tam/48955458-d4d5-4f63-b57b-bb4d87490c69/tam/git-repos/rayos/ecommerce-backend/model/Category/index.js          | JavaScript            |         63 |         28 |          8 |         99 |
+| /media/tam/48955458-d4d5-4f63-b57b-bb4d87490c69/tam/git-repos/rayos/ecommerce-backend/model/FeedImage/index.js         | JavaScript            |         14 |         13 |          4 |         31 |
+| /media/tam/48955458-d4d5-4f63-b57b-bb4d87490c69/tam/git-repos/rayos/ecommerce-backend/model/Keyword/index.js           | JavaScript            |          0 |         12 |          1 |         13 |
+| /media/tam/48955458-d4d5-4f63-b57b-bb4d87490c69/tam/git-repos/rayos/ecommerce-backend/model/Order/index.js             | JavaScript            |         63 |         44 |          5 |        112 |
+| /media/tam/48955458-d4d5-4f63-b57b-bb4d87490c69/tam/git-repos/rayos/ecommerce-backend/model/OrderCache/index.js        | JavaScript            |         27 |          3 |          3 |         33 |
+| /media/tam/48955458-d4d5-4f63-b57b-bb4d87490c69/tam/git-repos/rayos/ecommerce-backend/model/OrderLine/index.js         | JavaScript            |         39 |          0 |          3 |         42 |
+| /media/tam/48955458-d4d5-4f63-b57b-bb4d87490c69/tam/git-repos/rayos/ecommerce-backend/model/Product/index.js           | JavaScript            |        119 |         71 |          9 |        199 |
+| /media/tam/48955458-d4d5-4f63-b57b-bb4d87490c69/tam/git-repos/rayos/ecommerce-backend/model/Review/index.js            | JavaScript            |          0 |         25 |          1 |         26 |
+| /media/tam/48955458-d4d5-4f63-b57b-bb4d87490c69/tam/git-repos/rayos/ecommerce-backend/model/Store/index.js             | JavaScript            |         61 |         50 |          5 |        116 |
+| /media/tam/48955458-d4d5-4f63-b57b-bb4d87490c69/tam/git-repos/rayos/ecommerce-backend/model/StoreImage/index.js        | JavaScript            |          0 |         17 |          1 |         18 |
+| /media/tam/48955458-d4d5-4f63-b57b-bb4d87490c69/tam/git-repos/rayos/ecommerce-backend/model/Subcategory/index.js       | JavaScript            |         49 |         26 |          4 |         79 |
+| /media/tam/48955458-d4d5-4f63-b57b-bb4d87490c69/tam/git-repos/rayos/ecommerce-backend/model/User/index.js              | JavaScript            |        108 |         70 |         17 |        195 |
+| /media/tam/48955458-d4d5-4f63-b57b-bb4d87490c69/tam/git-repos/rayos/ecommerce-backend/model/Variant/index.js           | JavaScript            |         46 |         23 |          4 |         73 |
+| /media/tam/48955458-d4d5-4f63-b57b-bb4d87490c69/tam/git-repos/rayos/ecommerce-backend/package-lock.json                | JSON                  |      3,542 |          0 |          1 |      3,543 |
+| /media/tam/48955458-d4d5-4f63-b57b-bb4d87490c69/tam/git-repos/rayos/ecommerce-backend/package.json                     | JSON                  |         40 |          0 |          1 |         41 |
+| /media/tam/48955458-d4d5-4f63-b57b-bb4d87490c69/tam/git-repos/rayos/ecommerce-backend/readme.md                        | Markdown              |         72 |          0 |         28 |        100 |
+| /media/tam/48955458-d4d5-4f63-b57b-bb4d87490c69/tam/git-repos/rayos/ecommerce-backend/routes/admin.js                  | JavaScript            |         10 |         75 |          5 |         90 |
+| /media/tam/48955458-d4d5-4f63-b57b-bb4d87490c69/tam/git-repos/rayos/ecommerce-backend/routes/attachment.js             | JavaScript            |         14 |         85 |          6 |        105 |
+| /media/tam/48955458-d4d5-4f63-b57b-bb4d87490c69/tam/git-repos/rayos/ecommerce-backend/routes/auth.js                   | JavaScript            |         21 |        188 |         10 |        219 |
+| /media/tam/48955458-d4d5-4f63-b57b-bb4d87490c69/tam/git-repos/rayos/ecommerce-backend/routes/bookmark.js               | JavaScript            |         13 |         75 |          5 |         93 |
+| /media/tam/48955458-d4d5-4f63-b57b-bb4d87490c69/tam/git-repos/rayos/ecommerce-backend/routes/cart.js                   | JavaScript            |         14 |         95 |          6 |        115 |
+| /media/tam/48955458-d4d5-4f63-b57b-bb4d87490c69/tam/git-repos/rayos/ecommerce-backend/routes/category.js               | JavaScript            |         21 |        196 |          9 |        226 |
+| /media/tam/48955458-d4d5-4f63-b57b-bb4d87490c69/tam/git-repos/rayos/ecommerce-backend/routes/feed.js                   | JavaScript            |         17 |         83 |          6 |        106 |
+| /media/tam/48955458-d4d5-4f63-b57b-bb4d87490c69/tam/git-repos/rayos/ecommerce-backend/routes/order.js                  | JavaScript            |         27 |        205 |          9 |        241 |
+| /media/tam/48955458-d4d5-4f63-b57b-bb4d87490c69/tam/git-repos/rayos/ecommerce-backend/routes/product.js                | JavaScript            |         17 |        126 |          7 |        150 |
+| /media/tam/48955458-d4d5-4f63-b57b-bb4d87490c69/tam/git-repos/rayos/ecommerce-backend/routes/store.js                  | JavaScript            |         19 |        154 |          9 |        182 |
+| /media/tam/48955458-d4d5-4f63-b57b-bb4d87490c69/tam/git-repos/rayos/ecommerce-backend/routes/subcategory.js            | JavaScript            |         19 |        165 |          8 |        192 |
+| /media/tam/48955458-d4d5-4f63-b57b-bb4d87490c69/tam/git-repos/rayos/ecommerce-backend/routes/variant.js                | JavaScript            |         12 |         84 |          5 |        101 |
+| /media/tam/48955458-d4d5-4f63-b57b-bb4d87490c69/tam/git-repos/rayos/ecommerce-backend/utils/errorResponse.js           | JavaScript            |          7 |          0 |          1 |          8 |
+| /media/tam/48955458-d4d5-4f63-b57b-bb4d87490c69/tam/git-repos/rayos/ecommerce-backend/utils/searchRegex.js             | JavaScript            |         11 |          0 |          1 |         12 |
+| Total                                                                                                                  |                       |      1,574 |        754 |        134 |      2,462 |
++------------------------------------------------------------------------------------------------------------------------+-----------------------+------------+------------+------------+------------+

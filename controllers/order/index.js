@@ -2,6 +2,7 @@ const Cart = require("../../model/Cart");
 const Order = require("../../model/Order");
 const OrderCache = require("../../model/OrderCache");
 const OrderLine = require("../../model/OrderLine");
+const OrderTimeline = require("../../model/OrderTimeLine");
 const Variant = require("../../model/Variant");
 const ErrorResponse = require("../../utils/errorResponse");
 const { default: searchRegex } = require("../../utils/searchRegex");
@@ -203,6 +204,9 @@ exports.createOrder = async (req, res, next) => {
     });
 
     processingCarts?.map?.(async (cart) => {
+      // decrease quantity from products
+      await orderFromVariant(cart.variant?._id, cart.quantity);
+
       await OrderLine.create({
         order: order._id,
         product: cart.variant?.product?._id,
@@ -213,14 +217,16 @@ exports.createOrder = async (req, res, next) => {
         discount: cart.variant?.product?.discount || 0,
       });
 
-      const variant = await Variant.findById(cart.variant?._id);
-      variant.$inc("sold", cart.quantity);
-      variant.$inc("quantity", cart.quantity * -1);
-      variant.save();
-
       await Cart.deleteMany({
         _id: Array.from(processingCarts, (c) => c._id),
       });
+    });
+
+    await orderCache.delete();
+
+    await OrderTimeline.create({
+      order: order._id,
+      status: "Pending",
     });
 
     res.status(201).json({
@@ -234,8 +240,73 @@ exports.createOrder = async (req, res, next) => {
   }
 };
 
+/**
+ * Update Order
+ *
+ * Description: Update Order to Confirmed, Shipped, Delivered
+ */
+exports.updateOrder = async (req, res, next) => {
+  const { order_id } = req.params;
+  const { status } = req.query;
+  try {
+    const order = await Order.findOne({
+      _id: order_id,
+    });
+
+    const orderLines = await OrderLine.find({
+      order: order_id,
+    }).populate([
+      {
+        path: "product",
+        select: "quantity isActive",
+        match: {
+          isActive: true,
+        },
+      },
+      {
+        path: "variant",
+        select: "quantity isActive",
+        match: {
+          isActive: true,
+          quantity: {
+            $gte: this.quantity,
+          },
+        },
+      },
+    ]);
+    console.log(order);
+    console.log(orderLines);
+
+    res.status(201).json({
+      success: true,
+      message: `Order ${order_id} updated to ${status} successfully`,
+    });
+    // On Error
+  } catch (error) {
+    // Send Error Response
+    next(error);
+  }
+};
+
+/**
+ *
+ * @param { Id } variantId
+ * @param { Quantity } quantity
+ *
+ * Decrese quantity for variant when order confirmed
+ */
+const orderFromVariant = async (variantId, quantity) => {
+  const variant = await Variant.findById(variantId);
+  if (!variant) throw new ErrorResponse("Product not found", 404);
+
+  variant.$inc("sold", quantity);
+  variant.$inc("quantity", quantity * -1);
+  variant.save();
+};
+
 exports.getAll = async (req, res, next) => {
   const { skip, limit, page } = req.pagination;
+  const { status } = req.query;
 
   try {
     res.status(200).json({
@@ -243,6 +314,7 @@ exports.getAll = async (req, res, next) => {
       message: "Order list fetched successfully",
       data: await Order.find({
         // $or: searchRegex(req.search, "user.userName"),
+        ...(status && { status }),
       })
         .populate([
           {
@@ -252,7 +324,66 @@ exports.getAll = async (req, res, next) => {
         ])
         .skip(skip)
         .limit(limit),
-      total: await Order.find().count(),
+      status: status || "All",
+      total: await Order.count(),
+      page,
+      limit,
+    });
+
+    // On Error
+  } catch (error) {
+    // Send Error Response
+    next(error);
+  }
+};
+
+exports.getAllUser = async (req, res, next) => {
+  const { skip, limit, page } = req.pagination;
+  const { status } = req.query;
+  const user = req.user;
+
+  try {
+    res.status(200).json({
+      success: true,
+      message: "Order list fetched successfully",
+      data: await Order.find({
+        // $or: searchRegex(req.search, "user.userName"),
+        user: user._id,
+        ...(status && { status }),
+      })
+        .skip(skip)
+        .limit(limit),
+      status: status || "all",
+      total: await Order.count(),
+      page,
+      limit,
+    });
+
+    // On Error
+  } catch (error) {
+    // Send Error Response
+    next(error);
+  }
+};
+
+exports.getAllUserId = async (req, res, next) => {
+  const { userId } = req.params;
+  const { skip, limit, page } = req.pagination;
+  const { status } = req.query;
+
+  try {
+    res.status(200).json({
+      success: true,
+      message: "Order list fetched successfully",
+      data: await Order.find({
+        // $or: searchRegex(req.search, "user.userName"),
+        user: userId,
+        ...(status && { status }),
+      })
+        .skip(skip)
+        .limit(limit),
+      status: status || "all",
+      total: await Order.count(),
       page,
       limit,
     });
