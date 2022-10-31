@@ -107,12 +107,13 @@ exports.getAll = async (req, res, next) => {
     const category = await Category.find()
       .populate("totalSubcategories")
       .skip(skip)
-      .limit(limit);
+      .limit(limit)
+      .select("titleEn titleBn icon isActive totalSubcategories slug");
     res.status(200).json({
       success: true,
       message: "Category list fetched successfully",
       data: category,
-      total: await Category.find().count(),
+      total: await Category.count(),
       page,
       limit,
     });

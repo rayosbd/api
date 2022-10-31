@@ -10,7 +10,23 @@ exports.getForUser = async (req, res, next) => {
       success: true,
       message: "Bookmark list fetched successfully",
       data: await Bookmark.find({ user: user._id })
-        .populate("product")
+        .populate([
+          {
+            path: "category",
+            select: "titleEn titleBn icon isActive slug",
+          },
+          {
+            path: "subcategory",
+            select: "titleEn titleBn icon isActive slug",
+          },
+          {
+            path: "store",
+            select: "image titleEn titleBn isActive slug",
+          },
+        ])
+        .select(
+          "titleEn titleBn category subcategory slug store sellPrice price image isActive"
+        )
         .skip(skip)
         .limit(limit),
       total: await Bookmark.find({ user: user._id }).count(),

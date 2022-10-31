@@ -48,13 +48,11 @@ var storeSchema = new mongoose.Schema(
       type: Boolean,
       required: true,
       default: true,
-      select: false,
     },
     isVerified: {
       type: Boolean,
       required: true,
       default: true,
-      select: false,
     },
   },
   { timestamps: true }

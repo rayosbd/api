@@ -145,7 +145,23 @@ exports.getAll = async (req, res, next) => {
       success: true,
       message: "Product list fetched successfully",
       data: await Product.find()
-        .populate("category subcategory variants")
+        .populate([
+          {
+            path: "category",
+            select: "titleEn titleBn icon isActive slug",
+          },
+          {
+            path: "subcategory",
+            select: "titleEn titleBn icon isActive slug",
+          },
+          {
+            path: "store",
+            select: "image titleEn titleBn isActive slug",
+          },
+        ])
+        .select(
+          "titleEn titleBn category subcategory slug store sellPrice price image isActive"
+        )
         .skip(skip)
         .limit(limit),
       total: await Product.find().count(),
@@ -176,6 +192,19 @@ exports.getByCategoryId = async (req, res, next) => {
       data: await Product.find({
         category: category_id,
       })
+        .populate([
+          {
+            path: "subcategory",
+            select: "titleEn titleBn icon isActive slug",
+          },
+          {
+            path: "store",
+            select: "image titleEn titleBn isActive slug",
+          },
+        ])
+        .select(
+          "titleEn titleBn subcategory slug store sellPrice price image isActive"
+        )
         .skip(skip)
         .limit(limit),
       total: await Product.find({
@@ -208,6 +237,20 @@ exports.getBySubcategoryId = async (req, res, next) => {
       data: await Product.find({
         subcategory: category_id,
       })
+        .populate([
+          {
+            path: "category",
+            select: "titleEn titleBn icon isActive slug",
+          },
+
+          {
+            path: "store",
+            select: "image titleEn titleBn isActive slug",
+          },
+        ])
+        .select(
+          "titleEn titleBn category slug store sellPrice price image isActive"
+        )
         .skip(skip)
         .limit(limit),
       total: await Product.find({
@@ -240,6 +283,19 @@ exports.getByStoreId = async (req, res, next) => {
       data: await Product.find({
         store: store_id,
       })
+        .populate([
+          {
+            path: "category",
+            select: "titleEn titleBn icon isActive slug",
+          },
+          {
+            path: "subcategory",
+            select: "titleEn titleBn icon isActive slug",
+          },
+        ])
+        .select(
+          "titleEn titleBn category subcategory slug  sellPrice price image isActive"
+        )
         .skip(skip)
         .limit(limit),
       total: await Product.find({
@@ -265,9 +321,23 @@ exports.byID = async (req, res, next) => {
     return next(new ErrorResponse("Please provide valid product id", 400));
 
   try {
-    const product = await Product.findById(product_id).populate(
-      "category subcategory store variants"
-    );
+    const product = await Product.findById(product_id).populate([
+      {
+        path: "category",
+        select: "titleEn titleBn icon isActive slug",
+      },
+      {
+        path: "subcategory",
+        select: "titleEn titleBn icon isActive slug",
+      },
+      {
+        path: "variants",
+      },
+      {
+        path: "store",
+        select: "image titleEn titleBn isActive slug",
+      },
+    ]);
 
     if (!product) return next(new ErrorResponse("No product found", 404));
 

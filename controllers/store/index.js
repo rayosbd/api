@@ -42,10 +42,14 @@ exports.getAll = async (req, res, next) => {
             path: "owner",
             select: "userName image",
           },
+          {
+            path: "totalProducts",
+          },
         ])
         .skip(skip)
-        .limit(limit),
-      total: await Store.find().count(),
+        .limit(limit)
+        .select("titleEn titleBn owner slug image isActive totalProducts"),
+      total: await Store.count(),
       page,
       limit,
     });
@@ -66,7 +70,15 @@ exports.byID = async (req, res, next) => {
     return next(new ErrorResponse("Please provide valid store id", 400));
 
   try {
-    const store = await Store.findById(store_id);
+    const store = await Store.findById(store_id).populate([
+      {
+        path: "owner",
+        select: "userName image",
+      },
+      {
+        path: "icon",
+      },
+    ]);
 
     if (!store) return next(new ErrorResponse("No store found", 404));
 

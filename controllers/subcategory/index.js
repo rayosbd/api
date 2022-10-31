@@ -114,6 +114,7 @@ exports.getAll = async (req, res, next) => {
       message: "Subcategory list fetched successfully",
       data: await Subcategory.find()
         .populate("category")
+        .select("titleEn titleBn icon isActive category")
         .skip(skip)
         .limit(limit),
       total: await Subcategory.find().count(),
@@ -138,7 +139,7 @@ exports.byID = async (req, res, next) => {
 
   try {
     const subcategory = await Subcategory.findById(subcategory_id).populate(
-      "category"
+      "category icon"
     );
 
     if (!subcategory)
@@ -171,7 +172,8 @@ exports.byCategory = async (req, res, next) => {
       // isActive: true,
     })
       .skip(skip)
-      .limit(limit);
+      .limit(limit)
+      .select("titleEn titleBn icon isActive");
 
     res.status(200).json({
       success: true,
