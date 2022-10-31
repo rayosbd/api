@@ -14,7 +14,7 @@ var subcategorySchema = new mongoose.Schema(
     },
     descriptionEn: {
       type: String,
-      required: [true, "Please Provide Description"], // If Required
+      // required: [true, "Please Provide Description"], // If Required
       trim: true,
     },
     descriptionBn: {
