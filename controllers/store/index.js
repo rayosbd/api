@@ -48,7 +48,9 @@ exports.getAll = async (req, res, next) => {
         ])
         .skip(skip)
         .limit(limit)
-        .select("titleEn titleBn owner slug image isActive totalProducts"),
+        .select(
+          "titleEn titleBn owner ownerModel slug image isActive totalProducts"
+        ),
       total: await Store.count(),
       page,
       limit,
