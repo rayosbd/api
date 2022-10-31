@@ -58,6 +58,13 @@ var storeSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
+storeSchema.virtual("totalProducts", {
+  ref: "Product",
+  localField: "_id",
+  foreignField: "store",
+  count: true,
+});
+
 const Store = mongoose.model("Store", storeSchema);
 module.exports = Store;
 

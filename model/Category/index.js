@@ -69,6 +69,13 @@ categorySchema.virtual("products", {
   foreignField: "category",
 });
 
+categorySchema.virtual("totalProducts", {
+  ref: "Product",
+  localField: "_id",
+  foreignField: "category",
+  count: true,
+});
+
 categorySchema.set("toObject", { virtuals: true });
 categorySchema.set("toJSON", { virtuals: true });
 
