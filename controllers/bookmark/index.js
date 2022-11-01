@@ -12,44 +12,31 @@ exports.getForUser = async (req, res, next) => {
       data: await Bookmark.find({ user: user._id })
         .populate([
           {
-            path: "category",
-            select: "titleEn titleBn icon isActive slug",
-          },
-          {
-            path: "subcategory",
-            select: "titleEn titleBn icon isActive slug",
-          },
-          {
-            path: "store",
-            select: "image titleEn titleBn isActive slug",
+            path: "product",
+            populate: [
+              {
+                path: "category",
+                select: "titleEn titleBn icon isActive slug",
+              },
+              {
+                path: "subcategory",
+                select: "titleEn titleBn icon isActive slug",
+              },
+              {
+                path: "store",
+                select: "image titleEn titleBn isActive slug",
+              },
+            ],
+            select:
+              "titleEn titleBn category subcategory slug store sellPrice price image isActive",
           },
         ])
-        .select(
-          "titleEn titleBn category subcategory slug store sellPrice price image isActive"
-        )
+        .select("product")
         .skip(skip)
         .limit(limit),
       total: await Bookmark.find({ user: user._id }).count(),
       page,
       limit,
-    });
-
-    // On Error
-  } catch (error) {
-    // Send Error Response
-    next(error);
-  }
-};
-
-exports.getForUserId = async (req, res, next) => {
-  const { user_id } = req.params;
-
-  try {
-    res.status(200).json({
-      success: true,
-      message: "Bookmark list fetched successfully",
-      data: await Bookmark.find({ user: user_id }).populate("product"),
-      total: await Bookmark.find({ user: user_id }).count(),
     });
 
     // On Error

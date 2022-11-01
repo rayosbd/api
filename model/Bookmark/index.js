@@ -16,6 +16,9 @@ var bookmarkSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
+bookmarkSchema.set("toObject", { virtuals: true });
+bookmarkSchema.set("toJSON", { virtuals: true });
+
 const Bookmark = mongoose.model("Bookmark", bookmarkSchema);
 module.exports = Bookmark;
 
