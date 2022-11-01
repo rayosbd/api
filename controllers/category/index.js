@@ -105,10 +105,12 @@ exports.getAll = async (req, res, next) => {
   const { skip, limit, page } = req.pagination;
   try {
     const category = await Category.find()
-      .populate("totalSubcategories")
+      .populate("totalSubcategories totalProducts")
       .skip(skip)
       .limit(limit)
-      .select("titleEn titleBn icon isActive totalSubcategories slug");
+      .select(
+        "titleEn titleBn icon isActive totalSubcategories totalProducts slug"
+      );
     res.status(200).json({
       success: true,
       message: "Category list fetched successfully",
@@ -135,7 +137,7 @@ exports.byID = async (req, res, next) => {
 
   try {
     const category = await Category.findById(category_id).populate(
-      "icon totalSubcategories"
+      "icon totalSubcategories totalProducts"
     );
 
     if (!category) return next(new ErrorResponse("No category found", 404));

@@ -80,6 +80,9 @@ exports.byID = async (req, res, next) => {
       {
         path: "icon",
       },
+      {
+        path: "totalProducts",
+      },
     ]);
 
     if (!store) return next(new ErrorResponse("No store found", 404));

@@ -160,7 +160,7 @@ exports.getAll = async (req, res, next) => {
           },
         ])
         .select(
-          "titleEn titleBn category subcategory slug store sellPrice price image isActive"
+          "titleEn titleBn category subcategory slug store buyPrice sellPrice price image isActive"
         )
         .skip(skip)
         .limit(limit),
@@ -203,7 +203,7 @@ exports.getByCategoryId = async (req, res, next) => {
           },
         ])
         .select(
-          "titleEn titleBn subcategory slug store sellPrice price image isActive"
+          "titleEn titleBn subcategory slug store buyPrice sellPrice price image isActive"
         )
         .skip(skip)
         .limit(limit),
@@ -249,7 +249,7 @@ exports.getBySubcategoryId = async (req, res, next) => {
           },
         ])
         .select(
-          "titleEn titleBn category slug store sellPrice price image isActive"
+          "titleEn titleBn category slug store buyPrice sellPrice price image isActive"
         )
         .skip(skip)
         .limit(limit),
@@ -294,7 +294,7 @@ exports.getByStoreId = async (req, res, next) => {
           },
         ])
         .select(
-          "titleEn titleBn category subcategory slug  sellPrice price image isActive"
+          "titleEn titleBn category subcategory slug  buyPrice sellPrice price image isActive"
         )
         .skip(skip)
         .limit(limit),

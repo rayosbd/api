@@ -65,6 +65,9 @@ storeSchema.virtual("totalProducts", {
   count: true,
 });
 
+storeSchema.set("toObject", { virtuals: true });
+storeSchema.set("toJSON", { virtuals: true });
+
 const Store = mongoose.model("Store", storeSchema);
 module.exports = Store;
 

@@ -55,6 +55,9 @@ subcategorySchema.virtual("totalProducts", {
   count: true,
 });
 
+subcategorySchema.set("toObject", { virtuals: true });
+subcategorySchema.set("toJSON", { virtuals: true });
+
 const SubCategory = mongoose.model("Subcategory", subcategorySchema);
 module.exports = SubCategory;
 

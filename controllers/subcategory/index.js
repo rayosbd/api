@@ -113,8 +113,8 @@ exports.getAll = async (req, res, next) => {
       success: true,
       message: "Subcategory list fetched successfully",
       data: await Subcategory.find()
-        .populate("category")
-        .select("titleEn titleBn icon isActive category")
+        .populate("category totalProducts")
+        .select("titleEn titleBn icon isActive category totalProducts")
         .skip(skip)
         .limit(limit),
       total: await Subcategory.find().count(),
@@ -171,9 +171,14 @@ exports.byCategory = async (req, res, next) => {
       category: category_id,
       // isActive: true,
     })
+      .populate([
+        {
+          path: "totalProducts",
+        },
+      ])
       .skip(skip)
       .limit(limit)
-      .select("titleEn titleBn icon isActive");
+      .select("titleEn titleBn icon isActive totalProducts");
 
     res.status(200).json({
       success: true,
