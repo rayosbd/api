@@ -52,6 +52,7 @@ app.use("/api/attachments", require("./routes/attachment"));
 app.use("/api/bookmark", require("./routes/bookmark"));
 app.use("/api/cart", require("./routes/cart"));
 app.use("/api/category", require("./routes/category"));
+app.use("/api/customer", require("./routes/customer"));
 app.use("/api/feed", require("./routes/feed"));
 app.use("/api/order", require("./routes/order"));
 app.use("/api/store", require("./routes/store"));

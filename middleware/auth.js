@@ -27,8 +27,16 @@ exports.protect = async (req, res, next) => {
       return next(new ErrorResponse("Unauthorized user!", 401));
 
     const user = decoded.admin
-      ? await Admin.findById(decoded.id)
-      : await User.findById(decoded.id);
+      ? await Admin.findOne({
+          _id: decoded.id,
+          isActive: true,
+          isVerified: true,
+        })
+      : await User.findOne({
+          _id: decoded.id,
+          isActive: true,
+          isVerified: true,
+        });
 
     if (!user) return next(new ErrorResponse("Unauthorized user!", 401));
 
