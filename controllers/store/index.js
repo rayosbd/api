@@ -78,7 +78,7 @@ exports.byID = async (req, res, next) => {
         select: "userName image",
       },
       {
-        path: "icon",
+        path: "image",
       },
       {
         path: "totalProducts",
