@@ -2,6 +2,7 @@ const User = require("../../model/User");
 const ErrorResponse = require("../../utils/errorResponse");
 const base32 = require("base32");
 const Bookmark = require("../../model/Bookmark");
+const { sendSMS } = require("../../config/sms");
 
 exports.register = async (req, res, next) => {
   // Get Values
@@ -173,12 +174,17 @@ const sendToken = (user, statusCode, res) => {
 };
 
 const sendOTP = async (user, statusCode, res) => {
+  await sendSMS(
+    user.phone,
+    `Your Rayos OTP Code is ${await user.getTOTP()}`,
+    true
+  );
   res.status(statusCode).json({
     success: true,
     token: await user.getBase32ID(), // otp._id,
-    otp: await user.getTOTP(), // newOTP,
+    // otp: , // newOTP,
   });
-};
+};;
 
 
 // https://youtu.be/YocRq-KesCM

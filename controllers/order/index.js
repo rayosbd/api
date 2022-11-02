@@ -68,7 +68,7 @@ exports.calculateOrder = async (req, res, next) => {
 
     res.status(201).json({
       success: true,
-      message: "Order placed successfully",
+      message: "Order cached successfully",
       data: {
         carts: foundCarts,
         paymentMethod,
@@ -228,6 +228,11 @@ exports.createOrder = async (req, res, next) => {
       order: order._id,
       status: "Pending",
     });
+
+    await sendSMS(
+      user.phone,
+      `${user.fullName}, Your order placed successfully at Rayos!`
+    );
 
     res.status(201).json({
       success: true,

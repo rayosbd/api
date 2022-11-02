@@ -93,13 +93,21 @@ userSchema.methods.getTOTP = async function () {
     encoding: "ascii",
     digits: 6,
     epoch: Date.now(),
-    step: 30,
-    window: 30,
+    step: 300,
+    window: 300,
   };
   return totp.generate(this.verificationKey);
 };
 
 userSchema.methods.verifyTOTP = async function (otp) {
+  totp.options = {
+    algorithm: "sha1",
+    encoding: "ascii",
+    digits: 6,
+    epoch: Date.now(),
+    step: 300,
+    window: 300,
+  };
   return totp.check(otp, this.verificationKey);
 };
 
