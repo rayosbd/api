@@ -24,11 +24,11 @@ var ordertimelineSchema = new mongoose.Schema(
     },
     message: {
       type: String,
-      default: null,
-      set: function (value) {
+      default: function (value) {
         if (value) return value;
         else {
-          if (this.status === "Pending") return "The order is placed.";
+          if (this.status === "Pending")
+            return "The order is placed successfully.";
           else if (this.status === "Confirmed")
             return "The order is confirmed from the shop owner.";
           else if (this.status === "Shipped")
@@ -39,7 +39,7 @@ var ordertimelineSchema = new mongoose.Schema(
             return "Sorry! For some unfortunate reason the order had to be canceled from shop owner.";
           else if (this.status === "Returned")
             return "The ordered product is returned.";
-          else return value;
+          else return null;
         }
       },
     },

@@ -67,6 +67,22 @@ var orderSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
+orderSchema.virtual("products", {
+  ref: "OrderLine",
+  localField: "_id",
+  foreignField: "order",
+});
+
+orderSchema.virtual("timeline", {
+  ref: "OrderTimeline",
+  localField: "_id",
+  foreignField: "order",
+});
+
+orderSchema.set("toObject", { virtuals: true });
+orderSchema.set("toJSON", { virtuals: true });
+
+
 const Order = mongoose.model("Order", orderSchema);
 module.exports = Order;
 

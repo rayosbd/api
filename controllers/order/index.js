@@ -1,3 +1,4 @@
+const { default: mongoose } = require("mongoose");
 const { sendSMS } = require("../../config/sms");
 const Cart = require("../../model/Cart");
 const Order = require("../../model/Order");
@@ -259,6 +260,8 @@ exports.updateOrder = async (req, res, next) => {
       _id: order_id,
     });
 
+    if (!order) throw new ErrorResponse("No order found", 404);
+
     const orderLines = await OrderLine.find({
       order: order_id,
     }).populate([
@@ -328,6 +331,9 @@ exports.getAll = async (req, res, next) => {
             select: "userName image",
           },
         ])
+        .select(
+          "shipping paymentMethod status totalSellPrice shippingFee voucher discount total"
+        )
         .skip(skip)
         .limit(limit),
       status: status || "All",
@@ -347,7 +353,6 @@ exports.getAllUser = async (req, res, next) => {
   const { skip, limit, page } = req.pagination;
   const { status } = req.query;
   const user = req.user;
-
   try {
     res.status(200).json({
       success: true,
@@ -358,9 +363,16 @@ exports.getAllUser = async (req, res, next) => {
         ...(status && { status }),
       })
         .skip(skip)
-        .limit(limit),
+        .limit(limit)
+        .select(
+          "shipping paymentMethod status totalSellPrice shippingFee voucher discount total"
+        ),
       status: status || "all",
-      total: await Order.count(),
+      total: await Order.find({
+        // $or: searchRegex(req.search, "user.userName"),
+        user: user._id,
+        ...(status && { status }),
+      }).count(),
       page,
       limit,
     });
@@ -387,11 +399,68 @@ exports.getAllUserId = async (req, res, next) => {
         ...(status && { status }),
       })
         .skip(skip)
-        .limit(limit),
+        .limit(limit)
+        .select(
+          "shipping paymentMethod status totalSellPrice shippingFee voucher discount total"
+        ),
       status: status || "all",
       total: await Order.count(),
       page,
       limit,
+    });
+
+    // On Error
+  } catch (error) {
+    // Send Error Response
+    next(error);
+  }
+};
+
+exports.byID = async (req, res, next) => {
+  // Get Values
+  const { order_id } = req.params;
+
+  // mongoose.Types.ObjectId.isValid(id)
+  if (!order_id || !mongoose.Types.ObjectId.isValid(order_id))
+    return next(new ErrorResponse("Please provide valid order id", 400));
+
+  try {
+    const order = await Order.findById(order_id)
+      .populate([
+        {
+          path: "user",
+          select: "userName image",
+        },
+        {
+          path: "products",
+          populate: [
+            {
+              path: "product",
+              select:
+                "titleEn titleBn image quantity sellPrice price discount isActive variantType slug",
+            },
+            {
+              path: "variant",
+              select: "titleEn titleBn quantity isActive",
+            },
+          ],
+          select: "product variant quantity sellPrice price discount -order",
+        },
+        {
+          path: "timeline",
+          select: "status message createdAt -order",
+          sort: "-createdAt",
+        },
+      ])
+      .select(
+        "shipping paymentMethod status totalSellPrice shippingFee voucher discount total"
+      );
+
+    if (!order) return next(new ErrorResponse("No order found", 404));
+
+    res.status(200).json({
+      success: true,
+      data: order,
     });
 
     // On Error

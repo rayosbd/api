@@ -7,6 +7,7 @@ const {
   getAllUser,
   getAllUserId,
   updateOrder,
+  byID,
 } = require("../controllers/order");
 const { protect, adminProtect } = require("../middleware/auth");
 const { query } = require("../middleware/query");
@@ -58,7 +59,7 @@ router.route("/").get(adminProtect, protect, query, getAll);
  * /api/order/user:
  *  get:
  *    tags: [Order]
- *    summary: Get Order List for Admin
+ *    summary: Get Order List for User
  *    security:
  *      - bearer: []
  *    parameters:
@@ -91,6 +92,30 @@ router.route("/").get(adminProtect, protect, query, getAll);
  *
  */
 router.route("/user").get(protect, query, getAllUser);
+
+// Get Order API
+/**
+ * @swagger
+ * /api/order/{id}:
+ *  get:
+ *    tags: [Order]
+ *    summary: Get Order
+ *    parameters:
+ *      - in: path
+ *        name: id
+ *        required: true
+ *        type: string
+ *        description: Order Id
+ *    responses:
+ *      200:
+ *        description: Get successful
+ *      400:
+ *        description: Bad Request
+ *      404:
+ *        description: Not Found
+ *
+ */
+router.route("/:order_id").get(byID);
 
 // Get Order List for User API
 /**
@@ -134,12 +159,7 @@ router.route("/user").get(protect, query, getAllUser);
  *        description: Not Found
  *
  */
-router.route("/user/:userId").get(
-  // adminProtect,
-  protect,
-  query,
-  getAllUserId
-);
+router.route("/user/:userId").get(adminProtect, protect, query, getAllUserId);
 
 // Get Calculation API
 /**
