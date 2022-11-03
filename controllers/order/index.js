@@ -262,6 +262,74 @@ exports.updateOrder = async (req, res, next) => {
 
     if (!order) throw new ErrorResponse("No order found", 404);
 
+    switch (status) {
+      case "Pending":
+        throw new ErrorResponse("Order can't be updated as pending", 400);
+      case "Confirmed":
+        switch (order.status) {
+          case "Pending":
+            break;
+          default:
+            throw new ErrorResponse(
+              "Order can update as confirmed only from pending",
+              400
+            );
+        }
+        break;
+      case "Shipped":
+        switch (order.status) {
+          case "Confirmed":
+            break;
+          default:
+            throw new ErrorResponse(
+              "Order can update as shipped only from confirmed",
+              400
+            );
+        }
+        break;
+      case "Delivered":
+        switch (order.status) {
+          case "Shipped":
+            break;
+          default:
+            throw new ErrorResponse(
+              "Order can update as delivered only from shipped",
+              400
+            );
+        }
+        break;
+      case "Canceled":
+        switch (order.status) {
+          case "Pending":
+          case "Confirmed":
+            break;
+          default:
+            throw new ErrorResponse(
+              "Order can be canceled from pending or confirmed",
+              400
+            );
+        }
+        break;
+
+      case "Returned":
+        switch (order.status) {
+          case "Delivered":
+          case "Shipped":
+            break;
+          default:
+            throw new ErrorResponse(
+              "Order can be returned from delivered or shipped",
+              400
+            );
+        }
+        break;
+
+      case undefined:
+        throw new ErrorResponse("Status is required", 400);
+      default:
+        throw new ErrorResponse("Status is not valid", 400);
+    }
+
     const orderLines = await OrderLine.find({
       order: order_id,
     }).populate([
@@ -288,7 +356,7 @@ exports.updateOrder = async (req, res, next) => {
 
     res.status(201).json({
       success: true,
-      message: `Order ${order_id} updated to ${status} successfully`,
+      message: `Order ${status.toLowerCase()} successfully`,
     });
     // On Error
   } catch (error) {
