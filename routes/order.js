@@ -8,6 +8,8 @@ const {
   getAllUserId,
   updateOrder,
   byID,
+  productsByID,
+  timelineByID,
 } = require("../controllers/order");
 const { protect, adminProtect } = require("../middleware/auth");
 const { query } = require("../middleware/query");
@@ -116,6 +118,54 @@ router.route("/user").get(protect, query, getAllUser);
  *
  */
 router.route("/:order_id").get(byID);
+
+// Get Ordered API
+/**
+ * @swagger
+ * /api/order/{id}/products:
+ *  get:
+ *    tags: [Order]
+ *    summary: Get Order
+ *    parameters:
+ *      - in: path
+ *        name: id
+ *        required: true
+ *        type: string
+ *        description: Order Id
+ *    responses:
+ *      200:
+ *        description: Get successful
+ *      400:
+ *        description: Bad Request
+ *      404:
+ *        description: Not Found
+ *
+ */
+router.route("/:order_id/products").get(productsByID);
+
+// Get Order API
+/**
+ * @swagger
+ * /api/order/{id}/timeline:
+ *  get:
+ *    tags: [Order]
+ *    summary: Get Order
+ *    parameters:
+ *      - in: path
+ *        name: id
+ *        required: true
+ *        type: string
+ *        description: Order Id
+ *    responses:
+ *      200:
+ *        description: Get successful
+ *      400:
+ *        description: Bad Request
+ *      404:
+ *        description: Not Found
+ *
+ */
+router.route("/:order_id/timeline").get(timelineByID);
 
 // Get Order List for User API
 /**

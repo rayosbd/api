@@ -332,7 +332,7 @@ exports.getAll = async (req, res, next) => {
           },
         ])
         .select(
-          "shipping paymentMethod status totalSellPrice shippingFee voucher discount total"
+          "shipping paymentMethod status totalSellPrice shippingFee voucher discount total createdAt"
         )
         .skip(skip)
         .limit(limit),
@@ -365,7 +365,7 @@ exports.getAllUser = async (req, res, next) => {
         .skip(skip)
         .limit(limit)
         .select(
-          "shipping paymentMethod status totalSellPrice shippingFee voucher discount total"
+          "shipping paymentMethod status totalSellPrice shippingFee voucher discount total createdAt"
         ),
       status: status || "all",
       total: await Order.find({
@@ -401,7 +401,7 @@ exports.getAllUserId = async (req, res, next) => {
         .skip(skip)
         .limit(limit)
         .select(
-          "shipping paymentMethod status totalSellPrice shippingFee voucher discount total"
+          "shipping paymentMethod status totalSellPrice shippingFee voucher discount total createdAt"
         ),
       status: status || "all",
       total: await Order.count(),
@@ -461,6 +461,84 @@ exports.byID = async (req, res, next) => {
     res.status(200).json({
       success: true,
       data: order,
+    });
+
+    // On Error
+  } catch (error) {
+    // Send Error Response
+    next(error);
+  }
+};
+
+exports.productsByID = async (req, res, next) => {
+  // Get Values
+  const { order_id } = req.params;
+
+  // mongoose.Types.ObjectId.isValid(id)
+  if (!order_id || !mongoose.Types.ObjectId.isValid(order_id))
+    return next(new ErrorResponse("Please provide valid order id", 400));
+
+  try {
+    const order = await Order.findById(order_id).populate([
+      {
+        path: "user",
+        select: "userName image",
+      },
+      {
+        path: "products",
+        populate: [
+          {
+            path: "product",
+            select:
+              "titleEn titleBn image quantity sellPrice price discount isActive variantType slug",
+          },
+          {
+            path: "variant",
+            select: "titleEn titleBn quantity isActive",
+          },
+        ],
+        select: "product variant quantity sellPrice price discount -order",
+      },
+    ]);
+    if (!order) return next(new ErrorResponse("No order found", 404));
+
+    res.status(200).json({
+      success: true,
+      data: order?.products || [],
+    });
+
+    // On Error
+  } catch (error) {
+    // Send Error Response
+    next(error);
+  }
+};
+
+exports.timelineByID = async (req, res, next) => {
+  // Get Values
+  const { order_id } = req.params;
+
+  // mongoose.Types.ObjectId.isValid(id)
+  if (!order_id || !mongoose.Types.ObjectId.isValid(order_id))
+    return next(new ErrorResponse("Please provide valid order id", 400));
+
+  try {
+    const order = await Order.findById(order_id).populate([
+      {
+        path: "user",
+        select: "userName image",
+      },
+      {
+        path: "timeline",
+        select: "status message createdAt -order",
+        sort: "-createdAt",
+      },
+    ]);
+    if (!order) return next(new ErrorResponse("No order found", 404));
+
+    res.status(200).json({
+      success: true,
+      data: order?.timeline || [],
     });
 
     // On Error
