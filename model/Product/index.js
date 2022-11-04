@@ -63,6 +63,7 @@ var productSchema = new mongoose.Schema(
         values: ["Size", "Variant", "Color"],
         message: "{VALUE} is not supported",
       },
+      trim: true,
     },
     image: {
       type: mongoose.Schema.Types.ObjectId,

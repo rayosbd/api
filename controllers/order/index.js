@@ -233,7 +233,7 @@ exports.createOrder = async (req, res, next) => {
 
     await sendSMS(
       user.phone,
-      `${user.fullName}, Your order placed successfully at Rayos!`
+      `${user.fullName}, Your order is placed successfully at Rayos! For more details and tracking your order visit our website http://rayosbd.com.`
     );
 
     res.status(201).json({
@@ -540,7 +540,7 @@ exports.byID = async (req, res, next) => {
       .populate([
         {
           path: "user",
-          select: "userName image",
+          select: "userName image phone email",
         },
         {
           path: "products",
