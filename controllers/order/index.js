@@ -254,7 +254,7 @@ exports.createOrder = async (req, res, next) => {
  */
 exports.updateOrder = async (req, res, next) => {
   const { order_id } = req.params;
-  const { status } = req.query;
+  const { status, orderlines } = req.query;
   try {
     const order = await Order.findOne({
       _id: order_id,
@@ -268,6 +268,12 @@ exports.updateOrder = async (req, res, next) => {
       case "Confirmed":
         switch (order.status) {
           case "Pending":
+            order.status = "Confirmed";
+            order.save();
+            await OrderTimeline.create({
+              order: order._id,
+              status: "Confirmed",
+            });
             break;
           default:
             throw new ErrorResponse(
@@ -279,6 +285,12 @@ exports.updateOrder = async (req, res, next) => {
       case "Shipped":
         switch (order.status) {
           case "Confirmed":
+            order.status = "Shipped";
+            order.save();
+            await OrderTimeline.create({
+              order: order._id,
+              status: "Shipped",
+            });
             break;
           default:
             throw new ErrorResponse(
@@ -290,6 +302,12 @@ exports.updateOrder = async (req, res, next) => {
       case "Delivered":
         switch (order.status) {
           case "Shipped":
+            order.status = "Delivered";
+            order.save();
+            await OrderTimeline.create({
+              order: order._id,
+              status: "Delivered",
+            });
             break;
           default:
             throw new ErrorResponse(
@@ -302,6 +320,7 @@ exports.updateOrder = async (req, res, next) => {
         switch (order.status) {
           case "Pending":
           case "Confirmed":
+            await cancelOrderLine(order, orderlines, "Canceled");
             break;
           default:
             throw new ErrorResponse(
@@ -310,11 +329,11 @@ exports.updateOrder = async (req, res, next) => {
             );
         }
         break;
-
       case "Returned":
         switch (order.status) {
           case "Delivered":
           case "Shipped":
+            await cancelOrderLine(order, orderlines, "Returned");
             break;
           default:
             throw new ErrorResponse(
@@ -323,36 +342,11 @@ exports.updateOrder = async (req, res, next) => {
             );
         }
         break;
-
       case undefined:
         throw new ErrorResponse("Status is required", 400);
       default:
         throw new ErrorResponse("Status is not valid", 400);
     }
-
-    const orderLines = await OrderLine.find({
-      order: order_id,
-    }).populate([
-      {
-        path: "product",
-        select: "quantity isActive",
-        match: {
-          isActive: true,
-        },
-      },
-      {
-        path: "variant",
-        select: "quantity isActive",
-        match: {
-          isActive: true,
-          quantity: {
-            $gte: this.quantity,
-          },
-        },
-      },
-    ]);
-    console.log(order);
-    console.log(orderLines);
 
     res.status(201).json({
       success: true,
@@ -362,6 +356,55 @@ exports.updateOrder = async (req, res, next) => {
   } catch (error) {
     // Send Error Response
     next(error);
+  }
+};
+
+const cancelOrderLine = async (order, orderlinesIds, status) => {
+  const orderLines = await OrderLine.find({
+    ...(orderlinesIds && {
+      _id: orderlinesIds.replace(" ", "").split(","),
+    }),
+    order: order.id,
+  }).populate([
+    {
+      path: "product",
+      select: "quantity isActive",
+      match: {
+        isActive: true,
+      },
+    },
+    {
+      path: "variant",
+      select: "quantity isActive",
+      match: {
+        isActive: true,
+      },
+    },
+  ]);
+
+  var count = 0;
+  orderLines?.map?.(async (orderline) => {
+    count += orderline.quantity;
+    orderline.canceledOrReturned = status;
+    orderline.save();
+    order.sellPrice -= orderline.price * orderline.quantity;
+    order.total -= orderline.price * orderline.quantity;
+    orderFromVariant(orderline.variant._id, -1 * orderline.quantity);
+  });
+
+  if (orderlinesIds)
+    await OrderTimeline.create({
+      order: order._id,
+      status,
+      message: `${count || 0} items ${status.toLowerCase()}`,
+    });
+  else {
+    order.status = status;
+    order.save();
+    await OrderTimeline.create({
+      order: order._id,
+      status,
+    });
   }
 };
 
@@ -512,7 +555,8 @@ exports.byID = async (req, res, next) => {
               select: "titleEn titleBn quantity isActive",
             },
           ],
-          select: "product variant quantity sellPrice price discount -order",
+          select:
+            "product variant quantity sellPrice price discount canceledOrReturned -order",
         },
         {
           path: "timeline",
@@ -565,7 +609,8 @@ exports.productsByID = async (req, res, next) => {
             select: "titleEn titleBn quantity isActive",
           },
         ],
-        select: "product variant quantity sellPrice price discount -order",
+        select:
+          "product variant quantity sellPrice price discount canceledOrReturned -order",
       },
     ]);
     if (!order) return next(new ErrorResponse("No order found", 404));

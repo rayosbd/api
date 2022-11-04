@@ -95,29 +95,7 @@ router.route("/").get(adminProtect, protect, query, getAll);
  */
 router.route("/user").get(protect, query, getAllUser);
 
-// Get Order API
-/**
- * @swagger
- * /api/order/{id}:
- *  get:
- *    tags: [Order]
- *    summary: Get Order
- *    parameters:
- *      - in: path
- *        name: id
- *        required: true
- *        type: string
- *        description: Order Id
- *    responses:
- *      200:
- *        description: Get successful
- *      400:
- *        description: Bad Request
- *      404:
- *        description: Not Found
- *
- */
-router.route("/:order_id").get(byID);
+
 
 // Get Ordered API
 /**
@@ -283,6 +261,30 @@ router.route("/calculate").post(protect, calculateOrder);
  */
 router.route("/create").post(protect, createOrder);
 
+// Get Order API
+/**
+ * @swagger
+ * /api/order/{id}:
+ *  get:
+ *    tags: [Order]
+ *    summary: Get Order
+ *    parameters:
+ *      - in: path
+ *        name: id
+ *        required: true
+ *        type: string
+ *        description: Order Id
+ *    responses:
+ *      200:
+ *        description: Get successful
+ *      400:
+ *        description: Bad Request
+ *      404:
+ *        description: Not Found
+ *
+ */
+ router.route("/:order_id").get(byID);
+
 // Create Order API
 /**
  * @swagger
@@ -301,6 +303,9 @@ router.route("/create").post(protect, createOrder);
  *        name: status
  *        type: string
  *        required: true
+ *      - in: query
+ *        name: orderlines
+ *        type: string
  *    responses:
  *      201:
  *        description: Update Successful

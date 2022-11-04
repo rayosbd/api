@@ -25,22 +25,19 @@ var ordertimelineSchema = new mongoose.Schema(
     message: {
       type: String,
       default: function (value) {
-        if (value) return value;
-        else {
-          if (this.status === "Pending")
-            return "The order is placed successfully.";
-          else if (this.status === "Confirmed")
-            return "The order is confirmed from the shop owner.";
-          else if (this.status === "Shipped")
-            return "The order is shipped to delivery service. Be prepare to receive it.";
-          else if (this.status === "Delivered")
-            return "The order is delivered successfully.";
-          else if (this.status === "Canceled")
-            return "Sorry! For some unfortunate reason the order had to be canceled from shop owner.";
-          else if (this.status === "Returned")
-            return "The ordered product is returned.";
-          else return null;
-        }
+        if (this.status === "Pending")
+          return "The order is placed successfully.";
+        else if (this.status === "Confirmed")
+          return "The order is confirmed from the shop owner.";
+        else if (this.status === "Shipped")
+          return "The order is shipped to delivery service. Be prepare to receive it.";
+        else if (this.status === "Delivered")
+          return "The order is delivered successfully.";
+        else if (this.status === "Canceled")
+          return "Sorry! For some unfortunate reason the order had to be canceled from shop owner.";
+        else if (this.status === "Returned")
+          return "The ordered product is returned.";
+        else return null;
       },
     },
   },

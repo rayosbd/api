@@ -35,6 +35,11 @@ var orderlineSchema = new mongoose.Schema({
     type: Number,
     default: 0,
   },
+  canceledOrReturned: {
+    type: String,
+    trim: true,
+    default: null,
+  },
 });
 
 const OrderLine = mongoose.model("OrderLine", orderlineSchema);
