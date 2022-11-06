@@ -15,6 +15,7 @@ exports.create = async (req, res, next) => {
       descriptionBn,
       image,
       owner: req.user._id,
+      ownerModel: req.isAdmin ? "Admin" : "User",
     });
 
     res.status(201).json({

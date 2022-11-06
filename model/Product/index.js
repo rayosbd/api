@@ -109,6 +109,54 @@ productSchema
   });
 
 productSchema
+  .virtual("rating", {
+    ref: "Review",
+    localField: "_id",
+    foreignField: "product",
+    match: {
+      isActive: true,
+    },
+    // getters: true,
+  })
+  .set(function () {
+    return 1;
+  })
+  .get(function (value, virtual, doc) {
+    let rating = 0;
+    let oneLength = 0;
+    let twoLength = 0;
+    let threeLength = 0;
+    let fourLength = 0;
+    let fiveLength = 0;
+    value?.forEach?.(function (r) {
+      if (r.rating > 4) {
+        fiveLength++;
+      } else if (r.rating > 3) {
+        fourLength++;
+      } else if (r.rating > 2) {
+        threeLength++;
+      } else if (r.rating > 1) {
+        twoLength++;
+      } else if (r.rating > 0) {
+        oneLength++;
+      }
+      rating += r.rating;
+    });
+    return {
+      total:
+        parseFloat(parseFloat(rating / value?.length || 0).toFixed(1)) || 0,
+      count: {
+        all: value?.length || 0,
+        one: oneLength,
+        two: twoLength,
+        three: threeLength,
+        four: fourLength,
+        five: fiveLength,
+      },
+    };
+  });
+
+productSchema
   .virtual("price", {
     // ref: "Discount",
     localField: "_id",
@@ -126,7 +174,7 @@ productSchema
   });
 
 productSchema.pre(/^find/, async function () {
-  this.populate("quantity price");
+  this.populate("quantity price rating");
 });
 
 productSchema.set("toObject", { virtuals: true });

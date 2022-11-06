@@ -1,6 +1,5 @@
 const { default: mongoose } = require("mongoose");
 const Product = require("../../model/Product");
-const Variant = require("../../model/Variant");
 const ErrorResponse = require("../../utils/errorResponse");
 
 exports.create = async (req, res, next) => {

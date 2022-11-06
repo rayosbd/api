@@ -42,7 +42,6 @@ exports.protect = async (req, res, next) => {
 
     req.user = user;
     req.isAdmin = decoded.admin;
-
     next();
   } catch (error) {
     // error
