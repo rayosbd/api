@@ -42,5 +42,15 @@ var orderlineSchema = new mongoose.Schema({
   },
 });
 
+orderlineSchema.virtual("review", {
+  ref: "Review",
+  localField: "_id",
+  foreignField: "orderline",
+  justOne: true,
+});
+
+orderlineSchema.set("toObject", { virtuals: true });
+orderlineSchema.set("toJSON", { virtuals: true });
+
 const OrderLine = mongoose.model("OrderLine", orderlineSchema);
 module.exports = OrderLine;

@@ -7,6 +7,11 @@ var reviewSchema = new mongoose.Schema(
       ref: "Order",
       required: [true, "Please Provide Order Id"],
     },
+    orderline: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "OrderLine",
+      required: [true, "Please Provide Orderline Id"],
+    },
     product: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Product",
@@ -15,7 +20,7 @@ var reviewSchema = new mongoose.Schema(
     author: {
       type: mongoose.Schema.Types.ObjectId,
       refPath: "authorModel",
-      required: [true, "Please Provide author Id"],
+      required: [true, "Please Provide Author Id"],
     },
     authorModel: {
       type: String,
@@ -64,10 +69,14 @@ module.exports = Review;
  *        - order
  *        - product
  *        - rating
+ *        - orderline
  *     properties:
  *       order:
  *         type: string
  *         description: order id
+ *       orderline:
+ *         type: string
+ *         description: orderline id
  *       product:
  *         type: string
  *         description: product id

@@ -554,6 +554,10 @@ exports.byID = async (req, res, next) => {
               path: "variant",
               select: "titleEn titleBn quantity isActive",
             },
+            {
+              path: "review",
+              select: "rating message attachments isActive -orderline",
+            },
           ],
           select:
             "product variant quantity sellPrice price discount canceledOrReturned -order",
