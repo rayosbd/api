@@ -24,8 +24,8 @@ var reviewSchema = new mongoose.Schema(
     },
     rating: {
       type: Number, // < 5
-      min: [0.5, "Rating must be in 0.5 to 5"],
-      max: [5, "Rating must be in 0.5 to 5"],
+      min: [1, "Rating must be in 1 to 5"],
+      max: [5, "Rating must be in 1 to 5"],
       required: [true, "Please Provide Rating"],
     },
     message: {
