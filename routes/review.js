@@ -4,6 +4,9 @@ const {
   byID,
   create,
   activeInactive,
+  byProductID,
+  byProductIDForAdmin,
+  byUserIDForAdmin,
 } = require("../controllers/review");
 const { query } = require("../middleware/query");
 const { protect, adminProtect } = require("../middleware/auth");
@@ -85,6 +88,77 @@ router.route("/").post(protect, create);
  *
  */
 router.route("/:review_id").get(byID);
+
+// Get Review API
+/**
+ * @swagger
+ * /api/review/product/{productId}:
+ *  get:
+ *    tags: [Review]
+ *    summary: Get Product Reviews
+ *    parameters:
+ *      - in: path
+ *        name: productId
+ *        required: true
+ *        type: string
+ *        description: Product Id
+ *    responses:
+ *      200:
+ *        description: Get successful
+ *      400:
+ *        description: Bad Request
+ *      404:
+ *        description: Not Found
+ *
+ */
+router.route("/product/:product_id").get(byProductID);
+// Get Review API
+/**
+ * @swagger
+ * /api/review/admin/product/{productId}:
+ *  get:
+ *    tags: [Review]
+ *    summary: Get All Product Reviews for Admin
+ *    parameters:
+ *      - in: path
+ *        name: productId
+ *        required: true
+ *        type: string
+ *        description: Product Id
+ *    responses:
+ *      200:
+ *        description: Get successful
+ *      400:
+ *        description: Bad Request
+ *      404:
+ *        description: Not Found
+ *
+ */
+router.route("/admin/product/:product_id").get(byProductIDForAdmin);
+
+// Get Review API
+/**
+ * @swagger
+ * /api/review/admin/user/{userId}:
+ *  get:
+ *    tags: [Review]
+ *    summary: Get All User Reviews for Admin
+ *    parameters:
+ *      - in: path
+ *        name: userId
+ *        required: true
+ *        type: string
+ *        description: User Id
+ *    responses:
+ *      200:
+ *        description: Get successful
+ *      400:
+ *        description: Bad Request
+ *      404:
+ *        description: Not Found
+ *
+ */
+router.route("/admin/user/:user_id").get(byUserIDForAdmin);
 
 // Update Status API
 /**

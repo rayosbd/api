@@ -103,9 +103,30 @@ productSchema
   .get(function (value, virtual, doc) {
     let quantity = 0;
     value?.forEach?.(function (variant) {
-      quantity += variant.quantity;
+      quantity += variant.quantity || 0;
     });
     return quantity;
+  });
+
+productSchema
+  .virtual("sold", {
+    ref: "Variant",
+    localField: "_id",
+    foreignField: "product",
+    match: {
+      isActive: true,
+    },
+    // getters: true,
+  })
+  .set(function () {
+    return 1;
+  })
+  .get(function (value, virtual, doc) {
+    let sold = 0;
+    value?.forEach?.(function (variant) {
+      sold += variant.sold || 0;
+    });
+    return sold;
   });
 
 productSchema
@@ -116,7 +137,6 @@ productSchema
     match: {
       isActive: true,
     },
-    // getters: true,
   })
   .set(function () {
     return 1;
@@ -174,7 +194,7 @@ productSchema
   });
 
 productSchema.pre(/^find/, async function () {
-  this.populate("quantity price rating");
+  this.populate("quantity price sold rating");
 });
 
 productSchema.set("toObject", { virtuals: true });
