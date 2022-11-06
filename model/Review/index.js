@@ -31,6 +31,11 @@ var reviewSchema = new mongoose.Schema({
       required: [true, "Please Provide Attachment Id"],
     },
   ],
+  isActive: {
+    type: Boolean,
+    required: true,
+    default: true,
+  },
 });
 
 const Review = mongoose.model("Review", reviewSchema);
