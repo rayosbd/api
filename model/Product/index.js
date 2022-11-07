@@ -100,7 +100,7 @@ productSchema
   .set(function () {
     return 1;
   })
-  .get(function (value, virtual, doc) {
+  .get(function (value) {
     let quantity = 0;
     value?.forEach?.(function (variant) {
       quantity += variant.quantity || 0;
@@ -121,7 +121,7 @@ productSchema
   .set(function () {
     return 1;
   })
-  .get(function (value, virtual, doc) {
+  .get(function (value) {
     let sold = 0;
     value?.forEach?.(function (variant) {
       sold += variant.sold || 0;

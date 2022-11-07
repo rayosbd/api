@@ -24,7 +24,7 @@ var ordertimelineSchema = new mongoose.Schema(
     },
     message: {
       type: String,
-      default: function (value) {
+      default: function () {
         if (this.status === "Pending")
           return "The order is placed successfully.";
         else if (this.status === "Confirmed")

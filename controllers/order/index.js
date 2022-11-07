@@ -91,24 +91,30 @@ exports.calculateOrder = async (req, res, next) => {
 exports.getOrderCalculation = async (req, res, next) => {
   const user = req.user;
   try {
-    const orderCache = await OrderCache.findById(user._id).populate({
-      path: "carts",
-      populate: {
-        path: "variant",
-        match: {
-          isActive: true,
-        },
-        select: "titleEn titleBn product quantity",
+    const orderCache = await OrderCache.findById(user._id).populate([
+      {
+        path: "carts",
         populate: {
-          path: "product",
+          path: "variant",
           match: {
             isActive: true,
           },
-          select: "titleEn titleBn image sellPrice",
+          select: "titleEn titleBn product quantity",
+          populate: {
+            path: "product",
+            match: {
+              isActive: true,
+            },
+            select: "titleEn titleBn image sellPrice",
+          },
         },
+        select: "variant quantity",
       },
-      select: "variant quantity",
-    });
+      {
+        path: "shipping",
+        select: "label phone details",
+      },
+    ]);
     if (!orderCache)
       res.status(200).json({
         success: false,
@@ -154,24 +160,30 @@ exports.getOrderCalculation = async (req, res, next) => {
 exports.createOrder = async (req, res, next) => {
   const user = req.user;
   try {
-    const orderCache = await OrderCache.findById(user._id).populate({
-      path: "carts",
-      populate: {
-        path: "variant",
-        match: {
-          isActive: true,
-        },
-        select: "titleEn titleBn product quantity",
+    const orderCache = await OrderCache.findById(user._id).populate([
+      {
+        path: "carts",
         populate: {
-          path: "product",
+          path: "variant",
           match: {
             isActive: true,
           },
-          select: "titleEn titleBn image sellPrice",
+          select: "titleEn titleBn product quantity",
+          populate: {
+            path: "product",
+            match: {
+              isActive: true,
+            },
+            select: "titleEn titleBn image sellPrice",
+          },
         },
+        select: "variant quantity",
       },
-      select: "variant quantity",
-    });
+      {
+        path: "shipping",
+        select: "label phone details",
+      },
+    ]);
     if (!orderCache)
       res.status(200).json({
         success: false,
@@ -196,7 +208,10 @@ exports.createOrder = async (req, res, next) => {
 
     const order = await Order.create({
       user: user._id,
-      shipping: orderCache.shipping,
+      shipping: {
+        phone: orderCache.shipping.phone,
+        address: orderCache.shipping.details,
+      },
       paymentMethod: orderCache.paymentMethod,
       status: "Pending",
       totalSellPrice: sellPrice,

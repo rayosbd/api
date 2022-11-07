@@ -41,7 +41,6 @@ var reviewSchema = new mongoose.Schema(
       {
         type: mongoose.Schema.Types.ObjectId,
         ref: "Attachment",
-        required: [true, "Please Provide Attachment Id"],
       },
     ],
     isActive: {

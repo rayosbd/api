@@ -8,11 +8,23 @@ var orderSchema = new mongoose.Schema(
       required: [true, "Please Provide User Id"],
     },
     shipping: {
-      // type: mongoose.Schema.Types.ObjectId,
-      // ref: "Address",
-      // required: [true, "Please Provide Address"],
-      type: String,
-      default: null,
+      phone: {
+        type: String,
+        validate: [/01\d{9}$/, "Invalid Phone Number"],
+        required: [true, "Please Provide a Phone Number"],
+      },
+      lat: {
+        type: String,
+        default: null,
+      },
+      lng: {
+        type: String,
+        default: null,
+      },
+      address: {
+        type: String,
+        required: [true, "Please Provide an Address"],
+      },
     },
     paymentMethod: {
       type: String,

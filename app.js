@@ -47,6 +47,7 @@ app.get("/", function (req, res) {
 });
 
 // API Routes
+app.use("/api/address", require("./routes/address"));
 app.use("/api/auth", require("./routes/auth"));
 app.use("/api/attachments", require("./routes/attachment"));
 app.use("/api/bookmark", require("./routes/bookmark"));

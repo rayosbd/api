@@ -16,10 +16,9 @@ var ordercacheSchema = new mongoose.Schema({
     },
   },
   shipping: {
-    // type: mongoose.Schema.Types.ObjectId,
-    // ref: "Address",
-    // required: [true, "Please Provide Address"],
-    type: String,
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Address",
+    required: [true, "Please Provide Address"],
   },
   shippingFee: {
     type: Number,

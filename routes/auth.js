@@ -212,6 +212,8 @@ router.route("/forget-password").post(forgetpassword);
  */
 router.route("/reset-password").post(resetpassword);
 
+
+
 // admin auth routes
 router.use('/admin', require('./admin'))
 
