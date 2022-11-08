@@ -1,6 +1,7 @@
 const { default: mongoose } = require("mongoose");
 const Store = require("../../model/Store");
 const ErrorResponse = require("../../utils/errorResponse");
+const { fieldsQuery } = require("../../utils/fieldsQuery");
 
 exports.create = async (req, res, next) => {
   // Get Values
@@ -33,11 +34,16 @@ exports.create = async (req, res, next) => {
 
 exports.getAll = async (req, res, next) => {
   const { skip, limit, page } = req.pagination;
+  const { isActive } = req.query;
   try {
     res.status(200).json({
       success: true,
       message: "Store list fetched successfully",
-      data: await Store.find()
+      data: await Store.find({
+        ...fieldsQuery({
+          isActive,
+        }),
+      })
         .populate([
           {
             path: "owner",
@@ -52,7 +58,11 @@ exports.getAll = async (req, res, next) => {
         .select(
           "titleEn titleBn owner ownerModel slug image isActive totalProducts"
         ),
-      total: await Store.count(),
+      total: await Store.find({
+        ...fieldsQuery({
+          isActive,
+        }),
+      }).count(),
       page,
       limit,
     });
