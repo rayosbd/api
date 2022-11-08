@@ -1,6 +1,7 @@
 const { default: mongoose } = require("mongoose");
 const Product = require("../../model/Product");
 const ErrorResponse = require("../../utils/errorResponse");
+const { fieldsQuery } = require("../../utils/fieldsQuery");
 
 exports.create = async (req, res, next) => {
   // Get Values
@@ -139,11 +140,20 @@ exports.activeInactive = async (req, res, next) => {
 
 exports.getAll = async (req, res, next) => {
   const { skip, limit, page } = req.pagination;
+  const { store, category, subcategory, variantType } = req.query;
+
   try {
     res.status(200).json({
       success: true,
       message: "Product list fetched successfully",
-      data: await Product.find()
+      data: await Product.find({
+        ...fieldsQuery({
+          store,
+          category,
+          subcategory,
+          variantType,
+        }),
+      })
         .populate([
           {
             path: "category",
@@ -163,7 +173,14 @@ exports.getAll = async (req, res, next) => {
         )
         .skip(skip)
         .limit(limit),
-      total: await Product.find().count(),
+      total: await Product.find({
+        ...fieldsQuery({
+          store,
+          category,
+          subcategory,
+          variantType,
+        }),
+      }).count(),
       page,
       limit,
     });

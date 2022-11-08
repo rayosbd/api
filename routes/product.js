@@ -27,6 +27,18 @@ const router = express.Router();
  *      - in: query
  *        name: page
  *        type: string
+ *      - in: query
+ *        name: store
+ *        type: string
+ *      - in: query
+ *        name: category
+ *        type: string
+ *      - in: query
+ *        name: subcategory
+ *        type: string
+ *      - in: query
+ *        name: variantType
+ *        type: string
  *    responses:
  *      200:
  *        description: Get successful
