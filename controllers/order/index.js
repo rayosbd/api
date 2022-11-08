@@ -7,7 +7,6 @@ const OrderLine = require("../../model/OrderLine");
 const OrderTimeline = require("../../model/OrderTimeLine");
 const Variant = require("../../model/Variant");
 const ErrorResponse = require("../../utils/errorResponse");
-const { default: searchRegex } = require("../../utils/searchRegex");
 
 exports.calculateOrder = async (req, res, next) => {
   const user = req.user;
