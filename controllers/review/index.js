@@ -1,11 +1,18 @@
 const { default: mongoose } = require("mongoose");
 const Review = require("../../model/Review");
 const ErrorResponse = require("../../utils/errorResponse");
+const { fieldsQuery } = require("../../utils/fieldsQuery");
 
 exports.getAll = async (req, res, next) => {
   const { skip, limit, page } = req.pagination;
+  const { product, isActive } = req.query;
   try {
-    const review = await Review.find()
+    const review = await Review.find({
+      ...fieldsQuery({
+        product,
+        isActive,
+      }),
+    })
       .populate([
         {
           path: "order",
@@ -24,7 +31,12 @@ exports.getAll = async (req, res, next) => {
       success: true,
       message: "Review list fetched successfully",
       data: review,
-      total: await Review.count(),
+      total: await Review.find({
+        ...fieldsQuery({
+          product,
+          isActive,
+        }),
+      }).count(),
       page,
       limit,
     });
