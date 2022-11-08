@@ -1,6 +1,7 @@
 const { default: mongoose } = require("mongoose");
 const Category = require("../../model/Category");
 const ErrorResponse = require("../../utils/errorResponse");
+const { fieldsQuery } = require("../../utils/fieldsQuery");
 
 exports.create = async (req, res, next) => {
   // Get Values
@@ -103,8 +104,13 @@ exports.activeInactive = async (req, res, next) => {
 
 exports.getAll = async (req, res, next) => {
   const { skip, limit, page } = req.pagination;
+  const { isActive } = req.query;
   try {
-    const category = await Category.find()
+    const category = await Category.find({
+      ...fieldsQuery({
+        isActive,
+      }),
+    })
       .populate("totalSubcategories totalProducts")
       .skip(skip)
       .limit(limit)
@@ -115,7 +121,11 @@ exports.getAll = async (req, res, next) => {
       success: true,
       message: "Category list fetched successfully",
       data: category,
-      total: await Category.count(),
+      total: await Category.find({
+        ...fieldsQuery({
+          isActive,
+        }),
+      }).count(),
       page,
       limit,
     });

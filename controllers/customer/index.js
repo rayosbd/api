@@ -1,10 +1,17 @@
 const { default: mongoose } = require("mongoose");
 const User = require("../../model/User");
+const { fieldsQuery } = require("../../utils/fieldsQuery");
 
 exports.getAll = async (req, res, next) => {
   const { skip, limit, page } = req.pagination;
+  const { isVerified, isActive } = req.query;
   try {
-    const customers = await User.find()
+    const customers = await User.find({
+      ...fieldsQuery({
+        isVerified,
+        isActive,
+      }),
+    })
       .skip(skip)
       .limit(limit)
       .select("userName fullName phone email image isVerified isActive");
@@ -13,7 +20,12 @@ exports.getAll = async (req, res, next) => {
       success: true,
       message: "Customer list fetched successfully",
       data: customers,
-      total: await User.count(),
+      total: await User.find({
+        ...fieldsQuery({
+          isVerified,
+          isActive,
+        }),
+      }).count(),
       page,
       limit,
     });

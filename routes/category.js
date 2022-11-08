@@ -29,6 +29,9 @@ const router = express.Router();
  *      - in: query
  *        name: page
  *        type: string
+ *      - in: query
+ *        name: isActive
+ *        type: string
  *    responses:
  *      200:
  *        description: Get successful
