@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const slug = require("mongoose-slug-updater");
+const { MongooseFindByReference } = require("mongoose-find-by-reference");
 
 mongoose
   .connect(process.env.MONGO_DB, {
@@ -11,5 +12,6 @@ mongoose
   });
 
 mongoose.plugin(slug);
+mongoose.plugin(MongooseFindByReference);
 
 module.exports = mongoose;

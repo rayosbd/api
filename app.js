@@ -58,6 +58,7 @@ app.use("/api/feed", require("./routes/feed"));
 app.use("/api/order", require("./routes/order"));
 app.use("/api/review", require("./routes/review"));
 app.use("/api/store", require("./routes/store"));
+app.use("/api/search", require("./routes/search"));
 app.use("/api/subcategory", require("./routes/subcategory"));
 app.use("/api/product", require("./routes/product"));
 app.use("/api/variant", require("./routes/variant"));
