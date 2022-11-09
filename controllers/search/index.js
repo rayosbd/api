@@ -1,65 +1,41 @@
 const Product = require("../../model/Product");
 const ErrorResponse = require("../../utils/errorResponse");
-const { searchQuery } = require("../../utils/fieldsQuery");
+const { queryObjectBuilder, flatSubquery } = require("../../utils/fieldsQuery");
 
 exports.search = async (req, res, next) => {
-  const { skip, limit, page } = req.pagination;
   try {
     if (!req.search) throw new ErrorResponse("Search query not found", 400);
 
     const query = {
       $or: [
-        ...searchQuery(req.search, [
-          "titleEn",
-          "titleBn",
-          "slug",
-          "category.titleEn",
-          "category.titleBn",
-          "category.slug",
-          "subcategory.titleEn",
-          "subcategory.titleBn",
-          "subcategory.slug",
-          "store.titleEn",
-          "store.titleBn",
-          "store.slug",
-        ]),
+        ...queryObjectBuilder(
+          req.search,
+          [
+            "titleEn",
+            "titleBn",
+            "slug",
+            "category.titleEn",
+            "category.titleBn",
+            "category.slug",
+            "subcategory.titleEn",
+            "subcategory.titleBn",
+            "subcategory.slug",
+            "store.titleEn",
+            "store.titleBn",
+            "store.slug",
+          ],
+          true
+        ),
       ],
-      "category.isActive": true,
-      "subcategory.isActive": true,
-      "store.isActive": true,
-      isActive: true,
-    };
-
-    const squery = {
-      $or: searchQuery(req.search, [
-        "titleEn",
-        "titleBn",
-        "slug",
-        "category.titleEn",
-        "category.titleBn",
-        "category.slug",
-        "subcategory.titleEn",
-        "subcategory.titleBn",
-        "subcategory.slug",
-        "store.titleEn",
-        "store.titleBn",
-        "store.slug",
-      ]),
-      category: {
-        $subquery: {
-          isActive: true,
-        },
-      },
-      subcategory: {
-        $subquery: {
-          isActive: true,
-        },
-      },
-      store: {
-        $subquery: {
-          isActive: true,
-        },
-      },
+      // ...queryObjectBuilder(
+      //   true,
+      //   ["category.isActive", "subcategory.isActive", "store.isActive"],
+      //   false,
+      //   true
+      // ),
+      ...flatSubquery("category.isActive", true),
+      ...flatSubquery("subcategory.isActive", true),
+      ...flatSubquery("store.isActive", true),
       isActive: true,
     };
 
@@ -67,7 +43,8 @@ exports.search = async (req, res, next) => {
       success: true,
       // squery,
       message: "Search results fetched successfully",
-      ...(await Product.paginate(squery, {
+      ...(await Product.paginate(query, {
+        ...req.pagination,
         populate: [
           {
             path: "category",
@@ -84,18 +61,11 @@ exports.search = async (req, res, next) => {
         ],
         select:
           "titleEn titleBn category subcategory slug store buyPrice sellPrice price image isActive",
-        page,
-        limit,
         customLabels: {
           docs: "data",
           totalDocs: "total",
         },
       })),
-      // .skip(skip)
-      // .limit(limit),
-      // total: [...(await Product.find(query))].length,
-      // page,
-      // limit,
     });
 
     // On Error

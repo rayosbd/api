@@ -20,7 +20,6 @@
     "joi": "17.6.0",
     "jsonwebtoken": "8.5.1",
     "mongoose": "6.5.0",
-    "mongoose-find-by-reference": "1.0.5",
     "mongoose-paginate-v2": "1.7.1",
     "mongoose-slug-updater": "3.3.0",
     "mongoose-subquery": "2.2.5",
