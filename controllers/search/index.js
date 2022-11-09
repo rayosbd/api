@@ -6,27 +6,69 @@ exports.search = async (req, res, next) => {
   const { skip, limit, page } = req.pagination;
   try {
     if (!req.search) throw new ErrorResponse("Search query not found", 400);
-    res.status(200).json({
-      success: true,
-      message: "Search results fetched successfully",
-      data: await Product.find({
-        $or: searchQuery(req.search, [
+
+    const query = {
+      $or: [
+        ...searchQuery(req.search, [
           "titleEn",
           "titleBn",
           "slug",
           "category.titleEn",
           "category.titleBn",
+          "category.slug",
           "subcategory.titleEn",
           "subcategory.titleBn",
+          "subcategory.slug",
           "store.titleEn",
           "store.titleBn",
+          "store.slug",
         ]),
-        "category.isActive": true,
-        "subcategory.isActive": true,
-        "store.isActive": true,
-        isActive: true,
-      })
-        .populate([
+      ],
+      "category.isActive": true,
+      "subcategory.isActive": true,
+      "store.isActive": true,
+      isActive: true,
+    };
+
+    const squery = {
+      $or: searchQuery(req.search, [
+        "titleEn",
+        "titleBn",
+        "slug",
+        "category.titleEn",
+        "category.titleBn",
+        "category.slug",
+        "subcategory.titleEn",
+        "subcategory.titleBn",
+        "subcategory.slug",
+        "store.titleEn",
+        "store.titleBn",
+        "store.slug",
+      ]),
+      category: {
+        $subquery: {
+          isActive: true,
+        },
+      },
+      subcategory: {
+        $subquery: {
+          isActive: true,
+        },
+      },
+      store: {
+        $subquery: {
+          isActive: true,
+        },
+      },
+      isActive: true,
+    };
+
+    res.status(200).json({
+      success: true,
+      // squery,
+      message: "Search results fetched successfully",
+      ...(await Product.paginate(squery, {
+        populate: [
           {
             path: "category",
             select: "titleEn titleBn icon isActive slug",
@@ -39,31 +81,21 @@ exports.search = async (req, res, next) => {
             path: "store",
             select: "image titleEn titleBn isActive slug",
           },
-        ])
-        .select(
-          "titleEn titleBn category subcategory slug store buyPrice sellPrice price image isActive"
-        )
-        .skip(skip)
-        .limit(limit),
-      total: await Product.find({
-        $or: searchQuery(req.search, [
-          "titleEn",
-          "titleBn",
-          "slug",
-          "category.titleEn",
-          "category.titleBn",
-          "subcategory.titleEn",
-          "subcategory.titleBn",
-          "store.titleEn",
-          "store.titleBn",
-        ]),
-        "category.isActive": true,
-        "subcategory.isActive": true,
-        "store.isActive": true,
-        isActive: true,
-      }).count(),
-      page,
-      limit,
+        ],
+        select:
+          "titleEn titleBn category subcategory slug store buyPrice sellPrice price image isActive",
+        page,
+        limit,
+        customLabels: {
+          docs: "data",
+          totalDocs: "total",
+        },
+      })),
+      // .skip(skip)
+      // .limit(limit),
+      // total: [...(await Product.find(query))].length,
+      // page,
+      // limit,
     });
 
     // On Error
