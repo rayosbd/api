@@ -1,7 +1,7 @@
 const { default: mongoose } = require("mongoose");
 const Product = require("../../model/Product");
 const ErrorResponse = require("../../utils/errorResponse");
-const { fieldsQuery } = require("../../utils/fieldsQuery");
+const { fieldsQuery, queryObjectBuilder } = require("../../utils/fieldsQuery");
 
 exports.create = async (req, res, next) => {
   // Get Values
@@ -139,50 +139,68 @@ exports.activeInactive = async (req, res, next) => {
 };
 
 exports.getAll = async (req, res, next) => {
-  const { skip, limit, page } = req.pagination;
-  const { store, category, subcategory, variantType } = req.query;
+  const { store, category, subcategory, variantType, isActive } = req.query;
 
   try {
     res.status(200).json({
       success: true,
       message: "Product list fetched successfully",
-      data: await Product.find({
-        ...fieldsQuery({
-          store,
-          category,
-          subcategory,
-          variantType,
-        }),
-      })
-        .populate([
-          {
-            path: "category",
-            select: "titleEn titleBn icon isActive slug",
+      ...(await Product.paginate(
+        {
+          ...(req.search && {
+            $or: [
+              ...queryObjectBuilder(
+                req.search,
+                [
+                  "titleEn",
+                  "titleBn",
+                  "slug",
+                  "category.titleEn",
+                  "category.titleBn",
+                  "category.slug",
+                  "subcategory.titleEn",
+                  "subcategory.titleBn",
+                  "subcategory.slug",
+                  "store.titleEn",
+                  "store.titleBn",
+                  "store.slug",
+                ],
+                true
+              ),
+            ],
+          }),
+          ...fieldsQuery({
+            store,
+            category,
+            subcategory,
+            variantType,
+            isActive,
+          }),
+        },
+        {
+          ...req.pagination,
+          populate: [
+            {
+              path: "category",
+              select: "titleEn titleBn icon isActive slug",
+            },
+            {
+              path: "subcategory",
+              select: "titleEn titleBn icon isActive slug",
+            },
+            {
+              path: "store",
+              select: "image titleEn titleBn isActive slug",
+            },
+          ],
+          select:
+            "titleEn titleBn category subcategory slug store buyPrice sellPrice price image isActive",
+          customLabels: {
+            docs: "data",
+            totalDocs: "total",
           },
-          {
-            path: "subcategory",
-            select: "titleEn titleBn icon isActive slug",
-          },
-          {
-            path: "store",
-            select: "image titleEn titleBn isActive slug",
-          },
-        ])
-        .select(
-          "titleEn titleBn category subcategory slug store buyPrice sellPrice price image isActive"
-        )
-        .skip(skip)
-        .limit(limit),
-      total: await Product.find({
-        ...fieldsQuery({
-          store,
-          category,
-          subcategory,
-          variantType,
-        }),
-      }).count(),
-      page,
-      limit,
+        }
+      )),
     });
 
     // On Error

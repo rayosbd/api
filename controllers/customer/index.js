@@ -1,33 +1,38 @@
 const { default: mongoose } = require("mongoose");
 const User = require("../../model/User");
-const { fieldsQuery } = require("../../utils/fieldsQuery");
+const { fieldsQuery, queryObjectBuilder } = require("../../utils/fieldsQuery");
 
 exports.getAll = async (req, res, next) => {
-  const { skip, limit, page } = req.pagination;
   const { isVerified, isActive } = req.query;
   try {
-    const customers = await User.find({
-      ...fieldsQuery({
-        isVerified,
-        isActive,
-      }),
-    })
-      .skip(skip)
-      .limit(limit)
-      .select("userName fullName phone email image isVerified isActive");
-
     res.status(200).json({
       success: true,
       message: "Customer list fetched successfully",
-      data: customers,
-      total: await User.find({
-        ...fieldsQuery({
-          isVerified,
-          isActive,
-        }),
-      }).count(),
-      page,
-      limit,
+      ...(await User.paginate(
+        {
+          ...(req.search && {
+            $or: [
+              ...queryObjectBuilder(
+                req.search,
+                ["userName", "fullName", "phone", "email"],
+                true
+              ),
+            ],
+          }),
+          ...fieldsQuery({
+            isVerified,
+            isActive,
+          }),
+        },
+        {
+          ...req.pagination,
+          select: "userName fullName phone email image isVerified isActive",
+          customLabels: {
+            docs: "data",
+            totalDocs: "total",
+          },
+        }
+      )),
     });
 
     // On Error

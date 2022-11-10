@@ -1,42 +1,81 @@
 const { default: mongoose } = require("mongoose");
 const Bookmark = require("../../model/Bookmark");
 const ErrorResponse = require("../../utils/errorResponse");
+const { queryObjectBuilder, flatSubquery } = require("../../utils/fieldsQuery");
 
 exports.getForUser = async (req, res, next) => {
-  const user = req.user;
-  const { skip, limit, page } = req.pagination;
   try {
     res.status(200).json({
       success: true,
       message: "Bookmark list fetched successfully",
-      data: await Bookmark.find({ user: user._id })
-        .populate([
-          {
-            path: "product",
-            populate: [
-              {
-                path: "category",
-                select: "titleEn titleBn icon isActive slug",
-              },
-              {
-                path: "subcategory",
-                select: "titleEn titleBn icon isActive slug",
-              },
-              {
-                path: "store",
-                select: "image titleEn titleBn isActive slug",
-              },
+      ...(await Bookmark.paginate(
+        {
+          ...(req.search && {
+            $or: [
+              ...queryObjectBuilder(
+                req.search,
+                [
+                  "product.titleEn",
+                  "product.titleBn",
+                  "product.slug",
+                  "product.category.titleEn",
+                  "product.category.titleBn",
+                  "product.category.slug",
+                  "product.subcategory.titleEn",
+                  "product.subcategory.titleBn",
+                  "product.subcategory.slug",
+                  "product.store.titleEn",
+                  "product.store.titleBn",
+                  "product.store.slug",
+                ],
+                true
+              ),
             ],
-            select:
-              "titleEn titleBn category subcategory slug store sellPrice price image isActive",
+          }),
+          $and: [
+            ...queryObjectBuilder(
+              true,
+              [
+                "product.category.isActive",
+                "product.subcategory.isActive",
+                "product.store.isActive",
+                "product.isActive",
+              ],
+              false
+            ),
+          ],
+          user: req.user._id,
+        },
+        {
+          ...req.pagination,
+          populate: [
+            {
+              path: "product",
+              populate: [
+                {
+                  path: "category",
+                  select: "titleEn titleBn icon isActive slug",
+                },
+                {
+                  path: "subcategory",
+                  select: "titleEn titleBn icon isActive slug",
+                },
+                {
+                  path: "store",
+                  select: "image titleEn titleBn isActive slug",
+                },
+              ],
+              select:
+                "titleEn titleBn category subcategory slug store sellPrice price image isActive",
+            },
+          ],
+          select: "product",
+          customLabels: {
+            docs: "data",
+            totalDocs: "total",
           },
-        ])
-        .select("product")
-        .skip(skip)
-        .limit(limit),
-      total: await Bookmark.find({ user: user._id }).count(),
-      page,
-      limit,
+        }
+      )),
     });
 
     // On Error

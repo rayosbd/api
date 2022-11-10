@@ -7,6 +7,7 @@ const OrderLine = require("../../model/OrderLine");
 const OrderTimeline = require("../../model/OrderTimeLine");
 const Variant = require("../../model/Variant");
 const ErrorResponse = require("../../utils/errorResponse");
+const { queryObjectBuilder, searchRegex } = require("../../utils/fieldsQuery");
 
 exports.calculateOrder = async (req, res, next) => {
   const user = req.user;
@@ -439,32 +440,44 @@ const orderFromVariant = async (variantId, quantity) => {
 };
 
 exports.getAll = async (req, res, next) => {
-  const { skip, limit, page } = req.pagination;
   const { status } = req.query;
 
   try {
     res.status(200).json({
       success: true,
       message: "Order list fetched successfully",
-      data: await Order.find({
-        // $or: searchRegex(req.search, "user.userName"),
-        ...(status && { status }),
-      })
-        .populate([
-          {
-            path: "user",
-            select: "userName image",
+      ...(await Order.paginate(
+        {
+          ...(req.search && {
+            $or: [
+              ...queryObjectBuilder(
+                req.search,
+                ["user.userName", "user.fullName", "user.phone", "user.email"],
+                true
+              ),
+              { "shipping.phone": searchRegex(req.search) },
+              { "shipping.address": searchRegex(req.search) },
+            ],
+          }),
+          ...(status && { status }),
+        },
+        {
+          ...req.pagination,
+          populate: [
+            {
+              path: "user",
+              select: "userName image",
+            },
+          ],
+          select:
+            "shipping paymentMethod status totalSellPrice shippingFee voucher discount total createdAt",
+          customLabels: {
+            docs: "data",
+            totalDocs: "total",
           },
-        ])
-        .select(
-          "shipping paymentMethod status totalSellPrice shippingFee voucher discount total createdAt"
-        )
-        .skip(skip)
-        .limit(limit),
-      status: status || "All",
-      total: await Order.count(),
-      page,
-      limit,
+        }
+      )),
+      status,
     });
 
     // On Error
@@ -475,31 +488,40 @@ exports.getAll = async (req, res, next) => {
 };
 
 exports.getAllUser = async (req, res, next) => {
-  const { skip, limit, page } = req.pagination;
   const { status } = req.query;
   const user = req.user;
   try {
     res.status(200).json({
       success: true,
       message: "Order list fetched successfully",
-      data: await Order.find({
-        // $or: searchRegex(req.search, "user.userName"),
-        user: user._id,
-        ...(status && { status }),
-      })
-        .skip(skip)
-        .limit(limit)
-        .select(
-          "shipping paymentMethod status totalSellPrice shippingFee voucher discount total createdAt"
-        ),
-      status: status || "all",
-      total: await Order.find({
-        // $or: searchRegex(req.search, "user.userName"),
-        user: user._id,
-        ...(status && { status }),
-      }).count(),
-      page,
-      limit,
+      data: await Order.paginate(
+        {
+          ...(req.search && {
+            $or: [
+              { "shipping.phone": searchRegex(req.search) },
+              { "shipping.address": searchRegex(req.search) },
+            ],
+          }),
+          user: user._id,
+          ...(status && { status }),
+        },
+        {
+          ...req.pagination,
+          populate: [
+            {
+              path: "user",
+              select: "userName image",
+            },
+          ],
+          select:
+            "shipping paymentMethod status totalSellPrice shippingFee voucher discount total createdAt",
+          customLabels: {
+            docs: "data",
+            totalDocs: "total",
+          },
+        }
+      ),
+      status,
     });
 
     // On Error
@@ -511,27 +533,40 @@ exports.getAllUser = async (req, res, next) => {
 
 exports.getAllUserId = async (req, res, next) => {
   const { userId } = req.params;
-  const { skip, limit, page } = req.pagination;
   const { status } = req.query;
 
   try {
     res.status(200).json({
       success: true,
       message: "Order list fetched successfully",
-      data: await Order.find({
-        // $or: searchRegex(req.search, "user.userName"),
-        user: userId,
-        ...(status && { status }),
-      })
-        .skip(skip)
-        .limit(limit)
-        .select(
-          "shipping paymentMethod status totalSellPrice shippingFee voucher discount total createdAt"
-        ),
-      status: status || "all",
-      total: await Order.count(),
-      page,
-      limit,
+      ...(await Order.paginate(
+        {
+          ...(req.search && {
+            $or: [
+              { "shipping.phone": searchRegex(req.search) },
+              { "shipping.address": searchRegex(req.search) },
+            ],
+          }),
+          user: userId,
+          ...(status && { status }),
+        },
+        {
+          ...req.pagination,
+          populate: [
+            {
+              path: "user",
+              select: "userName image",
+            },
+          ],
+          select:
+            "shipping paymentMethod status totalSellPrice shippingFee voucher discount total createdAt",
+          customLabels: {
+            docs: "data",
+            totalDocs: "total",
+          },
+        }
+      )),
+      status,
     });
 
     // On Error

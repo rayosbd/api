@@ -1,7 +1,7 @@
 const { default: mongoose } = require("mongoose");
 const Category = require("../../model/Category");
 const ErrorResponse = require("../../utils/errorResponse");
-const { fieldsQuery } = require("../../utils/fieldsQuery");
+const { fieldsQuery, queryObjectBuilder } = require("../../utils/fieldsQuery");
 
 exports.create = async (req, res, next) => {
   // Get Values
@@ -103,31 +103,37 @@ exports.activeInactive = async (req, res, next) => {
 };
 
 exports.getAll = async (req, res, next) => {
-  const { skip, limit, page } = req.pagination;
   const { isActive } = req.query;
   try {
-    const category = await Category.find({
-      ...fieldsQuery({
-        isActive,
-      }),
-    })
-      .populate("totalSubcategories totalProducts")
-      .skip(skip)
-      .limit(limit)
-      .select(
-        "titleEn titleBn icon isActive totalSubcategories totalProducts slug"
-      );
     res.status(200).json({
       success: true,
       message: "Category list fetched successfully",
-      data: category,
-      total: await Category.find({
-        ...fieldsQuery({
-          isActive,
-        }),
-      }).count(),
-      page,
-      limit,
+      ...(await Category.paginate(
+        {
+          ...(req.search && {
+            $or: [
+              ...queryObjectBuilder(
+                req.search,
+                ["titleEn", "titleBn", "slug"],
+                true
+              ),
+            ],
+          }),
+          ...fieldsQuery({
+            isActive,
+          }),
+        },
+        {
+          ...req.pagination,
+          populate: "totalSubcategories totalProducts",
+          select:
+            "titleEn titleBn icon isActive totalSubcategories totalProducts slug",
+          customLabels: {
+            docs: "data",
+            totalDocs: "total",
+          },
+        }
+      )),
     });
 
     // On Error

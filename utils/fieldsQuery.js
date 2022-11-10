@@ -21,15 +21,10 @@ exports.queryObjectBuilder = (value, keys, isSearch, toObject) => {
       : Array.from(keys, (f) => {
           return this.flatSubquery(
             f,
-            isSearch
-              ? {
-                  $regex: value,
-                  $options: "i",
-                }
-              : value
+            isSearch ? this.searchRegex(value) : value
           );
         })
-    : obj
+    : value
     ? {}
     : [];
 };
@@ -50,3 +45,9 @@ exports.flatSubquery = (path, value) => {
     : {};
 };
 
+exports.searchRegex = (value) => {
+  return {
+    $regex: value,
+    $options: "i",
+  };
+};

@@ -39,6 +39,9 @@ const router = express.Router();
  *      - in: query
  *        name: variantType
  *        type: string
+ *      - in: query
+ *        name: isActive
+ *        type: string
  *    responses:
  *      200:
  *        description: Get successful
