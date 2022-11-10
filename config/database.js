@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const slug = require("mongoose-slug-updater");
+const slug = require("mongoose-slug-generator");
 // const { MongooseFindByReference } = require("mongoose-find-by-reference");
 const mongoosePaginate = require("mongoose-paginate-v2");
 const { mongooseSubqueryPlugin } = require("mongoose-subquery");
@@ -15,9 +15,9 @@ mongoose
 
 // mongoose.set("debug", true);
 
-mongoose.plugin(slug);
 mongoose.plugin(mongoosePaginate);
 mongoose.plugin(mongooseSubqueryPlugin);
+mongoose.plugin(slug);
 // mongoose.plugin(MongooseFindByReference);
 
 module.exports = mongoose;
