@@ -494,7 +494,7 @@ exports.getAllUser = async (req, res, next) => {
     res.status(200).json({
       success: true,
       message: "Order list fetched successfully",
-      data: await Order.paginate(
+      ...(await Order.paginate(
         {
           ...(req.search && {
             $or: [
@@ -520,7 +520,7 @@ exports.getAllUser = async (req, res, next) => {
             totalDocs: "total",
           },
         }
-      ),
+      )),
       status,
     });
 
