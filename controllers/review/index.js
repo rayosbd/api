@@ -4,7 +4,7 @@ const ErrorResponse = require("../../utils/errorResponse");
 const { fieldsQuery, queryObjectBuilder } = require("../../utils/fieldsQuery");
 
 exports.getAll = async (req, res, next) => {
-  const { product, isActive } = req.query;
+  const { author, product, isActive } = req.query;
   try {
     res.status(200).json({
       success: true,
@@ -28,6 +28,7 @@ exports.getAll = async (req, res, next) => {
             ],
           }),
           ...fieldsQuery({
+            author,
             product,
             isActive,
           }),

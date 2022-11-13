@@ -30,6 +30,9 @@ const router = express.Router();
  *        name: page
  *        type: string
  *      - in: query
+ *        name: author
+ *        type: string
+ *      - in: query
  *        name: product
  *        type: string
  *      - in: query
