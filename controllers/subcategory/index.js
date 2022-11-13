@@ -1,7 +1,7 @@
 const { default: mongoose } = require("mongoose");
 const Subcategory = require("../../model/Subcategory");
 const ErrorResponse = require("../../utils/errorResponse");
-const { fieldsQuery } = require("../../utils/fieldsQuery");
+const { fieldsQuery, queryObjectBuilder } = require("../../utils/fieldsQuery");
 
 exports.create = async (req, res, next) => {
   // Get Values
@@ -108,30 +108,51 @@ exports.activeInactive = async (req, res, next) => {
 };
 
 exports.getAll = async (req, res, next) => {
-  const { skip, limit, page } = req.pagination;
   const { isActive, category } = req.query;
   try {
     res.status(200).json({
       success: true,
       message: "Subcategory list fetched successfully",
-      data: await Subcategory.find({
-        ...fieldsQuery({
-          category,
-          isActive,
-        }),
-      })
-        .populate("category totalProducts")
-        .select("titleEn titleBn icon isActive category totalProducts")
-        .skip(skip)
-        .limit(limit),
-      total: await Subcategory.find({
-        ...fieldsQuery({
-          category,
-          isActive,
-        }),
-      }).count(),
-      page,
-      limit,
+      ...(await Subcategory.paginate(
+        {
+          ...(req.search && {
+            $or: [
+              ...queryObjectBuilder(
+                req.search,
+                [
+                  "titleEn",
+                  "titleBn",
+                  "slug",
+                  "category.titleEn",
+                  "category.titleBn",
+                  "category.slug",
+                ],
+                true
+              ),
+            ],
+          }),
+          ...fieldsQuery({
+            category,
+            isActive,
+          }),
+        },
+        {
+          ...req.pagination,
+          populate: [
+            {
+              path: "category",
+            },
+            {
+              path: "totalProducts",
+            },
+          ],
+          select: "titleEn titleBn icon isActive category totalProducts",
+          customLabels: {
+            docs: "data",
+            totalDocs: "total",
+          },
+        }
+      )),
     });
 
     // On Error

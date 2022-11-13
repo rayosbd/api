@@ -1,7 +1,7 @@
 const { default: mongoose } = require("mongoose");
 const Store = require("../../model/Store");
 const ErrorResponse = require("../../utils/errorResponse");
-const { fieldsQuery } = require("../../utils/fieldsQuery");
+const { fieldsQuery, queryObjectBuilder } = require("../../utils/fieldsQuery");
 
 exports.create = async (req, res, next) => {
   // Get Values
@@ -33,38 +33,46 @@ exports.create = async (req, res, next) => {
 };
 
 exports.getAll = async (req, res, next) => {
-  const { skip, limit, page } = req.pagination;
   const { isActive } = req.query;
+
   try {
     res.status(200).json({
       success: true,
       message: "Store list fetched successfully",
-      data: await Store.find({
-        ...fieldsQuery({
-          isActive,
-        }),
-      })
-        .populate([
-          {
-            path: "owner",
-            select: "userName image",
+      ...(await Store.paginate(
+        {
+          ...(req.search && {
+            $or: [
+              ...queryObjectBuilder(
+                req.search,
+                ["titleEn", "titleBn", "slug"],
+                true
+              ),
+            ],
+          }),
+          ...fieldsQuery({
+            isActive,
+          }),
+        },
+        {
+          ...req.pagination,
+          populate: [
+            {
+              path: "owner",
+              select: "userName image",
+            },
+            {
+              path: "totalProducts",
+            },
+          ],
+          select:
+            "titleEn titleBn owner ownerModel slug image isActive totalProducts",
+          customLabels: {
+            docs: "data",
+            totalDocs: "total",
           },
-          {
-            path: "totalProducts",
-          },
-        ])
-        .skip(skip)
-        .limit(limit)
-        .select(
-          "titleEn titleBn owner ownerModel slug image isActive totalProducts"
-        ),
-      total: await Store.find({
-        ...fieldsQuery({
-          isActive,
-        }),
-      }).count(),
-      page,
-      limit,
+        }
+      )),
     });
 
     // On Error

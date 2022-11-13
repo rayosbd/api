@@ -1,7 +1,11 @@
 const { default: mongoose } = require("mongoose");
 const Product = require("../../model/Product");
 const ErrorResponse = require("../../utils/errorResponse");
-const { fieldsQuery, queryObjectBuilder } = require("../../utils/fieldsQuery");
+const {
+  fieldsQuery,
+  queryObjectBuilder,
+  flatSubquery,
+} = require("../../utils/fieldsQuery");
 
 exports.create = async (req, res, next) => {
   // Get Values
@@ -213,7 +217,6 @@ exports.getAll = async (req, res, next) => {
 exports.getByCategoryId = async (req, res, next) => {
   // Get Values
   const { category_id } = req.params;
-  const { skip, limit, page } = req.pagination;
 
   // mongoose.Types.ObjectId.isValid(id)
   if (!category_id || !mongoose.Types.ObjectId.isValid(category_id))
@@ -223,29 +226,56 @@ exports.getByCategoryId = async (req, res, next) => {
     res.status(200).json({
       success: true,
       message: "Product list fetched successfully",
-      data: await Product.find({
-        category: category_id,
-      })
-        .populate([
-          {
-            path: "subcategory",
-            select: "titleEn titleBn icon isActive slug",
+      ...(await Product.paginate(
+        {
+          ...(req.search && {
+            $or: [
+              ...queryObjectBuilder(
+                req.search,
+                [
+                  "titleEn",
+                  "titleBn",
+                  "slug",
+                  "category.titleEn",
+                  "category.titleBn",
+                  "category.slug",
+                  "subcategory.titleEn",
+                  "subcategory.titleBn",
+                  "subcategory.slug",
+                  "store.titleEn",
+                  "store.titleBn",
+                  "store.slug",
+                ],
+                true
+              ),
+            ],
+          }),
+          ...flatSubquery("category.isActive", true),
+          ...flatSubquery("subcategory.isActive", true),
+          ...flatSubquery("store.isActive", true),
+          category: category_id,
+          isActive: true,
+        },
+        {
+          ...req.pagination,
+          populate: [
+            {
+              path: "subcategory",
+              select: "titleEn titleBn icon isActive slug",
+            },
+            {
+              path: "store",
+              select: "image titleEn titleBn isActive slug",
+            },
+          ],
+          select:
+            "titleEn titleBn subcategory store slug buyPrice sellPrice price image isActive",
+          customLabels: {
+            docs: "data",
+            totalDocs: "total",
           },
-          {
-            path: "store",
-            select: "image titleEn titleBn isActive slug",
-          },
-        ])
-        .select(
-          "titleEn titleBn subcategory slug store buyPrice sellPrice price image isActive"
-        )
-        .skip(skip)
-        .limit(limit),
-      total: await Product.find({
-        category: category_id,
-      }).count(),
-      page,
-      limit,
+        }
+      )),
     });
 
     // On Error
@@ -258,7 +288,6 @@ exports.getByCategoryId = async (req, res, next) => {
 exports.getBySubcategoryId = async (req, res, next) => {
   // Get Values
   const { category_id } = req.params;
-  const { skip, limit, page } = req.pagination;
 
   // mongoose.Types.ObjectId.isValid(id)
   if (!category_id || !mongoose.Types.ObjectId.isValid(category_id))
@@ -268,30 +297,56 @@ exports.getBySubcategoryId = async (req, res, next) => {
     res.status(200).json({
       success: true,
       message: "Product list fetched successfully",
-      data: await Product.find({
-        subcategory: category_id,
-      })
-        .populate([
-          {
-            path: "category",
-            select: "titleEn titleBn icon isActive slug",
+      ...(await Product.paginate(
+        {
+          ...(req.search && {
+            $or: [
+              ...queryObjectBuilder(
+                req.search,
+                [
+                  "titleEn",
+                  "titleBn",
+                  "slug",
+                  "category.titleEn",
+                  "category.titleBn",
+                  "category.slug",
+                  "subcategory.titleEn",
+                  "subcategory.titleBn",
+                  "subcategory.slug",
+                  "store.titleEn",
+                  "store.titleBn",
+                  "store.slug",
+                ],
+                true
+              ),
+            ],
+          }),
+          ...flatSubquery("category.isActive", true),
+          ...flatSubquery("subcategory.isActive", true),
+          ...flatSubquery("store.isActive", true),
+          subcategory: category_id,
+          isActive: true,
+        },
+        {
+          ...req.pagination,
+          populate: [
+            {
+              path: "category",
+              select: "titleEn titleBn icon isActive slug",
+            },
+            {
+              path: "store",
+              select: "image titleEn titleBn isActive slug",
+            },
+          ],
+          select:
+            "titleEn titleBn category store slug buyPrice sellPrice price image isActive",
+          customLabels: {
+            docs: "data",
+            totalDocs: "total",
           },
-
-          {
-            path: "store",
-            select: "image titleEn titleBn isActive slug",
-          },
-        ])
-        .select(
-          "titleEn titleBn category slug store buyPrice sellPrice price image isActive"
-        )
-        .skip(skip)
-        .limit(limit),
-      total: await Product.find({
-        subcategory: category_id,
-      }).count(),
-      page,
-      limit,
+        }
+      )),
     });
 
     // On Error
@@ -304,7 +359,6 @@ exports.getBySubcategoryId = async (req, res, next) => {
 exports.getByStoreId = async (req, res, next) => {
   // Get Values
   const { store_id } = req.params;
-  const { skip, limit, page } = req.pagination;
 
   // mongoose.Types.ObjectId.isValid(id)
   if (!store_id || !mongoose.Types.ObjectId.isValid(store_id))
@@ -314,29 +368,56 @@ exports.getByStoreId = async (req, res, next) => {
     res.status(200).json({
       success: true,
       message: "Product list fetched successfully",
-      data: await Product.find({
-        store: store_id,
-      })
-        .populate([
-          {
-            path: "category",
-            select: "titleEn titleBn icon isActive slug",
+      ...(await Product.paginate(
+        {
+          ...(req.search && {
+            $or: [
+              ...queryObjectBuilder(
+                req.search,
+                [
+                  "titleEn",
+                  "titleBn",
+                  "slug",
+                  "category.titleEn",
+                  "category.titleBn",
+                  "category.slug",
+                  "subcategory.titleEn",
+                  "subcategory.titleBn",
+                  "subcategory.slug",
+                  "store.titleEn",
+                  "store.titleBn",
+                  "store.slug",
+                ],
+                true
+              ),
+            ],
+          }),
+          ...flatSubquery("category.isActive", true),
+          ...flatSubquery("subcategory.isActive", true),
+          ...flatSubquery("store.isActive", true),
+          store: store_id,
+          isActive: true,
+        },
+        {
+          ...req.pagination,
+          populate: [
+            {
+              path: "category",
+              select: "titleEn titleBn icon isActive slug",
+            },
+            {
+              path: "subcategory",
+              select: "titleEn titleBn icon isActive slug",
+            },
+          ],
+          select:
+            "titleEn titleBn category subcategory slug buyPrice sellPrice price image isActive",
+          customLabels: {
+            docs: "data",
+            totalDocs: "total",
           },
-          {
-            path: "subcategory",
-            select: "titleEn titleBn icon isActive slug",
-          },
-        ])
-        .select(
-          "titleEn titleBn category subcategory slug  buyPrice sellPrice price image isActive"
-        )
-        .skip(skip)
-        .limit(limit),
-      total: await Product.find({
-        store: store_id,
-      }).count(),
-      page,
-      limit,
+        }
+      )),
     });
 
     // On Error
