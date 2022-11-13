@@ -1,44 +1,56 @@
 const { default: mongoose } = require("mongoose");
 const Review = require("../../model/Review");
 const ErrorResponse = require("../../utils/errorResponse");
-const { fieldsQuery } = require("../../utils/fieldsQuery");
+const { fieldsQuery, queryObjectBuilder } = require("../../utils/fieldsQuery");
 
 exports.getAll = async (req, res, next) => {
-  const { skip, limit, page } = req.pagination;
   const { product, isActive } = req.query;
   try {
-    const review = await Review.find({
-      ...fieldsQuery({
-        product,
-        isActive,
-      }),
-    })
-      .populate([
-        {
-          path: "order",
-        },
-        {
-          path: "product",
-        },
-        {
-          path: "author",
-        },
-      ])
-      .skip(skip)
-      .limit(limit);
-
     res.status(200).json({
       success: true,
       message: "Review list fetched successfully",
-      data: review,
-      total: await Review.find({
-        ...fieldsQuery({
-          product,
-          isActive,
-        }),
-      }).count(),
-      page,
-      limit,
+      ...(await Review.paginate(
+        {
+          ...(req.search && {
+            $or: [
+              ...queryObjectBuilder(
+                req.search,
+                [
+                  "message",
+                  "product.titleEn",
+                  "order.user.userName",
+                  "order.user.fullName",
+                  "order.user.phone",
+                  "order.user.email",
+                ],
+                true
+              ),
+            ],
+          }),
+          ...fieldsQuery({
+            product,
+            isActive,
+          }),
+        },
+        {
+          ...req.pagination,
+          populate: [
+            {
+              path: "order",
+            },
+            {
+              path: "product",
+            },
+            {
+              path: "author",
+            },
+          ],
+          customLabels: {
+            docs: "data",
+            totalDocs: "total",
+          },
+        }
+      )),
     });
 
     // On Error
