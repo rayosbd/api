@@ -26,7 +26,9 @@ exports.getAll = async (req, res, next) => {
         },
         {
           ...req.pagination,
-          select: "userName fullName phone email image isVerified isActive",
+          populate: "totalOrders",
+          select:
+            "userName fullName phone email image totalOrders isVerified isActive",
           customLabels: {
             docs: "data",
             totalDocs: "total",

@@ -125,6 +125,15 @@ userSchema.methods.verifyUser = async function () {
   await this.save();
 };
 
+userSchema.virtual("totalOrders", {
+  ref: "Order",
+  localField: "_id",
+  foreignField: "user",
+  count: true,
+});
+
+userSchema.set("toObject", { virtuals: true });
+userSchema.set("toJSON", { virtuals: true });
 
 
 const User = mongoose.model("User", userSchema);
