@@ -1,3 +1,4 @@
+const Category = require("../../model/Category");
 const Order = require("../../model/Order");
 const Product = require("../../model/Product");
 const User = require("../../model/User");
@@ -47,6 +48,24 @@ exports.customer = async (req, res, next) => {
         blocked: await User.find({ isActive: false }).count(),
       },
       message: "Get data from customer successfully",
+    });
+  } catch (error) {
+    // On Error
+    // Send Error Response
+    next(error);
+  }
+};
+
+exports.category = async (req, res, next) => {
+  try {
+    res.status(200).json({
+      success: true,
+      data: {
+        total: await Category.count(),
+        active: await Category.find({ isActive: true }).count(),
+        blocked: await Category.find({ isActive: false }).count(),
+      },
+      message: "Get data from category successfully",
     });
   } catch (error) {
     // On Error
