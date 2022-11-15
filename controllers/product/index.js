@@ -452,7 +452,7 @@ exports.byID = async (req, res, next) => {
       },
       {
         path: "images",
-        select: "-product",
+        select: "_id image",
       },
       {
         path: "store",
