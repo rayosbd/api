@@ -1,11 +1,33 @@
 const express = require("express");
-const { order, dashboard, customer, product } = require("../controllers/stats");
+const {
+  order,
+  dashboard,
+  customer,
+  product,
+  category,
+} = require("../controllers/stats");
 const router = express.Router();
 
 
 
 
 
+/**
+ * @swagger
+ * /api/stats/category:
+ *  get:
+ *    tags: [Stats]
+ *    summary: Get Dashboard Category
+ *    responses:
+ *      200:
+ *        description: Get successful
+ *      400:
+ *        description: Bad Request
+ *      404:
+ *        description: Not Found
+ *
+ */
+router.route("/category").get(category);
 
 
 /**
