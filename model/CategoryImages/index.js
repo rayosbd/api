@@ -8,6 +8,11 @@ var categoryImageSchema = new mongoose.Schema(
       required: [true, "Please Provide Category Image"], // If Required
       default: null,
     },
+    category: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Category",
+      required: [true, "Please Provide Category Id"],
+    },
   },
   { timestamps: true }
 );

@@ -8,6 +8,11 @@ var productImageSchema = new mongoose.Schema(
       required: [true, "Please Provide Product Image"], // If Required
       default: null,
     },
+    product: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Product",
+      required: [true, "Please Provide Product Id"],
+    },
   },
   { timestamps: true }
 );

@@ -1,5 +1,7 @@
 const { default: mongoose } = require("mongoose");
+const Attachment = require("../../model/Attachment");
 const Product = require("../../model/Product");
+const ProductImage = require("../../model/ProductImages");
 const ErrorResponse = require("../../utils/errorResponse");
 const {
   fieldsQuery,
@@ -449,6 +451,10 @@ exports.byID = async (req, res, next) => {
         path: "variants",
       },
       {
+        path: "images",
+        select: "-product",
+      },
+      {
         path: "store",
         select: "image titleEn titleBn isActive slug",
       },
@@ -459,6 +465,94 @@ exports.byID = async (req, res, next) => {
     res.status(200).json({
       success: true,
       data: product,
+    });
+
+    // On Error
+  } catch (error) {
+    // Send Error Response
+    next(error);
+  }
+};
+
+exports.imagesByID = async (req, res, next) => {
+  // Get Values
+  const { product_id } = req.params;
+
+  // mongoose.Types.ObjectId.isValid(id)
+  if (!product_id || !mongoose.Types.ObjectId.isValid(product_id))
+    return next(new ErrorResponse("Please provide valid product id", 400));
+
+  try {
+    res.status(200).json({
+      success: true,
+      data: await ProductImage.find({
+        product: product_id,
+      }).select("-product"),
+    });
+
+    // On Error
+  } catch (error) {
+    // Send Error Response
+    next(error);
+  }
+};
+
+exports.saveImages = async (req, res, next) => {
+  // Get Values
+  const { product_id } = req.params;
+
+  // mongoose.Types.ObjectId.isValid(id)
+  if (!product_id || !mongoose.Types.ObjectId.isValid(product_id))
+    return next(new ErrorResponse("Please provide valid product id", 400));
+
+  let attachmentList = req.files
+    ? req.files.map((file) => {
+        return {
+          mimetype: file.mimetype,
+          filename: file.filename,
+          size: file.size,
+        };
+      })
+    : [];
+
+  if (!attachmentList.length)
+    return next(new ErrorResponse("No attachments added", 404));
+
+  try {
+    const attachment = await Attachment.insertMany(attachmentList);
+    await ProductImage.insertMany(
+      Array.from(attachment, (per) => {
+        return {
+          image: per._id.toString(),
+          product: product_id,
+        };
+      })
+    );
+
+    res.status(201).json({
+      success: true,
+      message: "Attachments uploaded successfully",
+    });
+  } catch (error) {
+    // On Error
+    // Send Error Response
+    next(error);
+  }
+};
+
+exports.delImage = async (req, res, next) => {
+  const { feed_id } = req.params;
+
+  if (!feed_id || !mongoose.Types.ObjectId.isValid(feed_id))
+    return next(new ErrorResponse("Please provide valid image id", 400));
+
+  try {
+    // const imageInfo =
+    await ProductImage.findByIdAndDelete(feed_id);
+    // await Attachment.findByIdAndDelete(imageInfo.image);
+    res.status(200).json({
+      success: true,
+      message: "Image deleted successfully",
     });
 
     // On Error

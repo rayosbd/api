@@ -1,5 +1,7 @@
 const { default: mongoose } = require("mongoose");
+const Attachment = require("../../model/Attachment");
 const Category = require("../../model/Category");
+const CategoryImage = require("../../model/CategoryImages");
 const ErrorResponse = require("../../utils/errorResponse");
 const { fieldsQuery, queryObjectBuilder } = require("../../utils/fieldsQuery");
 
@@ -153,7 +155,7 @@ exports.byID = async (req, res, next) => {
 
   try {
     const category = await Category.findById(category_id).populate(
-      "icon totalSubcategories totalProducts"
+      "icon totalSubcategories totalProducts images"
     );
 
     if (!category) return next(new ErrorResponse("No category found", 404));
@@ -161,6 +163,94 @@ exports.byID = async (req, res, next) => {
     res.status(200).json({
       success: true,
       data: category,
+    });
+
+    // On Error
+  } catch (error) {
+    // Send Error Response
+    next(error);
+  }
+};
+
+exports.imagesByID = async (req, res, next) => {
+  // Get Values
+  const { category_id } = req.params;
+
+  // mongoose.Types.ObjectId.isValid(id)
+  if (!category_id || !mongoose.Types.ObjectId.isValid(category_id))
+    return next(new ErrorResponse("Please provide valid category id", 400));
+
+  try {
+    res.status(200).json({
+      success: true,
+      data: await CategoryImage.find({
+        category: category_id,
+      }).select("-category"),
+    });
+
+    // On Error
+  } catch (error) {
+    // Send Error Response
+    next(error);
+  }
+};
+
+exports.saveImages = async (req, res, next) => {
+  // Get Values
+  const { category_id } = req.params;
+
+  // mongoose.Types.ObjectId.isValid(id)
+  if (!category_id || !mongoose.Types.ObjectId.isValid(category_id))
+    return next(new ErrorResponse("Please provide valid category id", 400));
+
+  let attachmentList = req.files
+    ? req.files.map((file) => {
+        return {
+          mimetype: file.mimetype,
+          filename: file.filename,
+          size: file.size,
+        };
+      })
+    : [];
+
+  if (!attachmentList.length)
+    return next(new ErrorResponse("No attachments added", 404));
+
+  try {
+    const attachment = await Attachment.insertMany(attachmentList);
+    await CategoryImage.insertMany(
+      Array.from(attachment, (per) => {
+        return {
+          image: per._id.toString(),
+          category: category_id,
+        };
+      })
+    );
+
+    res.status(201).json({
+      success: true,
+      message: "Attachments uploaded successfully",
+    });
+  } catch (error) {
+    // On Error
+    // Send Error Response
+    next(error);
+  }
+};
+
+exports.delImage = async (req, res, next) => {
+  const { feed_id } = req.params;
+
+  if (!feed_id || !mongoose.Types.ObjectId.isValid(feed_id))
+    return next(new ErrorResponse("Please provide valid image id", 400));
+
+  try {
+    // const imageInfo =
+    await CategoryImage.findByIdAndDelete(feed_id);
+    // await Attachment.findByIdAndDelete(imageInfo.image);
+    res.status(200).json({
+      success: true,
+      message: "Image deleted successfully",
     });
 
     // On Error

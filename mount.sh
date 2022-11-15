@@ -1,0 +1,1 @@
+sudo sshfs -o allow_other root@162.0.211.226:/root/repositories/file_bucket /media/tam/48955458-d4d5-4f63-b57b-bb4d87490c69/tam/git-repos/rayos/file_bucket

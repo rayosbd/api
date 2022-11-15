@@ -87,6 +87,12 @@ productSchema.virtual("variants", {
   foreignField: "product",
 });
 
+productSchema.virtual("images", {
+  ref: "ProductImage",
+  localField: "_id",
+  foreignField: "product",
+});
+
 productSchema
   .virtual("quantity", {
     ref: "Variant",
@@ -192,6 +198,7 @@ productSchema
   .get(function (value, virtual, doc) {
     return doc.sellPrice;
   });
+
 
 productSchema.pre(/^find/, async function () {
   this.populate("quantity price sold rating");

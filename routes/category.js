@@ -1,10 +1,14 @@
 const express = require("express");
+const { upload } = require("../config/attachment");
 const {
   create,
   update,
   activeInactive,
   getAll,
   byID,
+  delImage,
+  saveImages,
+  imagesByID,
 } = require("../controllers/category");
 const { getByCategoryId } = require("../controllers/product");
 const { byCategory } = require("../controllers/subcategory");
@@ -40,6 +44,103 @@ const router = express.Router();
  *
  */
 router.route("/").get(query, getAll);
+
+// Get Category Images API
+/**
+ * @swagger
+ * /api/category/{id}/images:
+ *  get:
+ *    tags: [Images]
+ *    summary: Get Category Images
+ *    parameters:
+ *      - in: path
+ *        name: id
+ *        required: true
+ *        type: string
+ *        description: Category Id
+ *    responses:
+ *      200:
+ *        description: Get successful
+ *      400:
+ *        description: Bad Request
+ *      404:
+ *        description: Not Found
+ *
+ */
+router.route("/:category_id/images").get(imagesByID);
+
+// Save Category Images API
+/**
+ * @swagger
+ * /api/category/{id}/images:
+ *  post:
+ *    tags: [Images]
+ *    summary: Upload Category Images
+ *    security:
+ *      - bearer: []
+ *    parameters:
+ *      - in: path
+ *        name: id
+ *        required: true
+ *        type: string
+ *        description: Category Id
+ *    requestBody:
+ *      required: true
+ *      content:
+ *        multipart/form-data:
+ *          schema:
+ *            type: object
+ *            required:
+ *              - Files[]
+ *            properties:
+ *              Files[]:
+ *                type: array
+ *                items:
+ *                  type: string
+ *                  format: binary
+ *
+ *    responses:
+ *      201:
+ *        description: Upload successful
+ *      400:
+ *        description: Bad Request
+ *
+ */
+router.route("/:category_id/images").post(
+  // adminProtect, protect,
+  upload.array("Files[]"),
+  saveImages
+);
+
+// Delete Category Image
+/**
+ * @swagger
+ * /api/category/images/{id}:
+ *  delete:
+ *    tags: [Images]
+ *    summary: Delete Category Image
+ *    security:
+ *      - bearer: []
+ *    parameters:
+ *      - in: path
+ *        name: id
+ *        required: true
+ *        type: string
+ *        description: Image Id
+ *    responses:
+ *      200:
+ *        description: Get successful
+ *      400:
+ *        description: Bad Request
+ *      404:
+ *        description: Not Found
+ *
+ */
+router.route("/images/:feed_id").delete(
+  // adminProtect, protect,
+  delImage
+);
+ 
 
 // Create API
 /**
