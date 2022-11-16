@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const { flatSubquery } = require("../../utils/fieldsQuery");
 
 var categorySchema = new mongoose.Schema(
   {
@@ -61,6 +62,12 @@ categorySchema.virtual("subcategories", {
   ref: "Subcategory",
   localField: "_id",
   foreignField: "category",
+  match: {
+    isActive: true,
+  },
+  options: {
+    select: "titleEn titleBn slug id",
+  },
 });
 
 categorySchema.virtual("images", {
@@ -73,6 +80,16 @@ categorySchema.virtual("products", {
   ref: "Product",
   localField: "_id",
   foreignField: "category",
+  match: {
+    isActive: true,
+    ...flatSubquery("category.isActive", true),
+    ...flatSubquery("subcategory.isActive", true),
+    ...flatSubquery("store.isActive", true),
+  },
+  options: {
+    select:
+      "titleEn titleBn category subcategory slug store buyPrice sellPrice price image isActive",
+  },
 });
 
 categorySchema.virtual("totalProducts", {

@@ -132,7 +132,6 @@ exports.update = async (req, res, next) => {
     const store = await Store.findByIdAndUpdate(
       store_id,
       {
-        titleEn,
         titleBn,
         descriptionEn,
         descriptionBn,
@@ -143,11 +142,16 @@ exports.update = async (req, res, next) => {
       }
     );
 
+    if (titleEn) {
+      store.titleEn = titleEn;
+      store.save();
+    }
+
     if (store)
       res.status(200).json({
         success: true,
         message: "Store updated successfully",
-        data: store,
+        // data: store,
       });
     else return next(new ErrorResponse("Store not found", 404));
 

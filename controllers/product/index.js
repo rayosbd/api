@@ -80,7 +80,7 @@ exports.update = async (req, res, next) => {
     const product = await Product.findByIdAndUpdate(
       product_id,
       {
-        titleEn,
+        // titleEn,
         titleBn,
         descriptionEn,
         descriptionBn,
@@ -96,6 +96,11 @@ exports.update = async (req, res, next) => {
         new: true,
       }
     );
+
+    if (titleEn) {
+      product.titleEn = titleEn;
+      product.save();
+    }
 
     if (product)
       res.status(200).json({

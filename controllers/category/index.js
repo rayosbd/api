@@ -46,7 +46,6 @@ exports.update = async (req, res, next) => {
     const category = await Category.findByIdAndUpdate(
       category_id,
       {
-        titleEn,
         titleBn,
         descriptionEn,
         descriptionBn,
@@ -57,11 +56,16 @@ exports.update = async (req, res, next) => {
       }
     );
 
+    if (titleEn) {
+      category.titleEn = titleEn;
+      category.save();
+    }
+
     if (category)
       res.status(200).json({
         success: true,
         message: "Category updated successfully",
-        data: category,
+        // data: category,
       });
     else return next(new ErrorResponse("Category not found", 404));
 

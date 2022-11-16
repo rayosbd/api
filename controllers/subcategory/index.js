@@ -47,7 +47,6 @@ exports.update = async (req, res, next) => {
     const subcategory = await Subcategory.findByIdAndUpdate(
       subcategory_id,
       {
-        titleEn,
         titleBn,
         descriptionEn,
         descriptionBn,
@@ -59,11 +58,16 @@ exports.update = async (req, res, next) => {
       }
     );
 
+    if (titleEn) {
+      subcategory.titleEn = titleEn;
+      subcategory.save();
+    }
+
     if (subcategory)
       res.status(200).json({
         success: true,
         message: "Subcategory updated successfully",
-        data: subcategory,
+        // data: subcategory,
       });
     else return next(new ErrorResponse("Subcategory not found", 404));
 
