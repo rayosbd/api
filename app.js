@@ -18,24 +18,24 @@ const swaggerUi = require("swagger-ui-express");
 
 // swagger Options
 const swaggerOptions = {
-  swaggerDefinition: {
-    openapi: "3.0.0",
-    info: {
-      title: process.env.NAME || "eCommerce API",
-      version: "1.0.0",
-    },
-  },
-  // ['app.js', '.routes/*.js']
-  apis: ["app.js", "./routes/*.js", "./middleware/*.js", "./model/*/*.js"],
+	swaggerDefinition: {
+		openapi: "3.0.0",
+		info: {
+			title: process.env.NAME || "eCommerce API",
+			version: "1.0.0",
+		},
+	},
+	// ['app.js', '.routes/*.js']
+	apis: ["app.js", "./routes/*.js", "./middleware/*.js", "./model/*/*.js"],
 };
 
 app.use(
-  cors({
-    origin: "*",
-    methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
-    preflightContinue: false,
-    optionsSuccessStatus: 204,
-  })
+	cors({
+		origin: "*",
+		methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+		preflightContinue: false,
+		optionsSuccessStatus: 204,
+	})
 );
 
 // Use Routes
@@ -43,7 +43,7 @@ app.use(express.json());
 
 // Redirect to the Documentation
 app.get("/", function (req, res) {
-  res.redirect("/doc");
+	res.redirect("/doc");
 });
 
 // API Routes
@@ -54,6 +54,7 @@ app.use("/api/bookmark", require("./routes/bookmark"));
 app.use("/api/cart", require("./routes/cart"));
 app.use("/api/category", require("./routes/category"));
 app.use("/api/customer", require("./routes/customer"));
+app.use("/api/discount", require("./routes/discount"));
 app.use("/api/feed", require("./routes/feed"));
 app.use("/api/order", require("./routes/order"));
 app.use("/api/review", require("./routes/review"));
@@ -67,7 +68,7 @@ app.use("/api/variant", require("./routes/variant"));
 // Add Swagger UI to Home Page
 app.use("/doc", swaggerUi.serve, swaggerUi.setup(swaggerJSDoc(swaggerOptions)));
 
-// Authentication 
+// Authentication
 /**
  * @swagger
  * components:
@@ -82,5 +83,5 @@ app.use("/doc", swaggerUi.serve, swaggerUi.setup(swaggerJSDoc(swaggerOptions)));
 app.use(errorHandler);
 
 app.listen(PORT, () => {
-  console.log(`Listening on port ${PORT}`);
+	console.log(`Listening on port ${PORT}`);
 });
