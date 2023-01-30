@@ -1,14 +1,14 @@
 const express = require("express");
 const { upload } = require("../config/attachment");
 const {
-  create,
-  update,
-  getAll,
-  activeInactive,
-  byID,
-  saveImages,
-  delImage,
-  imagesByID,
+	create,
+	update,
+	getAll,
+	activeInactive,
+	byID,
+	saveImages,
+	delImage,
+	imagesByID,
 } = require("../controllers/product");
 const { protect, adminProtect } = require("../middleware/auth");
 const { query } = require("../middleware/query");
@@ -141,9 +141,9 @@ router.route("/:product_id/images").get(imagesByID);
  *
  */
 router.route("/:product_id/images").post(
-  // adminProtect, protect,
-  upload.array("Files[]"),
-  saveImages
+	// adminProtect, protect,
+	upload.array("Files[]"),
+	saveImages
 );
 
 // Delete Product Image
@@ -171,8 +171,8 @@ router.route("/:product_id/images").post(
  *
  */
 router.route("/images/:feed_id").delete(
-  // adminProtect, protect,
-  delImage
+	// adminProtect, protect,
+	delImage
 );
 
 // Create API
