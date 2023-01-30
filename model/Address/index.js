@@ -45,6 +45,22 @@ var addressSchema = new mongoose.Schema(
 	}
 );
 
+addressSchema
+	.virtual("shippingFee", {
+		localField: "type",
+		foreignField: "fee",
+		getters: true,
+	})
+	.set(function () {
+		return 1;
+	})
+	.get(function (_value, _virtual, doc) {
+		return deliveryOptions[doc.type];
+	});
+
+addressSchema.set("toObject", { virtuals: true });
+addressSchema.set("toJSON", { virtuals: true });
+
 const Address = mongoose.model("Address", addressSchema);
 module.exports = Address;
 

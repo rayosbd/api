@@ -1,5 +1,5 @@
 exports.deliveryOptions = {
 	INSIDE: 70,
-	OUTSIDE: 140,
+	OUTSIDE: 150,
 	SUBAREA: 120,
 };
