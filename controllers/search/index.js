@@ -34,7 +34,7 @@ exports.search = async (req, res, next) => {
 			// ),
 			// ...flatSubquery("sold.$lt", 5),
 			...flatSubquery("category.isActive", true),
-			...flatSubquery("subcategory.isActive", true),
+			// ...flatSubquery("subcategory.isActive", true),
 			...flatSubquery("store.isActive", true),
 			isActive: true,
 		};

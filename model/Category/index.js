@@ -84,7 +84,7 @@ categorySchema
 		match: {
 			isActive: true,
 			...flatSubquery("category.isActive", true),
-			...flatSubquery("subcategory.isActive", true),
+			// ...flatSubquery("subcategory.isActive", true),
 			...flatSubquery("store.isActive", true),
 		},
 		options: {
@@ -109,7 +109,7 @@ categorySchema.virtual("totalProducts", {
 	match: {
 		isActive: true,
 		...flatSubquery("category.isActive", true),
-		...flatSubquery("subcategory.isActive", true),
+		// ...flatSubquery("subcategory.isActive", true),
 		...flatSubquery("store.isActive", true),
 	},
 });
