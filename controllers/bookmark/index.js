@@ -37,7 +37,7 @@ exports.getForUser = async (req, res, next) => {
 							true,
 							[
 								"product.category.isActive",
-								"product.subcategory.isActive",
+								// "product.subcategory.isActive",
 								"product.store.isActive",
 								"product.isActive",
 							],
