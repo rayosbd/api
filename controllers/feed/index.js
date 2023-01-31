@@ -86,7 +86,8 @@ exports.getFeedCategories = async (req, res, next) => {
 			message: "Category list fetched successfully",
 			data: await Category.find({ isActive: true })
 				.populate("totalSubcategories subcategories totalProducts products")
-				.select("titleEn titleBn icon slug totalSubcategories products id"),
+				.select("titleEn titleBn icon slug totalSubcategories products id")
+				.sort("titleEn"),
 			total: await Category.find({ isActive: true }).count(),
 		});
 

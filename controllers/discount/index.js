@@ -124,6 +124,7 @@ exports.getAll = async (req, res, next) => {
 					// populate: "totalSubcategories totalProducts",
 					// select:
 					//   "titleEn titleBn icon isActive totalSubcategories totalProducts slug",
+					sort: "-createdAt",
 					customLabels: {
 						docs: "data",
 						totalDocs: "total",

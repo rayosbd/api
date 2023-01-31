@@ -61,6 +61,7 @@ exports.search = async (req, res, next) => {
 				],
 				select:
 					"titleEn titleBn category subcategory slug store buyPrice sellPrice price image isActive",
+				sort: "-rating.total",
 				customLabels: {
 					docs: "data",
 					totalDocs: "total",

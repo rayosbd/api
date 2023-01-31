@@ -205,6 +205,7 @@ exports.getAll = async (req, res, next) => {
 							select: "image titleEn titleBn isActive slug",
 						},
 					],
+					sort: "-createdAt",
 					select:
 						"titleEn titleBn category subcategory slug store buyPrice sellPrice price image isActive discount",
 					customLabels: {
@@ -276,6 +277,7 @@ exports.getByCategoryId = async (req, res, next) => {
 							select: "image titleEn titleBn isActive slug",
 						},
 					],
+					sort: "-createdAt",
 					select:
 						"titleEn titleBn subcategory store slug buyPrice sellPrice price image isActive discount",
 					customLabels: {
@@ -356,6 +358,7 @@ exports.getByDiscountId = async (req, res, next) => {
 					],
 				},
 			],
+			sort: "-createdAt",
 			customLabels: {
 				docs: "data",
 				totalDocs: "total",
@@ -447,6 +450,7 @@ exports.getByOfferId = async (req, res, next) => {
 					],
 				},
 			],
+			sort: "-createdAt",
 			customLabels: {
 				docs: "data",
 				totalDocs: "total",
@@ -522,6 +526,7 @@ exports.getBySubcategoryId = async (req, res, next) => {
 							select: "image titleEn titleBn isActive slug",
 						},
 					],
+					sort: "-createdAt",
 					select:
 						"titleEn titleBn category store slug buyPrice sellPrice price image isActive discount",
 					customLabels: {
@@ -593,6 +598,7 @@ exports.getByStoreId = async (req, res, next) => {
 							select: "titleEn titleBn icon isActive slug",
 						},
 					],
+					sort: "-createdAt",
 					select:
 						"titleEn titleBn category subcategory slug buyPrice sellPrice price image isActive discount",
 					customLabels: {

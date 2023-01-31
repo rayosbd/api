@@ -8,7 +8,8 @@ exports.getForUser = async (req, res, next) => {
 			message: "Address list fetched successfully",
 			data: await Address.find({ user: req.user._id })
 				.populate("shippingFee")
-				.select("label phone details type shippingFee"),
+				.select("label phone details type shippingFee")
+				.sort("-createdAt"),
 		});
 
 		// On Error

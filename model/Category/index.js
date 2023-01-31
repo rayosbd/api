@@ -88,7 +88,7 @@ categorySchema
 			...flatSubquery("store.isActive", true),
 		},
 		options: {
-			sort: "rating",
+			sort: "-rating.total",
 			select:
 				"titleEn titleBn category subcategory slug store buyPrice sellPrice price image isActive",
 		},

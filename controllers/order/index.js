@@ -498,6 +498,7 @@ exports.getAll = async (req, res, next) => {
 							select: "userName image",
 						},
 					],
+					sort: "-createdAt",
 					select:
 						"shipping paymentMethod status totalSellPrice shippingFee voucher discount total createdAt",
 					customLabels: {
@@ -542,6 +543,7 @@ exports.getAllUser = async (req, res, next) => {
 							select: "userName image",
 						},
 					],
+					sort: "-createdAt",
 					select:
 						"shipping paymentMethod status totalSellPrice shippingFee voucher discount total createdAt",
 					customLabels: {
@@ -587,6 +589,7 @@ exports.getAllUserId = async (req, res, next) => {
 							select: "userName image",
 						},
 					],
+					sort: "-createdAt",
 					select:
 						"shipping paymentMethod status totalSellPrice shippingFee voucher discount total createdAt",
 					customLabels: {
@@ -691,6 +694,7 @@ exports.productsByID = async (req, res, next) => {
 						select: "titleEn titleBn quantity isActive",
 					},
 				],
+				sort: "-createdAt",
 				select:
 					"product variant quantity sellPrice price discount canceledOrReturned -order",
 			},
