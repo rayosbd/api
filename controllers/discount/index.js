@@ -2,6 +2,8 @@ const { default: mongoose } = require("mongoose");
 const Discount = require("../../model/Discount");
 const { queryObjectBuilder, fieldsQuery } = require("../../utils/fieldsQuery");
 const DiscountJunction = require("../../model/DiscountJunction");
+const Product = require("../../model/Product");
+const ObjectId = mongoose.Types.ObjectId;
 
 exports.create = async (req, res, next) => {
 	// Get Values
@@ -250,6 +252,55 @@ exports.activeInactive = async (req, res, next) => {
 			message: `Discount ${
 				discount.isActive ? "deactivated" : "activated"
 			} successfully`,
+		});
+
+		// On Error
+	} catch (error) {
+		// Send Error Response
+		next(error);
+	}
+};
+
+exports.getSearch = async (req, res, next) => {
+	const { discount } = req.query;
+
+	try {
+		res.status(200).json({
+			success: true,
+			message: "Product list fetched successfully",
+			data:
+				req.search?.length > 2
+					? await Product.aggregate([
+							{
+								$lookup: {
+									from: "discountjunctions",
+									localField: "_id",
+									foreignField: "product",
+									as: "junction",
+								},
+							},
+							{
+								$match: {
+									titleEn: {
+										$regex: new RegExp(req.search, "i"),
+									},
+								},
+							},
+							{
+								$match: {
+									"junction.discount": { $ne: new ObjectId(discount) },
+								},
+							},
+							{
+								$project: {
+									_id: 1,
+									titleEn: 1,
+									titleBn: 1,
+									image: 1,
+								},
+							},
+					  ])
+					: [],
 		});
 
 		// On Error

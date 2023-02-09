@@ -9,6 +9,7 @@ const {
 	activeInactive,
 	removeProduct,
 	aboutDiscount,
+	getSearch,
 } = require("../controllers/discount");
 const { getByDiscountId, getByOfferId } = require("../controllers/product");
 const router = express.Router();
@@ -284,6 +285,30 @@ router.route("/admin/:category_id/products").get(query, getByDiscountId);
  *
  */
 router.route("/:category_id/products").get(query, getByOfferId);
+
+// Search to Add API
+/**
+ * @swagger
+ * /api/discount/products:
+ *  get:
+ *    tags: [Discount]
+ *    summary: Search Products to add on discount
+ *    parameters:
+ *      - in: query
+ *        name: discount
+ *        type: string
+ *        required: true
+ *      - in: query
+ *        name: search
+ *        type: string
+ *    responses:
+ *      200:
+ *        description: Get successful
+ *      400:
+ *        description: Bad Request
+ *
+ */
+router.route("/products").get(query, getSearch);
 
 // Discount Info API
 /**

@@ -5,13 +5,13 @@ const mongoosePaginate = require("mongoose-paginate-v2");
 const { mongooseSubqueryPlugin } = require("mongoose-subquery");
 
 mongoose
-  .connect(process.env.MONGO_DB, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  })
-  .then(() => {
-    console.log("DB Connected Successfully");
-  });
+	.connect(process.env.MONGO_DB, {
+		useNewUrlParser: true,
+		useUnifiedTopology: true,
+	})
+	.then(() => {
+		console.log("DB Connected Successfully");
+	});
 
 // mongoose.set("debug", true);
 
