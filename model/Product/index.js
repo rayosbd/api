@@ -195,8 +195,8 @@ productSchema
 		},
 		match: {
 			$and: [
-				{ ...flatSubquery("discount.startDate", beforeThisMinute()) },
-				{ ...flatSubquery("discount.endDate", afterThisMinute()) },
+				// { ...flatSubquery("discount.startDate", beforeThisMinute()) },
+				// { ...flatSubquery("discount.endDate", afterThisMinute()) },
 				{ ...flatSubquery("discount.isActive", true) },
 			],
 		},
@@ -226,8 +226,8 @@ productSchema
 		},
 		match: {
 			$and: [
-				{ ...flatSubquery("discount.startDate", beforeThisMinute()) },
-				{ ...flatSubquery("discount.endDate", afterThisMinute()) },
+				// { ...flatSubquery("discount.startDate", beforeThisMinute()) },
+				// { ...flatSubquery("discount.endDate", afterThisMinute()) },
 				{ ...flatSubquery("discount.isActive", true) },
 			],
 		},
