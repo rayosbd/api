@@ -97,3 +97,55 @@ exports.getFeedCategories = async (req, res, next) => {
 		next(error);
 	}
 };
+
+const { createClient } = require("redis");
+
+const client = createClient({
+	url: "redis://127.0.0.1:6379",
+});
+
+client.on("error", (err) => console.log("Redis Client Error", err));
+
+// News Feed API
+exports.getFeedCategoriesNew = async (req, res, next) => {
+	try {
+		try {
+			await client.connect();
+		} catch {}
+
+		var data;
+		var sent = false;
+		data = await client.get("feed");
+
+		if (data) {
+			res.status(200).json({
+				success: true,
+				message: "Category list fetched successfully",
+				...JSON.parse(data),
+			});
+			sent = true;
+		}
+		// Auto Cache
+		data = {
+			data: await Category.find({ isActive: true })
+				.populate("totalSubcategories subcategories totalProducts products")
+				.select("titleEn titleBn icon slug totalSubcategories products id")
+				.sort("titleEn"),
+			total: await Category.find({ isActive: true }).count(),
+		};
+
+		await client.set("feed", JSON.stringify(data), "EX", 60 * 60 * 4);
+
+		if (!sent)
+			res.status(200).json({
+				success: true,
+				message: "Category list fetched successfully",
+				...data,
+			});
+
+		// On Error
+	} catch (error) {
+		// Send Error Response
+		next(error);
+	}
+};

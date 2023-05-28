@@ -1,10 +1,11 @@
 const express = require("express");
 const { upload } = require("../config/attachment");
 const {
-  getImages,
-  getFeedCategories,
-  saveImages,
-  delImage,
+	getImages,
+	getFeedCategories,
+	saveImages,
+	delImage,
+	getFeedCategoriesNew,
 } = require("../controllers/feed");
 const { adminProtect, protect } = require("../middleware/auth");
 const router = express.Router();
@@ -23,7 +24,23 @@ const router = express.Router();
  *        description: Bad Request
  *
  */
-router.route("/").get(getFeedCategories);
+router.route("/").get(getFeedCategoriesNew);
+
+// Get Feed Products API
+/**
+ * @swagger
+ * /api/feed/old:
+ *  get:
+ *    tags: [Feed]
+ *    summary: Get Feed for Home
+ *    responses:
+ *      200:
+ *        description: Get successful
+ *      400:
+ *        description: Bad Request
+ *
+ */
+router.route("/old").get(getFeedCategories);
 
 // Get Feed Images API
 /**
@@ -73,8 +90,8 @@ router.route("/image").get(getImages);
  *
  */
 router
-  .route("/image")
-  .post(adminProtect, protect, upload.array("Files[]"), saveImages);
+	.route("/image")
+	.post(adminProtect, protect, upload.array("Files[]"), saveImages);
 
 // Get Category API
 /**
