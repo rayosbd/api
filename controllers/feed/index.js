@@ -100,7 +100,9 @@ exports.getFeedCategories = async (req, res, next) => {
 
 const { createClient } = require("redis");
 
-const client = createClient(6379, "redis");
+const client = createClient({
+	url: process.env.REDIS_URI,
+});
 
 client.on("error", (err) => console.log("Redis Client Error", err));
 
