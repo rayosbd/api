@@ -24,12 +24,12 @@ const router = express.Router();
  *        description: Bad Request
  *
  */
-router.route("/").get(getFeedCategories);
+router.route("/").get(getFeedCategoriesNew);
 
 // Get Feed Products API
 /**
  * @swagger
- * /api/feed/new:
+ * /api/feed/old:
  *  get:
  *    tags: [Feed]
  *    summary: Get Feed for Home
@@ -40,7 +40,7 @@ router.route("/").get(getFeedCategories);
  *        description: Bad Request
  *
  */
-router.route("/new").get(getFeedCategoriesNew);
+router.route("/old").get(getFeedCategories);
 
 // Get Feed Images API
 /**
