@@ -13,6 +13,10 @@ services:
       - "4001:4000"
     volumes:
       - ../file_bucket:/usr/src/file_bucket:rw
+  redis:
+    image: 'redis:alpine'
+    ports:
+      - '6379:6379'
   #   depends_on:
   #     - mongo
   # mongo:

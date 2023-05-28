@@ -100,9 +100,7 @@ exports.getFeedCategories = async (req, res, next) => {
 
 const { createClient } = require("redis");
 
-const client = createClient({
-	url: "redis://162.0.211.226:6379",
-});
+const client = createClient(6379, "redis");
 
 client.on("error", (err) => console.log("Redis Client Error", err));
 
