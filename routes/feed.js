@@ -24,7 +24,7 @@ const router = express.Router();
  *        description: Bad Request
  *
  */
-router.route("/").get(getFeedCategoriesNew);
+router.route("/").get(getFeedCategories); //getFeedCategoriesNew);
 
 // Get Feed Products API
 /**
