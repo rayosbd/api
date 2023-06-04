@@ -13,19 +13,19 @@ services:
       - "4001:4000"
     volumes:
       - ../file_bucket:/usr/src/file_bucket:rw
-    depends_on:
-      - redis
-  redis:
-    image: 'redis:alpine'
-    ports:
-      - '6379:6379'
-  # mongo:
-  #   container_name: mongo
-  #   image: mongo:4.4.6
-  #   restart: always
-  #   environment:
-  #     - MONGO_INITDB_DATABASE=main
-  #     - MONGO_INITDB_ROOT_USERNAME=admin
-  #     - MONGO_INITDB_ROOT_PASSWORD=hellobro
-  #   ports:
-  #     - "27017:27017"
+    # depends_on:
+    #   - redis
+    # redis:
+    #   image: 'redis:alpine'
+    #   ports:
+    #     - '6379:6379'
+    # mongo:
+    #   container_name: mongo
+    #   image: mongo:4.4.6
+    #   restart: always
+    #   environment:
+    #     - MONGO_INITDB_DATABASE=main
+    #     - MONGO_INITDB_ROOT_USERNAME=admin
+    #     - MONGO_INITDB_ROOT_PASSWORD=hellobro
+    #   ports:
+    #     - "27017:27017"
